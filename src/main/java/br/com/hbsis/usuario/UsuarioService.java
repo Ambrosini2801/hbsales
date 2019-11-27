@@ -23,7 +23,6 @@ public class UsuarioService {
 	}
 
 	public UsuarioDTO save(UsuarioDTO usuarioDTO) {
-
 		this.validate(usuarioDTO);
 
 		LOGGER.info("Salvando usuário");
@@ -85,7 +84,7 @@ public class UsuarioService {
 
 
 		throw new IllegalArgumentException(String.format("ID %s não existe", id));
-	}
+}
 
 	public void delete(Long id) {
 		LOGGER.info("Executando delete para usuário de ID: [{}]", id);
