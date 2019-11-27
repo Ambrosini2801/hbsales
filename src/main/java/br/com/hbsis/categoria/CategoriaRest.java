@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("/categorias")
 public class CategoriaRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaRest.class);
     private final CategoriaService CategoriaService;

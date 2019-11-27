@@ -1,34 +1,38 @@
 package br.com.hbsis.categoria;
 
+import br.com.hbsis.Fornecedor.Fornecedor;
+
 public class CategoriaDTO {
 
     private Long id;
-    private String sku;
-    private String fornecedorCategoria;
     private String nomeCategoria;
+    private String codCategoria;
+    private Fornecedor fornecedor;
 
-    public CategoriaDTO(){
-
+    public CategoriaDTO() {
     }
 
-    public CategoriaDTO(Long id, String sku) {
-        this.id = id;
-        this.sku = sku;
-    }
+    public CategoriaDTO( String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
 
-    public CategoriaDTO(Long id, String sku, String fornecedorCategoria, String nomeCategoria) {
-        this.id = id;
-        this.sku = sku;
-        this.fornecedorCategoria = fornecedorCategoria;
         this.nomeCategoria = nomeCategoria;
+        this.codCategoria = codCategoria;
+        this.fornecedor = fornecedor;
     }
 
-    public static CategoriaDTO of(Categoria categoriaDTO) {
-        return new CategoriaDTO(categoriaDTO.getId(),
-                categoriaDTO.getFornecedorCategoria(),
-                categoriaDTO.getsku(),
-                categoriaDTO.getNomeCategoria());
+    public CategoriaDTO(Long id,  String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
+        this.id = id;
+        this.nomeCategoria = nomeCategoria;
+        this.codCategoria = codCategoria;
+        this.fornecedor = fornecedor;
+    }
 
+    public static CategoriaDTO of(Categoria categoriaExistente) {
+        return new CategoriaDTO(
+                categoriaExistente.getId(),
+                categoriaExistente.getNomeCategoria(),
+                categoriaExistente.getCodCategoria(),
+                categoriaExistente.getFornecedor()
+        );
     }
 
     public Long getId() {
@@ -39,21 +43,6 @@ public class CategoriaDTO {
         this.id = id;
     }
 
-    public String getsku() {
-        return sku;
-    }
-
-    public void setsku(String sku) {
-        this.sku = sku;
-    }
-
-    public  String getFornecedorCategoria() {
-        return fornecedorCategoria;
-    }
-
-    public void setFornecedorCategoria(String fornecedorCategoria) {
-        this.fornecedorCategoria = fornecedorCategoria;
-    }
 
     public String getNomeCategoria() {
         return nomeCategoria;
@@ -63,10 +52,27 @@ public class CategoriaDTO {
         this.nomeCategoria = nomeCategoria;
     }
 
+    public String getCodCategoria() {
+        return codCategoria;
+    }
+
+    public void setCodCategoria(String codCategoria) {
+        this.codCategoria = codCategoria;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    @Override
+    public String toString() {
+        return "categoria [IdFornecedor=" + fornecedor.getId() + ", nomeCategoria=" + nomeCategoria + " ," +
+                " idCategoria=" + codCategoria + "]";
+
+
+    }
 }
-
-
-
-
-
-

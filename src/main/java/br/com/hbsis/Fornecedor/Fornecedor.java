@@ -34,13 +34,14 @@ public class Fornecedor {
     public Fornecedor(String razao_social, String cnpj, String nome_fantasia, String endereco, String telefone, String email) {
     }
 
+    public Fornecedor() {
 
+    }
     public Long getId() {return id; }
 
     public String getRazao_social() {
         return razao_social;
     }
-
     public void setRazao_social(String razao_social) {
         this.razao_social = razao_social;
     }
@@ -48,7 +49,6 @@ public class Fornecedor {
     public String getCNPJ() {
         return CNPJ;
     }
-
     public void setCNPJ(String CNPJ) {
         this.CNPJ = CNPJ;
     }
@@ -56,10 +56,10 @@ public class Fornecedor {
     public String getNome_fantasia() {
         return nome_fantasia;
     }
-
     public void setNome_fantasia(String nome_fantasia) {
         this.nome_fantasia = nome_fantasia;
     }
+
     public String getEndereco() {
         return endereco;
     }
@@ -68,7 +68,6 @@ public class Fornecedor {
     }
 
     public String getTelefone() {return telefone; }
-
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
@@ -79,6 +78,5 @@ public class Fornecedor {
     public void setEmail(String email) {
         this.email = email;
     }
-
 
 }

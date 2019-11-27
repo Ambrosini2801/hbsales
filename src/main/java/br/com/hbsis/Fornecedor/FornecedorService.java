@@ -19,27 +19,33 @@ public class FornecedorService {
     public FornecedorService(IFornecedorRepository iFornecedorRepository) {
         this.iFornecedorRepository = iFornecedorRepository;
     }
+
     public FornecedorDTO save(FornecedorDTO fornecedorDTO) {
-        Fornecedor fornecedor = new Fornecedor(
+        this.validate(fornecedorDTO);
 
-                fornecedorDTO.setRazao_social(),
-                fornecedorDTO.setCNPJ(),
-                fornecedorDTO.setNome_fantasia(),
-                fornecedorDTO.setEndereco(),
-                fornecedorDTO.setTelefone(),
-                fornecedorDTO.setEmail()
+        LOGGER.info("Salvando o fornecedor");
+        LOGGER.debug("Fornecedor: {}", fornecedorDTO);
 
-        );
+        Fornecedor fornecedor = new Fornecedor();
 
-        Fornecedor save = this.iFornecedorRepository.save(fornecedor);
+        fornecedor.setRazao_social(fornecedorDTO.getRazao_social());
+        fornecedor.setCNPJ(fornecedorDTO.getCnpj());
+        fornecedor.setEmail(fornecedorDTO.getEmail());
+        fornecedor.setEndereco(fornecedorDTO.getEndereco());
+        fornecedor.setNome_fantasia(fornecedorDTO.getNome_fantasia());
+        fornecedor.setTelefone(fornecedorDTO.getTelefone());
+
+        fornecedor = this.iFornecedorRepository.save(fornecedor);
         return FornecedorDTO.of(fornecedor);
     }
+
     private void validate(FornecedorDTO FornecedorDTO) {
         LOGGER.info("Validando Fornecedor");
         if (FornecedorDTO == null) {
             throw new IllegalArgumentException("FornecedorDTO não deve ser nulo");
         }
     }
+
     public FornecedorDTO findById(Long id) {
         Optional<Fornecedor> fornecedorOptional = this.iFornecedorRepository.findById(id);
         if (fornecedorOptional.isPresent()) {
@@ -47,6 +53,15 @@ public class FornecedorService {
         }
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
+
+    public Fornecedor findFornecedorById(Long id) {
+        Optional<Fornecedor> fornecedorOptional = this.iFornecedorRepository.findById(id);
+        if (fornecedorOptional.isPresent()) {
+            return fornecedorOptional.get();
+        }
+        throw new IllegalArgumentException(String.format("ID %s não existe", id));
+    }
+
     public FornecedorDTO update(FornecedorDTO FornecedorDTO, Long id) {
         Optional<Fornecedor> fornecedorExistenteOptional = this.iFornecedorRepository.findById(id);
         if (fornecedorExistenteOptional.isPresent()) {
@@ -67,4 +82,6 @@ public class FornecedorService {
     }
 
 }
+
+
 

@@ -1,40 +1,54 @@
 package br.com.hbsis.categoria;
 
+import br.com.hbsis.Fornecedor.Fornecedor;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "br/com/hbsis/categoria")
+@Table(name = "categoria")
 public class Categoria {
 
-    public Object Categoria;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "sku", unique = true, length = 8)
-    private String sku;
-    @Column(name = "fornecedorCategoria", unique = true, length = 100)
-    private String fornecedorCategoria;
-    @Column(name = "nomeCategoria", nullable = true, updatable = true, length = 100)
+
+
+    @Column(name = "nome_categoria", unique = true, nullable = false, length = 100)
     private String nomeCategoria;
+
+    @Column(name = "cod_categoria")
+    private String codCategoria;
+
+    @ManyToOne
+    @JoinColumn(name = "id_fornecedor", referencedColumnName = "id")
+    private Fornecedor fornecedor;
+
+
+    public Categoria(Long id, String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
+        this.id = id;
+
+        this.nomeCategoria = nomeCategoria;
+        this.codCategoria = codCategoria;
+        this.fornecedor = fornecedor;
+    }
+
+    public Categoria( String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
+
+        this.nomeCategoria = nomeCategoria;
+        this.codCategoria = codCategoria;
+        this.fornecedor = fornecedor;
+    }
+
+    public Categoria() {
+
+    }
 
     public Long getId() {
         return id;
     }
 
-    public String getsku() {
-        return sku;
-    }
-
-    public void setsku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getFornecedorCategoria() {
-        return fornecedorCategoria;
-    }
-
-    public void setFornecedorCategoria(String fornecedorCategoria) {
-        this.fornecedorCategoria = fornecedorCategoria;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNomeCategoria() {
@@ -45,14 +59,29 @@ public class Categoria {
         this.nomeCategoria = nomeCategoria;
     }
 
+    public String getCodCategoria() {
+        return codCategoria;
+    }
+
+    public void setCodCategoria(String codCategoria) {
+        this.codCategoria = codCategoria;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
     @Override
     public String toString() {
-        return "categoria [SKU=" + sku + ", fornecedorCategoria=" + fornecedorCategoria +
-                " + nomeCategoria=" + nomeCategoria + "]";
+        return "categoria [IdFornecedor=" + fornecedor.getId() + ", nomeCategoria=" + nomeCategoria + " ," +
+                " idCategoria=" + codCategoria + "]";
 
 
     }
-
 
 }
 
