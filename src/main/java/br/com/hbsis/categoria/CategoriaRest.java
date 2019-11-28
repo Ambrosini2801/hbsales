@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
@@ -31,9 +32,9 @@ public class CategoriaRest {
     }
 
     @GetMapping("/{id}")
-   public CategoriaDTO find(@PathVariable("id") Long id) {
-       LOGGER.info("Recebendo find by ID.. id: [{}]", id);
-       return this.CategoriaService.findById(id);
+    public CategoriaDTO find(@PathVariable("id") Long id) {
+        LOGGER.info("Recebendo find by ID.. id: [{}]", id);
+        return this.CategoriaService.findById(id);
     }
 
     @PutMapping("/{id}")
@@ -75,5 +76,4 @@ public class CategoriaRest {
         }
 
     }
-
 }
