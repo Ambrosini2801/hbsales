@@ -17,7 +17,7 @@ public class FornecedorRest {
         this.fornecedorService = fornecedorService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public FornecedorDTO save(@RequestBody FornecedorDTO fornecedorDTO) {
         LOGGER.info("Recebendo solicitação de persistência de usuário...");
         LOGGER.debug("Payaload: {}", fornecedorDTO);
