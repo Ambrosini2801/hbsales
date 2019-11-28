@@ -1,4 +1,5 @@
 package br.com.hbsis.Fornecedor;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +10,7 @@ public class Fornecedor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "razao_social", unique = true, length = 100)
-    private String razao_social;
+    private String razaoSocial;
     @Column(name = "cnpj", unique = true, length = 14)
     private String CNPJ;
     @Column(name = "nome_fantasia", nullable = true, updatable = true, length = 100)
@@ -21,34 +22,26 @@ public class Fornecedor {
     @Column(name = "email", nullable = true, updatable = true, length = 100)
     private String email;
 
-    public Fornecedor(Long id, String razao_social, String cnpj, String nome_fantasia, String endereco, String telefone, String email) {
-        this.id = id;
-        this.razao_social = razao_social;
-        this.CNPJ = cnpj;
-        this.nome_fantasia = nome_fantasia;
-        this.endereco = endereco;
-        this.telefone = telefone;
-        this.email = email;
-    }
-
-    public Fornecedor(String razao_social, String cnpj, String nome_fantasia, String endereco, String telefone, String email) {
-    }
-
     public Fornecedor() {
 
     }
-    public Long getId() {return id; }
 
-    public String getRazao_social() {
-        return razao_social;
+    public Long getId() {
+        return id;
     }
-    public void setRazao_social(String razao_social) {
-        this.razao_social = razao_social;
+
+    public String getRazaoSocial() {
+        return razaoSocial;
+    }
+
+    public void setRazaoSocial(String razaoSocial) {
+        this.razaoSocial = razaoSocial;
     }
 
     public String getCNPJ() {
         return CNPJ;
     }
+
     public void setCNPJ(String CNPJ) {
         this.CNPJ = CNPJ;
     }
@@ -56,6 +49,7 @@ public class Fornecedor {
     public String getNome_fantasia() {
         return nome_fantasia;
     }
+
     public void setNome_fantasia(String nome_fantasia) {
         this.nome_fantasia = nome_fantasia;
     }
@@ -63,11 +57,15 @@ public class Fornecedor {
     public String getEndereco() {
         return endereco;
     }
+
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
 
-    public String getTelefone() {return telefone; }
+    public String getTelefone() {
+        return telefone;
+    }
+
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
@@ -75,8 +73,19 @@ public class Fornecedor {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
+
+
+    @Override
+    public String toString() {
+        return "categoria [razao_social = " + razaoSocial + ", cnpj =" + CNPJ + " ," +
+                " nome_fantasia = " + nome_fantasia + ", endereco = " + endereco + "telefone = " + telefone + "]";
+
+
+    }
+
 
 }

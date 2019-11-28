@@ -1,6 +1,5 @@
 package br.com.hbsis.Fornecedor;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ public class FornecedorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FornecedorService.class);
     private final IFornecedorRepository iFornecedorRepository;
-    private Fornecedor Fornecedor;
+
 
     @Autowired
     public FornecedorService(IFornecedorRepository iFornecedorRepository) {
@@ -28,7 +27,7 @@ public class FornecedorService {
 
         Fornecedor fornecedor = new Fornecedor();
 
-        fornecedor.setRazao_social(fornecedorDTO.getRazao_social());
+        fornecedor.setRazaoSocial(fornecedorDTO.getRazao_social());
         fornecedor.setCNPJ(fornecedorDTO.getCnpj());
         fornecedor.setEmail(fornecedorDTO.getEmail());
         fornecedor.setEndereco(fornecedorDTO.getEndereco());

@@ -30,7 +30,7 @@ public class FornecedorDTO {
     public static FornecedorDTO of(Fornecedor fornecedor) {
         return new FornecedorDTO(
                 fornecedor.getId(),
-                fornecedor.getRazao_social(),
+                fornecedor.getRazaoSocial(),
                 fornecedor.getCNPJ(),
                 fornecedor.getNome_fantasia(),
                 fornecedor.getEndereco(),

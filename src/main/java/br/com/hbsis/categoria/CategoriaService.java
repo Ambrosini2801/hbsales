@@ -1,6 +1,5 @@
 package br.com.hbsis.categoria;
 
-
 import br.com.hbsis.Fornecedor.Fornecedor;
 import br.com.hbsis.Fornecedor.FornecedorService;
 import org.slf4j.Logger;
@@ -8,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,7 +18,6 @@ public class CategoriaService {
 
     private final ICategoriaRepository iCategoriaRepository;
     private final FornecedorService fornecedorService;
-    private Categoria Categoria;
 
     @Autowired
     public CategoriaService(ICategoriaRepository iCategoriaRepository, FornecedorService fornecedorService) {
@@ -72,15 +72,15 @@ public class CategoriaService {
     public CategoriaDTO update(CategoriaDTO categoriaDTO, Long id) {
         Optional<Categoria> categoriaExistenteOptional = this.iCategoriaRepository.findById(id);
         if (categoriaExistenteOptional.isPresent()) {
-        Categoria categoriaExistente = categoriaExistenteOptional.get();
+            Categoria categoriaExistente = categoriaExistenteOptional.get();
 
-        LOGGER.info("Atualizando usuário... id: [{}]", categoriaExistente.getId());
-        LOGGER.debug("Payload: {}", categoriaDTO);
-        LOGGER.debug("Usuario Existente: {}", categoriaExistente);
+            LOGGER.info("Atualizando usuário... id: [{}]", categoriaExistente.getId());
+            LOGGER.debug("Payload: {}", categoriaDTO);
+            LOGGER.debug("Usuario Existente: {}", categoriaExistente);
 
-        categoriaExistente = this.iCategoriaRepository.save(categoriaExistente);
-        return CategoriaDTO.of(categoriaExistente);
-    }
+            categoriaExistente = this.iCategoriaRepository.save(categoriaExistente);
+            return CategoriaDTO.of(categoriaExistente);
+        }
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
@@ -89,8 +89,17 @@ public class CategoriaService {
         this.iCategoriaRepository.deleteById(id);
     }
 
+    public List<Categoria> findAll() {
+        return iCategoriaRepository.findAll();
+
+    }
 
 }
+
+
+
+
+
 
 
 
