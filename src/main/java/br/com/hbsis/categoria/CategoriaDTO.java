@@ -12,14 +12,7 @@ public class CategoriaDTO {
     public CategoriaDTO() {
     }
 
-    public CategoriaDTO( String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
-
-        this.nomeCategoria = nomeCategoria;
-        this.codCategoria = codCategoria;
-        this.fornecedor = fornecedor;
-    }
-
-    public CategoriaDTO(Long id,  String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
+    public CategoriaDTO(Long id, String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
         this.id = id;
         this.nomeCategoria = nomeCategoria;
         this.codCategoria = codCategoria;
@@ -42,7 +35,6 @@ public class CategoriaDTO {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getNomeCategoria() {
         return nomeCategoria;

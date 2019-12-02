@@ -1,8 +1,6 @@
 package br.com.hbsis.categoria;
 
-import br.com.hbsis.Fornecedor.Fornecedor;
 import com.google.common.net.HttpHeaders;
-import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.ICSVWriter;
@@ -13,10 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 
 @RestController
 @RequestMapping("/categorias")
@@ -85,25 +79,9 @@ public class CategoriaRest {
     }
 
     @PostMapping("/import")
-    public CategoriaDTO importCsv() throws Exception {
-        String arquivo = "import.csv";
-        Reader reader = Files.newBufferedReader(Paths.get("C:\\Users\\vanessa.silva\\Desktop\\categorias.import"));
-        CSVReader CSVReader = new CSVReader(reader, ';');
-
-        String[] line;
-        while ((line = CSVReader.readNext()) != null) {
-            Fornecedor fornecedorCompleto = new Fornecedor();
-            CategoriaDTO categoriaDTO = new CategoriaDTO();
-            categoriaDTO.setId(Long.parseLong(line[0]));
-            categoriaDTO.setNomeCategoria(line[1]);
-
-            return this.CategoriaService.save(categoriaDTO);
-
-        }
-        return null;
+    public void importCSV() throws Exception {
+        CategoriaService.importCSV();
     }
+
 }
-
-
-
 

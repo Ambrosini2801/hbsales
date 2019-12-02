@@ -2,7 +2,6 @@ package br.com.hbsis.categoria;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
 import com.opencsv.bean.CsvBindByPosition;
-
 import javax.persistence.*;
 
 @Entity
@@ -24,6 +23,7 @@ public class Categoria {
     @JoinColumn(name = "id_fornecedor", referencedColumnName = "id")
     @CsvBindByPosition(position = 3)
     private Fornecedor fornecedor;
+
 
     public Categoria() {
 
