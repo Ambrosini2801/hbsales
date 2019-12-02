@@ -1,6 +1,8 @@
 package br.com.hbsis.categoria;
 
+import br.com.hbsis.Fornecedor.Fornecedor;
 import com.google.common.net.HttpHeaders;
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.ICSVWriter;
@@ -8,8 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 @RestController
 @RequestMapping("/categorias")
@@ -23,7 +30,7 @@ public class CategoriaRest {
 
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public CategoriaDTO save(@RequestBody CategoriaDTO categoriaDTO) {
         LOGGER.info("Receber a solicitação da categoria");
         LOGGER.debug("Payaload: {}", categoriaDTO);
@@ -31,9 +38,9 @@ public class CategoriaRest {
     }
 
     @GetMapping("/{id}")
-   public CategoriaDTO find(@PathVariable("id") Long id) {
-       LOGGER.info("Recebendo find by ID.. id: [{}]", id);
-       return this.CategoriaService.findById(id);
+    public CategoriaDTO find(@PathVariable("id") Long id) {
+        LOGGER.info("Recebendo find by ID.. id: [{}]", id);
+        return this.CategoriaService.findById(id);
     }
 
     @PutMapping("/{id}")
@@ -60,7 +67,7 @@ public class CategoriaRest {
         PrintWriter writer = response.getWriter();
 
         ICSVWriter csvwriter = new CSVWriterBuilder(response.getWriter())
-                .withSeparator(',')
+                .withSeparator(';')
                 .withEscapeChar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
                 .withLineEnd(CSVWriter.DEFAULT_LINE_END)
                 .build();
@@ -74,6 +81,29 @@ public class CategoriaRest {
                     String.valueOf(linha.getId())});
         }
 
+
     }
 
+    @PostMapping("/import")
+    public CategoriaDTO importCsv() throws Exception {
+        String arquivo = "import.csv";
+        Reader reader = Files.newBufferedReader(Paths.get("C:\\Users\\vanessa.silva\\Desktop\\categorias.import"));
+        CSVReader CSVReader = new CSVReader(reader, ';');
+
+        String[] line;
+        while ((line = CSVReader.readNext()) != null) {
+            Fornecedor fornecedorCompleto = new Fornecedor();
+            CategoriaDTO categoriaDTO = new CategoriaDTO();
+            categoriaDTO.setId(Long.parseLong(line[0]));
+            categoriaDTO.setNomeCategoria(line[1]);
+
+            return this.CategoriaService.save(categoriaDTO);
+
+        }
+        return null;
+    }
 }
+
+
+
+

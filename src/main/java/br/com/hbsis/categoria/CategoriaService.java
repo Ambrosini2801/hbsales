@@ -2,12 +2,16 @@ package br.com.hbsis.categoria;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
 import br.com.hbsis.Fornecedor.FornecedorService;
+import com.opencsv.CSVReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Reader;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,14 +19,16 @@ import java.util.Optional;
 public class CategoriaService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaService.class);
+    private static final URI SAMPLE_CSV_FILE_PATH = null;
 
     private final ICategoriaRepository iCategoriaRepository;
     private final FornecedorService fornecedorService;
 
     @Autowired
-    public CategoriaService(ICategoriaRepository iCategoriaRepository, FornecedorService fornecedorService) {
+    public CategoriaService(ICategoriaRepository iCategoriaRepository, FornecedorService fornecedorService) throws IOException {
         this.iCategoriaRepository = iCategoriaRepository;
         this.fornecedorService = fornecedorService;
+
     }
 
     public CategoriaDTO save(CategoriaDTO categoriaDTO) {
@@ -94,14 +100,28 @@ public class CategoriaService {
 
     }
 
+    public Categoria[] readAll(Reader ler) throws Exception {
+        CSVReader lerArquivo = new CSVReader(ler);
+
+        try {
+            String arquivoLido = new String();
+            String[] leitor;
+
+            while ((leitor = lerArquivo.readNext()) != null) {
+                Categoria categoria = new Categoria();
+
+                categoria.setFornecedor(categoria.getFornecedor());
+                categoria.setNomeCategoria(leitor[0]);
+                categoria.setCodCategoria(categoria.getCodCategoria());
+                categoria.setId(categoria.getId());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
 }
-
-
-
-
-
-
-
-
-
-
