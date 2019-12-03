@@ -25,15 +25,16 @@ public class FornecedorService {
         LOGGER.info("Salvando o fornecedor");
         LOGGER.debug("Fornecedor: {}", fornecedorDTO);
 
-        Fornecedor fornecedor = new Fornecedor();
+        Object id = null;
+        Object categoria = null;
+        Fornecedor fornecedor = new Fornecedor(id, categoria);
 
-        fornecedor.setRazaoSocial(fornecedorDTO.getRazao_social());
+        fornecedor.setRazaoSocial(fornecedorDTO.getRazaoSocial());
         fornecedor.setCNPJ(fornecedorDTO.getCnpj());
         fornecedor.setEmail(fornecedorDTO.getEmail());
         fornecedor.setEndereco(fornecedorDTO.getEndereco());
         fornecedor.setNome_fantasia(fornecedorDTO.getNome_fantasia());
         fornecedor.setTelefone(fornecedorDTO.getTelefone());
-
         fornecedor = this.iFornecedorRepository.save(fornecedor);
         return FornecedorDTO.of(fornecedor);
     }
@@ -81,6 +82,3 @@ public class FornecedorService {
     }
 
 }
-
-
-

@@ -25,6 +25,7 @@ public class Categoria {
     @CsvBindByPosition(position = 3)
     private Fornecedor fornecedor;
 
+
     public Categoria() {
 
     }
@@ -69,7 +70,20 @@ public class Categoria {
 
     }
 
+    public void setCategoria(Categoria categoria) {
+    }
+
+    public String getCatLinha() { return getCatLinha(); }
+
+
+    public String getNomeLinha() { return getNomeLinha(); }
+
+    public String getCodLinha() { return getCodLinha(); }
 }
+
+
+ 
+
 
 
 

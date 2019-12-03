@@ -2,16 +2,19 @@ package br.com.hbsis.categoria;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
 import br.com.hbsis.Fornecedor.FornecedorService;
+import br.com.hbsis.Fornecedor.IFornecedorRepository;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,17 +26,26 @@ public class CategoriaService {
 
     private final ICategoriaRepository iCategoriaRepository;
     private final FornecedorService fornecedorService;
+    private final IFornecedorRepository iFornecedorRepository;
+
 
     @Autowired
-    public CategoriaService(ICategoriaRepository iCategoriaRepository, FornecedorService fornecedorService) throws IOException {
+    public CategoriaService(ICategoriaRepository iCategoriaRepository, FornecedorService fornecedorService, IFornecedorRepository iFornecedorRepository) {
         this.iCategoriaRepository = iCategoriaRepository;
         this.fornecedorService = fornecedorService;
+        this.iFornecedorRepository = iFornecedorRepository;
+    }
 
+    public Categoria findCategoriaById(Long id) {
+        Optional<Categoria> CategoriaOptional = this.iCategoriaRepository.findById(id);
+        if (CategoriaOptional.isPresent()) {
+            return CategoriaOptional.get();
+        }
+        throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
     public CategoriaDTO save(CategoriaDTO categoriaDTO) {
-        Fornecedor fornecedorCompleto = new Fornecedor();
-        fornecedorCompleto = fornecedorService.findFornecedorById(categoriaDTO.getFornecedor().getId());
+        Fornecedor fornecedorCompleto = fornecedorService.findFornecedorById(categoriaDTO.getFornecedor().getId());
         categoriaDTO.setFornecedor(fornecedorCompleto);
 
         this.validate(categoriaDTO);
@@ -45,7 +57,6 @@ public class CategoriaService {
         categoria.setCodCategoria(categoriaDTO.getCodCategoria());
         categoria.setNomeCategoria(categoriaDTO.getNomeCategoria());
         categoria.setFornecedor(categoriaDTO.getFornecedor());
-
 
         categoria = this.iCategoriaRepository.save(categoria);
         return CategoriaDTO.of(categoria);
@@ -97,31 +108,29 @@ public class CategoriaService {
 
     public List<Categoria> findAll() {
         return iCategoriaRepository.findAll();
-
     }
 
-    public Categoria[] readAll(Reader ler) throws Exception {
-        CSVReader lerArquivo = new CSVReader(ler);
+    public void importCSV() throws IOException {
 
-        try {
-            String arquivoLido = new String();
-            String[] leitor;
+        Reader caminho = Files.newBufferedReader(Paths.get("C:\\Users\\vanessa.silva\\Desktop\\arquivoimport.csv"));
+        CSVReader cs = new CSVReaderBuilder(caminho).withSkipLines(1).build();
+        List<String[]> categoriasCSV = cs.readAll();
+        Categoria categoriacadastro = new Categoria();
 
-            while ((leitor = lerArquivo.readNext()) != null) {
-                Categoria categoria = new Categoria();
+        for (String[] categoria : categoriasCSV) {
+            String[] colunacategoria = categoria[0].replaceAll("\"", "").split(";");
 
-                categoria.setFornecedor(categoria.getFornecedor());
-                categoria.setNomeCategoria(leitor[0]);
-                categoria.setCodCategoria(categoria.getCodCategoria());
-                categoria.setId(categoria.getId());
-            }
+            Fornecedor fornecedor = new Fornecedor();
+            fornecedor = fornecedorService.findFornecedorById(Long.parseLong(colunacategoria[2]));
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            categoriacadastro.setFornecedor(fornecedor);
+            categoriacadastro.setCodCategoria(colunacategoria[1]);
+            categoriacadastro.setNomeCategoria(colunacategoria[0]);
+
+            this.iCategoriaRepository.save(categoriacadastro);
+
         }
-
-        return null;
     }
-
 
 }
+
