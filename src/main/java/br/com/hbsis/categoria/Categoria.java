@@ -2,6 +2,7 @@ package br.com.hbsis.categoria;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
 import com.opencsv.bean.CsvBindByPosition;
+
 import javax.persistence.*;
 
 @Entity
@@ -69,7 +70,20 @@ public class Categoria {
 
     }
 
+    public void setCategoria(Categoria categoria) {
+    }
+
+    public String getCatLinha() { return getCatLinha(); }
+
+
+    public String getNomeLinha() { return getNomeLinha(); }
+
+    public String getCodLinha() { return getCodLinha(); }
 }
+
+
+ 
+
 
 
 

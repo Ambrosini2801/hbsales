@@ -1,7 +1,6 @@
 package br.com.hbsis.categoria;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
-import br.com.hbsis.Fornecedor.FornecedorDTO;
 import br.com.hbsis.Fornecedor.FornecedorService;
 import br.com.hbsis.Fornecedor.IFornecedorRepository;
 import com.opencsv.CSVReader;
@@ -18,7 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-import java.util.StringTokenizer;
 
 @Service
 public class CategoriaService {
@@ -35,8 +33,15 @@ public class CategoriaService {
     public CategoriaService(ICategoriaRepository iCategoriaRepository, FornecedorService fornecedorService, IFornecedorRepository iFornecedorRepository) {
         this.iCategoriaRepository = iCategoriaRepository;
         this.fornecedorService = fornecedorService;
-
         this.iFornecedorRepository = iFornecedorRepository;
+    }
+
+    public Categoria findCategoriaById(Long id) {
+        Optional<Categoria> CategoriaOptional = this.iCategoriaRepository.findById(id);
+        if (CategoriaOptional.isPresent()) {
+            return CategoriaOptional.get();
+        }
+        throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
     public CategoriaDTO save(CategoriaDTO categoriaDTO) {
@@ -112,7 +117,6 @@ public class CategoriaService {
         List<String[]> categoriasCSV = cs.readAll();
         Categoria categoriacadastro = new Categoria();
 
-
         for (String[] categoria : categoriasCSV) {
             String[] colunacategoria = categoria[0].replaceAll("\"", "").split(";");
 
@@ -127,4 +131,6 @@ public class CategoriaService {
 
         }
     }
+
 }
+

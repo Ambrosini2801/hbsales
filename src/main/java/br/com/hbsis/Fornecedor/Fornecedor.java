@@ -15,7 +15,7 @@ public class Fornecedor {
     @Column(name = "razao_social", unique = true, nullable = false, length = 100)
     private String razaoSocial;
     @Column(name = "cnpj", unique = true, nullable = false, length = 14)
-    private String CNPJ;
+    private String cnpj;
     @Column(name = "nome_fantasia", nullable = false, updatable = true, length = 100)
     private String nome_fantasia;
     @Column(name = "endereco", nullable = false, updatable = true, length = 100)
@@ -56,11 +56,11 @@ public class Fornecedor {
     }
 
     public String getCNPJ() {
-        return CNPJ;
+        return cnpj;
     }
 
     public void setCNPJ(String CNPJ) {
-        this.CNPJ = CNPJ;
+        this.cnpj = CNPJ;
     }
 
     public String getNome_fantasia() {
@@ -102,7 +102,7 @@ public class Fornecedor {
     public Fornecedor(Long id, String razaoSocial, String CNPJ, String nome_fantasia, String endereco, String telefone, String email) {
         this.id = id;
         this.razaoSocial = razaoSocial;
-        this.CNPJ = CNPJ;
+        this.cnpj = CNPJ;
         this.nome_fantasia = nome_fantasia;
         this.endereco = endereco;
         this.telefone = telefone;
@@ -111,7 +111,7 @@ public class Fornecedor {
 
     @Override
     public String toString() {
-        return "categoria [razao_social = " + razaoSocial + ", cnpj =" + CNPJ + " ," +
+        return "categoria [razao_social = " + razaoSocial + ", cnpj =" + cnpj + " ," +
                 " nome_fantasia = " + nome_fantasia + ", endereco = " + endereco + "telefone = " + telefone + "]";
 
 
