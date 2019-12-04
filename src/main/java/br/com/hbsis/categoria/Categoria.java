@@ -64,22 +64,14 @@ public class Categoria {
 
     @Override
     public String toString() {
-        return "categoria [IdFornecedor=" + fornecedor.getId() + ", nomeCategoria=" + nomeCategoria + " ," +
-                " idCategoria=" + codCategoria + "]";
+        return "categoria {IdFornecedor=" + fornecedor.getId() + ", nomeCategoria=" + nomeCategoria + " ," +
+                " idCategoria=" + codCategoria + "}";
 
 
     }
-
-    public void setCategoria(Categoria categoria) {
-    }
-
-    public String getCatLinha() { return getCatLinha(); }
-
-
-    public String getNomeLinha() { return getNomeLinha(); }
-
-    public String getCodLinha() { return getCodLinha(); }
 }
+
+
 
 
  

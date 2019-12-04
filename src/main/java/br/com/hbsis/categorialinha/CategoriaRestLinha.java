@@ -1,7 +1,6 @@
 package br.com.hbsis.categorialinha;
 
 
-import br.com.hbsis.categoria.Categoria;
 import com.google.common.net.HttpHeaders;
 import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
@@ -70,7 +69,7 @@ public class CategoriaRestLinha {
         String headerCSV[] = {"cod_linha", "nome_linha", "catLinha"};
         csvwriter.writeNext(headerCSV);
 
-        for (Categoria linha : CategoriaLinhaService.findAll()) {
+        for (CategoriaLinha linha : CategoriaLinhaService.findAll()) {
             csvwriter.writeNext(new String[]{String.valueOf(linha.getId()),
                     linha.getCatLinha(),
                     linha.getNomeLinha(),
@@ -85,4 +84,3 @@ public class CategoriaRestLinha {
 
     }
 }
-

@@ -1,20 +1,7 @@
 package br.com.hbsis.categorialinha;
 
-import br.com.hbsis.categoria.Categoria;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
+public interface ICategoriaLinhaRepository extends JpaRepository<CategoriaLinha, Long> {
 
-public interface ICategoriaLinhaRepository {
-
-  public  static void findCategoriaById(long parseLong) {
-  }
-
-    CategoriaLinha save(CategoriaLinha categorialinha);
-
-    Optional<CategoriaLinha> findById(Long id);
-
-    void deleteById(Long id);
-
-    List<Categoria> findAll();
-    }
+}
