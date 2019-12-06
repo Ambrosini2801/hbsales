@@ -14,10 +14,10 @@ public class Categoria {
     @CsvBindByPosition(position = 0)
     private Long id;
     @CsvBindByPosition(position = 1)
-    @Column(name = "nome_categoria", unique = true, nullable = false, length = 100)
+    @Column(name = "nome_categoria", unique = true, nullable = false, length = 50)
     private String nomeCategoria;
     @CsvBindByPosition(position = 2)
-    @Column(name = "cod_categoria")
+    @Column(name = "cod_categoria",unique = true, nullable = false, length = 10)
     private String codCategoria;
 
     @ManyToOne

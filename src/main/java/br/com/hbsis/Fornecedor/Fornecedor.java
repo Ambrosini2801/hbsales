@@ -20,7 +20,7 @@ public class Fornecedor {
     private String nome_fantasia;
     @Column(name = "endereco", nullable = false, updatable = true, length = 100)
     private String endereco;
-    @Column(name = "telefone", nullable = false, updatable = true, length = 50)
+    @Column(name = "telefone", nullable = false, updatable = true, length = 13)
     private String telefone;
     @Column(name = "email", nullable = false, updatable = false, length = 100)
     private String email;
@@ -114,8 +114,5 @@ public class Fornecedor {
         return "categoria [razao_social = " + razaoSocial + ", cnpj =" + cnpj + " ," +
                 " nome_fantasia = " + nome_fantasia + ", endereco = " + endereco + "telefone = " + telefone + "]";
 
-
     }
-
-
 }

@@ -1,10 +1,10 @@
 package br.com.hbsis.produto;
 
-
 import br.com.hbsis.categorialinha.CategoriaLinha;
 import com.opencsv.bean.CsvBindByPosition;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "produto")
@@ -15,37 +15,28 @@ public class Produto {
     @CsvBindByPosition(position = 0)
     private Long id;
     @CsvBindByPosition(position = 1)
-    @Column(name = "cod_produto", unique = true, nullable = false, length = 100)
-    private Long codProduto;
+    @Column(name = "cod_produto", unique = true, nullable = false, length = 10)
+    private String codProduto;
     @CsvBindByPosition(position = 2)
-    @Column(name = "nome_produto", unique = true, nullable = false, length = 100)
+    @Column(name = "nome_produto", unique = true, nullable = false, length = 200)
     private String nomeProduto;
     @CsvBindByPosition(position = 3)
-    @Column(name = "preco_produto", unique = true, nullable = false, length = 100)
-    private Long precoProduto;
+    @Column(name = "preco_produto", unique = true, nullable = false, length = 25)
+    private double precoProduto;
     @CsvBindByPosition(position = 4)
-    @Column(name = "unidade_cx", unique = true, nullable = false, length = 100)
-    private String unidadeCx;
+    @Column(name = "unidade_cx", unique = true, nullable = false, length = 25)
+    private int unidadeCx;
     @CsvBindByPosition(position = 5)
-    @Column(name = "peso_uni", unique = true, nullable = false, length = 100)
+    @Column(name = "peso_uni", unique = true, nullable = false, length = 25)
     private String pesoUni;
     @CsvBindByPosition(position = 6)
-    @Column(name = "val_produto", unique = true, nullable = false, length = 100)
-    private String valProduto;
-
-    @ManyToOne
-    @JoinColumn(name = "id_fornecedor", referencedColumnName = "id")
+    @Column(name = "val_produto", unique = true, nullable = false)
+    private LocalDate valProduto;
     @CsvBindByPosition(position = 7)
+    @Column(name = "categoria_linha", unique = true, nullable = false)
     private CategoriaLinha categoriaLinha;
 
-    public Produto() {
-
-    }
-
-    public Produto(Long id, Long codProduto,
-                   String nomeProduto, Long precoProduto,
-                   String unidadeCx, String pesoUni,
-                   String valProduto, CategoriaLinha categoriaLinha) {
+    public Produto(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, CategoriaLinha categoriaLinha) {
         this.id = id;
         this.codProduto = codProduto;
         this.nomeProduto = nomeProduto;
@@ -56,6 +47,10 @@ public class Produto {
         this.categoriaLinha = categoriaLinha;
     }
 
+    public Produto() {
+
+    }
+
     public Long getId() {
         return id;
     }
@@ -64,11 +59,11 @@ public class Produto {
         this.id = id;
     }
 
-    public Long getCodProduto() {
+    public String getCodProduto() {
         return codProduto;
     }
 
-    public void setCodProduto(Long codProduto) {
+    public void setCodProduto(String codProduto) {
         this.codProduto = codProduto;
     }
 
@@ -80,19 +75,19 @@ public class Produto {
         this.nomeProduto = nomeProduto;
     }
 
-    public Long getPrecoProduto() {
+    public double getPrecoProduto() {
         return precoProduto;
     }
 
-    public void setPrecoProduto(Long precoProduto) {
+    public void setPrecoProduto(double precoProduto) {
         this.precoProduto = precoProduto;
     }
 
-    public String getUnidadeCx() {
+    public int getUnidadeCx() {
         return unidadeCx;
     }
 
-    public void setUnidadeCx(String unidadeCx) {
+    public void setUnidadeCx(int unidadeCx) {
         this.unidadeCx = unidadeCx;
     }
 
@@ -104,11 +99,11 @@ public class Produto {
         this.pesoUni = pesoUni;
     }
 
-    public String getValProduto() {
+    public LocalDate getValProduto() {
         return valProduto;
     }
 
-    public void setValProduto(String valProduto) {
+    public void setValProduto(LocalDate valProduto) {
         this.valProduto = valProduto;
     }
 

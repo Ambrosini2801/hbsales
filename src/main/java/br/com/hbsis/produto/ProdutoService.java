@@ -1,36 +1,30 @@
 package br.com.hbsis.produto;
 
-
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
+import br.com.hbsis.categorialinha.CategoriaLinhaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.Reader;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProdutoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProdutoService.class);
     private static final URI SAMPLE_CSV_FILE_PATH = null;
 
     private final IProdutoRepository iProdutoRepository;
-    private final ProdutoService produtoService;
+   private final CategoriaLinhaService categoriaLinhaService;
 
     @Autowired
-    public ProdutoService(IProdutoRepository iProdutoRepository, ProdutoService produtoService) {
+    public ProdutoService(IProdutoRepository iProdutoRepository, CategoriaLinhaService categoriaLinhaService) {
         this.iProdutoRepository = iProdutoRepository;
-        this.produtoService = produtoService;
+        this.categoriaLinhaService = categoriaLinhaService;
     }
 
-    public ProdutoDTO save(ProdutoDTO produtoDTO) {
-        this.validate(produtoDTO);
+    public  ProdutoDTO save(ProdutoDTO produtoDTO) {
         LOGGER.info("Salvando produto");
         LOGGER.debug("Produto: {}", produtoDTO);
 
@@ -48,8 +42,8 @@ public class ProdutoService {
     }
 
     private void validate(ProdutoDTO produtoDTO) {
-        LOGGER.info("Validando Categoria");
-        if (produtoService == null) {
+        LOGGER.info("Validando produto");
+        if (produtoDTO == null) {
             throw new IllegalArgumentException("Produto não deve ser nulo");
         }
     }
@@ -86,11 +80,11 @@ public class ProdutoService {
         this.iProdutoRepository.deleteById(id);
     }
 
-    public List<Produto> findAll() {
-        return iProdutoRepository.findAll();
+    public Produto findAll() {
+        return (Produto) iProdutoRepository.findAll();
     }
 
-    public void importCSV() throws IOException {
+ /*   public void importCSV() throws IOException {
 
         Reader caminho = Files.newBufferedReader(Paths.get("C:\\Users\\vanessa.silva\\Desktop\\arquivoimport.csv"));
         CSVReader cs = new CSVReaderBuilder(caminho).withSkipLines(1).build();
@@ -102,14 +96,13 @@ public class ProdutoService {
 
             produtocadastro.setCodProduto(Long.parseLong(produtoCadastro[0]));
             produtocadastro.setNomeProduto(produtoCadastro[1]);
-            produtocadastro.setPrecoProduto(Long.parseLong(produtoCadastro[2]));
-            produtocadastro.setUnidadeCx(produtoCadastro[3]);
-            produtocadastro.setPesoUni(produtoCadastro[4]);
-            produtocadastro.setValProduto(produtoCadastro[5]);
+            produtocadastro.setPrecoProduto((float) Long.parseLong(produtoCadastro[2]));
+            produtocadastro.setUnidadeCx((float) Long.parseLong(produtoCadastro[3]));
+            produtocadastro.setPesoUni((float) Long.parseLong(produtoCadastro[4]));
+            produtocadastro.setValProduto(produtoCadastro[5].toString());
+            produtocadastro.setCategoriaLinha(produtoCadastro[6]);
 
             this.iProdutoRepository.save(produtocadastro);
         }
-
-
-    }
+    }*/
 }

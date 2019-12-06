@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
+
 @RestController
 @RequestMapping("/produto")
 public class ProdutoRest {
@@ -20,13 +21,13 @@ public class ProdutoRest {
 
     @Autowired
     public ProdutoRest(ProdutoService produtoService) {
-        ProdutoService = produtoService;
+        this.ProdutoService = produtoService;
     }
 
     @PostMapping
     public ProdutoDTO save(@RequestBody ProdutoDTO produtoDTO) {
         LOGGER.info("Receber solicitação do produto");
-        LOGGER.debug("Payaload: {}", produtoDTO);
+        LOGGER.debug("Payload: {}", produtoDTO);
         return this.ProdutoService.save(produtoDTO);
     }
 
@@ -65,29 +66,31 @@ public class ProdutoRest {
                 .build();
 
         String headerCSV[] = {"cod_produto", "nome_produto", "preco_produto", "unidade_cx",
-                "peso_uni", "val_produto"};
+                "peso_uni", "val_produto", "id_categorialinha"};
         csvwriter.writeNext(headerCSV);
 
-        for (Produto produtos : ProdutoService.findAll()) {
+        //SimpleDateFormat valProduto = new SimpleDateFormat("dd/mm/yyyy");
+
+        for (Produto produtos : findAll()) {
             csvwriter.writeNext(new String[]{String.valueOf(produtos.getId()),
                     String.valueOf(produtos.getCodProduto()),
                     produtos.getNomeProduto(),
                     String.valueOf(produtos.getPrecoProduto()),
-                    produtos.getUnidadeCx(),
-                    produtos.getPesoUni(),
-                    produtos.getValProduto(),
-
+                    String.valueOf(produtos.getUnidadeCx()),
+                    String.valueOf(produtos.getPesoUni()),
+                    String.valueOf(produtos.getValProduto()),
+                    String.valueOf(produtos.getCategoriaLinha())
             });
         }
-
     }
 
-    @PostMapping("/import")
+    private Iterable<? extends Produto> findAll() {
+        return null;
+    }
+
+    /*@PostMapping("/import")
     public void importCSV() throws Exception {
         ProdutoService.importCSV();
 
-    }
+    }*/
 }
-
-
-

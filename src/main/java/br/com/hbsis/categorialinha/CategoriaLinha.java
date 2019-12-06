@@ -1,8 +1,10 @@
 package br.com.hbsis.categorialinha;
 
+import br.com.hbsis.produto.Produto;
 import com.opencsv.bean.CsvBindByPosition;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "linha")
@@ -21,9 +23,19 @@ public class CategoriaLinha {
     @CsvBindByPosition(position = 3)
     @Column(name = "nome_linha", unique = true, nullable = false, length = 100)
     private String nomeLinha;
+    @OneToMany(mappedBy = "categoriaLinha", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Produto> produto;
+
+    public List<Produto> getProduto() {
+        return produto;
+    }
+
+    public void setProduto(List<Produto> produtos) {
+        this.produto = produtos;
+    }
+
 
     public CategoriaLinha() {
-
     }
 
     public Long getId() {

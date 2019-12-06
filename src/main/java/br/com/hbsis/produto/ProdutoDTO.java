@@ -1,22 +1,25 @@
 package br.com.hbsis.produto;
 
+import br.com.hbsis.categorialinha.CategoriaLinha;
+
+import java.time.LocalDate;
+
 public class ProdutoDTO {
 
     private Long id;
-    private Long codProduto;
+    private String codProduto;
     private String nomeProduto;
-    private Long precoProduto;
-    private String unidadeCx;
+    private double precoProduto;
+    private int unidadeCx;
     private String pesoUni;
-    private String valProduto;
+    private LocalDate valProduto;
+    private CategoriaLinha categoriaLinha;
 
     public ProdutoDTO() {
+
     }
 
-    public ProdutoDTO(Long id, Long codProduto,
-                      String nomeProduto, Long precoProduto,
-                      String unidadeCx, String pesoUni,
-                      String valProduto) {
+    public ProdutoDTO(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, CategoriaLinha categoriaLinha) {
         this.id = id;
         this.codProduto = codProduto;
         this.nomeProduto = nomeProduto;
@@ -24,6 +27,7 @@ public class ProdutoDTO {
         this.unidadeCx = unidadeCx;
         this.pesoUni = pesoUni;
         this.valProduto = valProduto;
+        this.categoriaLinha = categoriaLinha;
     }
 
     public static ProdutoDTO of(Produto produtoexistente) {
@@ -34,8 +38,10 @@ public class ProdutoDTO {
                 produtoexistente.getPrecoProduto(),
                 produtoexistente.getUnidadeCx(),
                 produtoexistente.getPesoUni(),
-                produtoexistente.getValProduto()
+                produtoexistente.getValProduto(),
+                produtoexistente.getCategoriaLinha()
         );
+
     }
 
     public Long getId() {
@@ -46,11 +52,11 @@ public class ProdutoDTO {
         this.id = id;
     }
 
-    public Long getCodProduto() {
+    public String getCodProduto() {
         return codProduto;
     }
 
-    public void setCodProduto(Long codProduto) {
+    public void setCodProduto(String codProduto) {
         this.codProduto = codProduto;
     }
 
@@ -62,19 +68,19 @@ public class ProdutoDTO {
         this.nomeProduto = nomeProduto;
     }
 
-    public Long getPrecoProduto() {
+    public double getPrecoProduto() {
         return precoProduto;
     }
 
-    public void setPrecoProduto(Long precoProduto) {
+    public void setPrecoProduto(double precoProduto) {
         this.precoProduto = precoProduto;
     }
 
-    public String getUnidadeCx() {
+    public int getUnidadeCx() {
         return unidadeCx;
     }
 
-    public void setUnidadeCx(String unidadeCx) {
+    public void setUnidadeCx(int unidadeCx) {
         this.unidadeCx = unidadeCx;
     }
 
@@ -86,11 +92,19 @@ public class ProdutoDTO {
         this.pesoUni = pesoUni;
     }
 
-    public String getValProduto() {
+    public LocalDate getValProduto() {
         return valProduto;
     }
 
-    public void setValProduto(String valProduto) {
+    public void setValProduto(LocalDate valProduto) {
         this.valProduto = valProduto;
+    }
+
+    public CategoriaLinha getCategoriaLinha() {
+        return categoriaLinha;
+    }
+
+    public void setCategoriaLinha(CategoriaLinha categoriaLinha) {
+        this.categoriaLinha = categoriaLinha;
     }
 }

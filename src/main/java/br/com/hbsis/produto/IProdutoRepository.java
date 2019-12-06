@@ -1,14 +1,8 @@
 package br.com.hbsis.produto;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IProdutoRepository {
-    Produto save(Produto produto);
+public interface IProdutoRepository extends JpaRepository<Produto, Long> {
 
-    Optional<Produto> findById(Long id);
-
-    void deleteById(Long id);
-
-    List<Produto> findAll();
 }
+

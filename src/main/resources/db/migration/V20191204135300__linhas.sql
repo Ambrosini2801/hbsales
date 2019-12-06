@@ -5,5 +5,6 @@ create table linha(
     nome_linha VARCHAR  (100)     NOT NULL,
 
 );
---create unique index ix_linha_01 on linha (cod_linha, cat_linha asc);
+create unique index ix_linha_01 on linha (cod_linha, cat_linha asc);
+
 
