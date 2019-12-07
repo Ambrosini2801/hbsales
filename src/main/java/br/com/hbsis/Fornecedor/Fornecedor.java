@@ -16,16 +16,19 @@ public class Fornecedor {
     private String razaoSocial;
     @Column(name = "cnpj", unique = true, nullable = false, length = 14)
     private String cnpj;
-    @Column(name = "nome_fantasia", nullable = false, updatable = true, length = 100)
+    @Column(name = "nome_fantasia", nullable = false, length = 100)
     private String nome_fantasia;
-    @Column(name = "endereco", nullable = false, updatable = true, length = 100)
+    @Column(name = "endereco", nullable = false, length = 100)
     private String endereco;
-    @Column(name = "telefone", nullable = false, updatable = true, length = 13)
+    @Column(name = "telefone", nullable = false, length = 13)
     private String telefone;
-    @Column(name = "email", nullable = false, updatable = false, length = 100)
+    @Column(name = "email", nullable = false, length = 50)
     private String email;
     @OneToMany(mappedBy = "fornecedor", targetEntity = Categoria.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Categoria> categoria;
+
+    public Fornecedor(Object id, Object categoria) {
+    }
 
     public List<Categoria> getCategoria() {
         return categoria;
@@ -35,15 +38,10 @@ public class Fornecedor {
         this.categoria = categorias;
     }
 
-
-    public Fornecedor(Object id, Object categoria) {
-    }
-
     public Fornecedor() {
-
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

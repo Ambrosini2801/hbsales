@@ -1,7 +1,5 @@
 package br.com.hbsis.produto;
 
-import br.com.hbsis.categorialinha.CategoriaLinha;
-
 import java.time.LocalDate;
 
 public class ProdutoDTO {
@@ -13,13 +11,13 @@ public class ProdutoDTO {
     private int unidadeCx;
     private String pesoUni;
     private LocalDate valProduto;
-    private CategoriaLinha categoriaLinha;
+    private long categoriaLinhaID;
 
     public ProdutoDTO() {
 
     }
 
-    public ProdutoDTO(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, CategoriaLinha categoriaLinha) {
+    public ProdutoDTO(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, long categoriaLinhaID) {
         this.id = id;
         this.codProduto = codProduto;
         this.nomeProduto = nomeProduto;
@@ -27,7 +25,7 @@ public class ProdutoDTO {
         this.unidadeCx = unidadeCx;
         this.pesoUni = pesoUni;
         this.valProduto = valProduto;
-        this.categoriaLinha = categoriaLinha;
+        this.categoriaLinhaID = categoriaLinhaID;
     }
 
     public static ProdutoDTO of(Produto produtoexistente) {
@@ -39,9 +37,8 @@ public class ProdutoDTO {
                 produtoexistente.getUnidadeCx(),
                 produtoexistente.getPesoUni(),
                 produtoexistente.getValProduto(),
-                produtoexistente.getCategoriaLinha()
+                produtoexistente.getCategoriaLinha().getId()
         );
-
     }
 
     public Long getId() {
@@ -100,11 +97,11 @@ public class ProdutoDTO {
         this.valProduto = valProduto;
     }
 
-    public CategoriaLinha getCategoriaLinha() {
-        return categoriaLinha;
+    public long getCategoriaLinhaID() {
+        return categoriaLinhaID;
     }
 
-    public void setCategoriaLinha(CategoriaLinha categoriaLinha) {
-        this.categoriaLinha = categoriaLinha;
+    public void setCategoriaLinhaID(long categoriaLinhaID) {
+        this.categoriaLinhaID = categoriaLinhaID;
     }
 }

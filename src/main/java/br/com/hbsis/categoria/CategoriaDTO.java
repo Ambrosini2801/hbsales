@@ -62,9 +62,9 @@ public class CategoriaDTO {
 
     @Override
     public String toString() {
-        return "categoria [IdFornecedor=" + fornecedor.getId() + ", nomeCategoria=" + nomeCategoria + " ," +
+        return "categoria [Fornecedor" + fornecedor + ", nomeCategoria=" + nomeCategoria + " ," +
                 " idCategoria=" + codCategoria + "]";
 
-
     }
+
 }

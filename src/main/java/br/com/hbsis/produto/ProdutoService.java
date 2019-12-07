@@ -1,6 +1,7 @@
 package br.com.hbsis.produto;
 
 import br.com.hbsis.categorialinha.CategoriaLinhaService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,9 @@ public class ProdutoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProdutoService.class);
     private static final URI SAMPLE_CSV_FILE_PATH = null;
-
     private final IProdutoRepository iProdutoRepository;
-   private final CategoriaLinhaService categoriaLinhaService;
+    private final CategoriaLinhaService categoriaLinhaService;
+    private ProdutoService iCategoriaLinhaRepository;
 
     @Autowired
     public ProdutoService(IProdutoRepository iProdutoRepository, CategoriaLinhaService categoriaLinhaService) {
@@ -24,9 +25,9 @@ public class ProdutoService {
         this.categoriaLinhaService = categoriaLinhaService;
     }
 
-    public  ProdutoDTO save(ProdutoDTO produtoDTO) {
+    public ProdutoDTO save(ProdutoDTO produtoDTO) {
         LOGGER.info("Salvando produto");
-        LOGGER.debug("Produto: {}", produtoDTO);
+        LOGGER.debug("Produto: {}", produtoDTO.getCategoriaLinhaID());
 
         Produto produto = new Produto();
 
@@ -36,6 +37,7 @@ public class ProdutoService {
         produto.setUnidadeCx(produtoDTO.getUnidadeCx());
         produto.setPesoUni(produtoDTO.getPesoUni());
         produto.setValProduto(produtoDTO.getValProduto());
+        produto.setCategoriaLinha(categoriaLinhaService.findByIdcategorialinha(produtoDTO.getCategoriaLinhaID()));
 
         produto = this.iProdutoRepository.save(produto);
         return produtoDTO.of(produto);
@@ -44,8 +46,27 @@ public class ProdutoService {
     private void validate(ProdutoDTO produtoDTO) {
         LOGGER.info("Validando produto");
         if (produtoDTO == null) {
-            throw new IllegalArgumentException("Produto não deve ser nulo");
+            throw new IllegalArgumentException("Produto não deve ser nulo ou vazio!");
         }
+
+        if (StringUtils.isEmpty( produtoDTO.getCodProduto())){
+            throw new IllegalArgumentException("Código da linha da categoria não deve ser nulo ou vazio!");
+        }
+
+        if (StringUtils.isEmpty(produtoDTO.getNomeProduto())){
+            throw  new  IllegalArgumentException("Nome do produto não deve ser nulo ou vazio!");
+        }
+
+        if (StringUtils.isEmpty(produtoDTO.getPesoUni())){
+            throw  new IllegalArgumentException("Peso por unidade não deve ser nulo ou vazio!");
+        }
+
+//////        if (StringUtils.isEmpty(produtoDTO.getPrecoProduto())){
+//////            throw  new IllegalArgumentException("Preço do produto não deve ser nulo ou vazio!");
+////
+//        if (StringUtils.isEmpty(produtoDTO.getUnidadeCx()){
+//            throw  new IllegalArgumentException("Unidade da caixa não deve ser nula ou vazia!");
+//        }
     }
 
     public ProdutoDTO findByid(Long id) {

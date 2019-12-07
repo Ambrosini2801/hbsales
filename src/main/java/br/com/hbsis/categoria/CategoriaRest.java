@@ -1,10 +1,6 @@
 package br.com.hbsis.categoria;
 
 import br.com.hbsis.categorialinha.CategoriaLinhaService;
-import com.google.common.net.HttpHeaders;
-import com.opencsv.CSVWriter;
-import com.opencsv.CSVWriterBuilder;
-import com.opencsv.ICSVWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 @RestController
 @RequestMapping("/categorias")
@@ -23,7 +18,6 @@ public class CategoriaRest {
     @Autowired
     public CategoriaRest(CategoriaService categoriaService) {
         this.CategoriaService = categoriaService;
-
     }
 
     @PostMapping
@@ -59,10 +53,7 @@ public class CategoriaRest {
     }
 
     @PostMapping("/import")
-    public void importCSV(@RequestParam ("file")MultipartFile arquivo) throws Exception {
+    public void importCSV(@RequestParam("file") MultipartFile arquivo) throws Exception {
         CategoriaLinhaService.importCSV(arquivo);
     }
-
-
 }
-

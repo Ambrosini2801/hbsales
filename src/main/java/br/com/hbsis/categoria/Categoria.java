@@ -1,6 +1,7 @@
 package br.com.hbsis.categoria;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
+import br.com.hbsis.categorialinha.CategoriaLinha;
 import com.opencsv.bean.CsvBindByPosition;
 
 import javax.persistence.*;
@@ -17,17 +18,21 @@ public class Categoria {
     @Column(name = "nome_categoria", unique = true, nullable = false, length = 50)
     private String nomeCategoria;
     @CsvBindByPosition(position = 2)
-    @Column(name = "cod_categoria",unique = true, nullable = false, length = 10)
+    @Column(name = "cod_categoria", unique = true, nullable = false, length = 10)
     private String codCategoria;
-
     @ManyToOne
     @JoinColumn(name = "id_fornecedor", referencedColumnName = "id")
     @CsvBindByPosition(position = 3)
     private Fornecedor fornecedor;
 
-
     public Categoria() {
+    }
 
+    public Categoria(Long id, String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
+        this.id = id;
+        this.nomeCategoria = nomeCategoria;
+        this.codCategoria = codCategoria;
+        this.fornecedor = fornecedor;
     }
 
     public Long getId() {
@@ -67,15 +72,6 @@ public class Categoria {
         return "categoria {IdFornecedor=" + fornecedor.getId() + ", nomeCategoria=" + nomeCategoria + " ," +
                 " idCategoria=" + codCategoria + "}";
 
-
     }
+
 }
-
-
-
-
- 
-
-
-
-

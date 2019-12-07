@@ -2,6 +2,7 @@ package br.com.hbsis.produto;
 
 import br.com.hbsis.categorialinha.CategoriaLinha;
 import com.opencsv.bean.CsvBindByPosition;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -30,13 +31,16 @@ public class Produto {
     @Column(name = "peso_uni", unique = true, nullable = false, length = 25)
     private String pesoUni;
     @CsvBindByPosition(position = 6)
-    @Column(name = "val_produto", unique = true, nullable = false)
+    @Column(name = "val_produto", nullable = false, length = 8)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate valProduto;
     @CsvBindByPosition(position = 7)
-    @Column(name = "categoria_linha", unique = true, nullable = false)
-    private CategoriaLinha categoriaLinha;
 
-    public Produto(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, CategoriaLinha categoriaLinha) {
+    @ManyToOne
+    @JoinColumn(name = "id_categoria_linha", referencedColumnName = "id")
+    private CategoriaLinha categoriaLinhaID;
+
+    public Produto(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, CategoriaLinha categoriaLinhaID) {
         this.id = id;
         this.codProduto = codProduto;
         this.nomeProduto = nomeProduto;
@@ -44,7 +48,7 @@ public class Produto {
         this.unidadeCx = unidadeCx;
         this.pesoUni = pesoUni;
         this.valProduto = valProduto;
-        this.categoriaLinha = categoriaLinha;
+        this.categoriaLinhaID = categoriaLinhaID;
     }
 
     public Produto() {
@@ -108,10 +112,10 @@ public class Produto {
     }
 
     public CategoriaLinha getCategoriaLinha() {
-        return categoriaLinha;
+        return categoriaLinhaID;
     }
 
     public void setCategoriaLinha(CategoriaLinha categoriaLinha) {
-        this.categoriaLinha = categoriaLinha;
+        this.categoriaLinhaID = categoriaLinhaID;
     }
 }
