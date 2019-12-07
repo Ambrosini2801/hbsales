@@ -1,12 +1,13 @@
 package br.com.hbsis.categorialinha;
 
-import br.com.hbsis.categoria.Categoria;
+import br.com.hbsis.produto.Produto;
 import com.opencsv.bean.CsvBindByPosition;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "categorialinha")
+@Table(name = "linha")
 public class CategoriaLinha {
 
     @Id
@@ -17,19 +18,24 @@ public class CategoriaLinha {
     @Column(name = "cod_linha", unique = true, nullable = false, length = 100)
     private String codLinha;
     @CsvBindByPosition(position = 2)
-    @Column(name = "nome_linha")
-    private String nomeLinha;
-    @CsvBindByPosition(position = 3)
-    @Column(name = "cat_linha")
+    @Column(name = "cat_linha", unique = true, nullable = false, length = 100)
     private String catLinha;
-
-    @ManyToOne
-    @JoinColumn(name = "id_categoria", referencedColumnName = "id")
     @CsvBindByPosition(position = 3)
-    private Categoria categoria;
+    @Column(name = "nome_linha", unique = true, nullable = false, length = 100)
+    private String nomeLinha;
+    @OneToMany(mappedBy = "categoriaLinha", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Produto> produto;
+
+    public List<Produto> getProduto() {
+        return produto;
+    }
+
+    public void setProduto(List<Produto> produtos) {
+        this.produto = produtos;
+    }
+
 
     public CategoriaLinha() {
-
     }
 
     public Long getId() {
@@ -48,6 +54,14 @@ public class CategoriaLinha {
         this.codLinha = codLinha;
     }
 
+    public String getCatLinha() {
+        return catLinha;
+    }
+
+    public void setCatLinha(String catLinha) {
+        this.catLinha = catLinha;
+    }
+
     public String getNomeLinha() {
         return nomeLinha;
     }
@@ -56,29 +70,11 @@ public class CategoriaLinha {
         this.nomeLinha = nomeLinha;
     }
 
-    public String getCatLinha() {
-        return catLinha;
-    }
-
-    public void setCatLinha(String catLinha) {
-        this.catLinha = catLinha;
-
-    }
-
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
     @Override
     public String toString() {
-        return "categoria [codLinha=" + codLinha + ", nomeLinha=" + nomeLinha + " ," +
-                " catLinha=" + catLinha + "]";
+        return "CategoriaLinha{codLinha=" + codLinha + ", " +
+                "catLinha=" + catLinha + " ," +
+                "nomeLinha=" + nomeLinha + "}";
 
     }
-
-
 }

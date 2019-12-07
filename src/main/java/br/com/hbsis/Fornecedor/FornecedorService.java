@@ -1,5 +1,6 @@
 package br.com.hbsis.Fornecedor;
 
+import com.microsoft.sqlserver.jdbc.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ public class FornecedorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FornecedorService.class);
     private final IFornecedorRepository iFornecedorRepository;
-
 
     @Autowired
     public FornecedorService(IFornecedorRepository iFornecedorRepository) {
@@ -42,7 +42,40 @@ public class FornecedorService {
     private void validate(FornecedorDTO FornecedorDTO) {
         LOGGER.info("Validando Fornecedor");
         if (FornecedorDTO == null) {
-            throw new IllegalArgumentException("FornecedorDTO não deve ser nulo");
+            throw new IllegalArgumentException("FornecedorDTO não deve ser nulo!");
+        }
+        if (StringUtils.isEmpty(FornecedorDTO.getRazaoSocial())) {
+            throw new IllegalArgumentException("Razão Social não deve ser nula ou vazia!");
+        }
+        if (StringUtils.isEmpty(FornecedorDTO.getCnpj())) {
+            throw new IllegalArgumentException("CNPJ não deve ser nulo ou vazio!");
+        }
+        if (!(StringUtils.isNumeric(FornecedorDTO.getCnpj()))) {
+            throw new IllegalArgumentException("CNPJ deve ser conter apenas números!");
+        }
+        if (FornecedorDTO.getCnpj().length() != 14) {
+            throw new IllegalArgumentException("CNPJ deve conter 14 dígitos");
+        }
+        if (StringUtils.isEmpty(FornecedorDTO.getNome_fantasia())) {
+            throw new IllegalArgumentException("Nome Fantasia não deve ser nula ou vazia!");
+        }
+        if (StringUtils.isEmpty(FornecedorDTO.getEndereco())) {
+            throw new IllegalArgumentException("Endereço não deve ser nulo ou vazio!");
+        }
+        if (StringUtils.isEmpty(FornecedorDTO.getTelefone())) {
+            throw new IllegalArgumentException("Telefone não deve ser nulo ou vazio!");
+        }
+        if (!(StringUtils.isNumeric(FornecedorDTO.getTelefone()))) {
+            throw new IllegalArgumentException("Telefone não pode conter letras!");
+        }
+        if (Integer.parseInt(String.valueOf(FornecedorDTO.getTelefone().charAt(5))) != 9) {
+            throw new IllegalArgumentException("Somente números de telefone celular!");
+        }
+        if (FornecedorDTO.getTelefone().length() != 13) {
+            throw new IllegalArgumentException("Numeração incorreta!");
+        }
+        if (StringUtils.isEmpty(FornecedorDTO.getEmail())) {
+            throw new IllegalArgumentException("E-mail não deve ser nulo ou vazio!");
         }
     }
 
@@ -54,7 +87,7 @@ public class FornecedorService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-    public Fornecedor findFornecedorById(Long id) {
+    public Fornecedor findFornecedorById(long id) {
         Optional<Fornecedor> fornecedorOptional = this.iFornecedorRepository.findById(id);
         if (fornecedorOptional.isPresent()) {
             return fornecedorOptional.get();
@@ -66,9 +99,16 @@ public class FornecedorService {
         Optional<Fornecedor> fornecedorExistenteOptional = this.iFornecedorRepository.findById(id);
         if (fornecedorExistenteOptional.isPresent()) {
             Fornecedor fornecedorExistente = fornecedorExistenteOptional.get();
-            LOGGER.info("Atualizando usuário... id: [{}]", fornecedorExistente.getId());
+            LOGGER.info("Atualizando o Fornecedor... id: [{}]", fornecedorExistente.getId());
             LOGGER.debug("Payload: {}", FornecedorDTO);
             LOGGER.debug("Fornecedor Existente: {}", fornecedorExistente);
+
+            fornecedorExistente.setRazaoSocial((FornecedorDTO.getRazaoSocial()));
+            fornecedorExistente.setCNPJ(FornecedorDTO.getCnpj());
+            fornecedorExistente.setNome_fantasia(FornecedorDTO.getNome_fantasia());
+            fornecedorExistente.setEndereco(FornecedorDTO.getEndereco());
+            fornecedorExistente.setTelefone(FornecedorDTO.getTelefone());
+            fornecedorExistente.setEmail(FornecedorDTO.getEmail());
 
             fornecedorExistente = this.iFornecedorRepository.save(fornecedorExistente);
             return FornecedorDTO.of(fornecedorExistente);
@@ -80,5 +120,6 @@ public class FornecedorService {
         LOGGER.info("Executando delete para fornecedor de ID: [{}]", id);
         this.iFornecedorRepository.deleteById(id);
     }
+
 
 }

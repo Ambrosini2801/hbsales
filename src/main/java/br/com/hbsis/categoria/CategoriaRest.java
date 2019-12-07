@@ -1,16 +1,13 @@
 package br.com.hbsis.categoria;
 
-import com.google.common.net.HttpHeaders;
-import com.opencsv.CSVWriter;
-import com.opencsv.CSVWriterBuilder;
-import com.opencsv.ICSVWriter;
+import br.com.hbsis.categorialinha.CategoriaLinhaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 @RestController
 @RequestMapping("/categorias")
@@ -21,7 +18,6 @@ public class CategoriaRest {
     @Autowired
     public CategoriaRest(CategoriaService categoriaService) {
         this.CategoriaService = categoriaService;
-
     }
 
     @PostMapping
@@ -52,36 +48,12 @@ public class CategoriaRest {
 
     @GetMapping("/export")
     public void exportCSV(HttpServletResponse response) throws Exception {
-
-        String nomeArquivo = "categorias.csv";
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; fileName=\"" + nomeArquivo);
-
-        PrintWriter writer = response.getWriter();
-
-        ICSVWriter csvwriter = new CSVWriterBuilder(response.getWriter())
-                .withSeparator(';')
-                .withEscapeChar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
-                .withLineEnd(CSVWriter.DEFAULT_LINE_END)
-                .build();
-
-        String headerCSV[] = {"nome_categoria", "cod_categoria", "id_fornecedor"};
-        csvwriter.writeNext(headerCSV);
-
-        for (Categoria linha : CategoriaService.findAll()) {
-            csvwriter.writeNext(new String[]{linha.getNomeCategoria(),
-                    linha.getCodCategoria(),
-                    String.valueOf(linha.getId())});
-        }
-
-
+        HttpServletResponse file = null;
+        CategoriaLinhaService.findAll(file);
     }
 
     @PostMapping("/import")
-    public void importCSV() throws Exception {
-        CategoriaService.importCSV();
+    public void importCSV(@RequestParam("file") MultipartFile arquivo) throws Exception {
+        CategoriaLinhaService.importCSV(arquivo);
     }
-
 }
-

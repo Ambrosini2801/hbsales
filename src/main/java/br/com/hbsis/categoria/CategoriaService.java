@@ -53,10 +53,14 @@ public class CategoriaService {
         LOGGER.debug("Categoria: {}", categoriaDTO);
 
         Categoria categoria = new Categoria();
+        String digitos = (categoria.getFornecedor().getCNPJ());
+        String ultimosQuatroDigitos = digitos.substring(digitos.length() - 4);
 
-        categoria.setCodCategoria(categoriaDTO.getCodCategoria());
+        categoria.setNomeCategoria("CAT" + ultimosQuatroDigitos + "");
         categoria.setNomeCategoria(categoriaDTO.getNomeCategoria());
         categoria.setFornecedor(categoriaDTO.getFornecedor());
+        categoria = this.iCategoriaRepository.save(categoria);
+
 
         categoria = this.iCategoriaRepository.save(categoria);
         return CategoriaDTO.of(categoria);
@@ -65,14 +69,15 @@ public class CategoriaService {
     private void validate(CategoriaDTO categoriaDTO) {
         LOGGER.info("Validando Categoria");
         if (categoriaDTO == null) {
-            throw new IllegalArgumentException("categoriaDTO não deve ser nulo");
+            throw new IllegalArgumentException("Categoria DTO não deve ser nulo ou vazia!");
         }
 
         if (categoriaDTO.getNomeCategoria().isEmpty()) {
-            throw new IllegalArgumentException("Nome da categoria não ser vazia.");
+            throw new IllegalArgumentException("Nome da categoria não deve ser nula ou vazia!");
         }
+
         if (categoriaDTO.getCodCategoria().isEmpty()) {
-            throw new IllegalArgumentException("Id da Categoria não pode ser vazia.");
+            throw new IllegalArgumentException("Código da categoria não deve ser nula ou vazia!");
         }
     }
 
@@ -131,6 +136,4 @@ public class CategoriaService {
 
         }
     }
-
 }
-
