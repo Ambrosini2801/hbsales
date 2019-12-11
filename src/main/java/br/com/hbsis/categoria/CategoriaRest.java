@@ -53,7 +53,6 @@ public class CategoriaRest {
     public void exportCSV(HttpServletResponse response) throws Exception {
      LOGGER.info("Exportando Arquivo CSV-Categorias disponíveis...");
         this.CategoriaService.exportCSV(response);
-
     }
 
     @PostMapping("/import")
