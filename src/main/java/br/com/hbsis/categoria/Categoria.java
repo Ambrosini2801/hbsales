@@ -1,7 +1,6 @@
 package br.com.hbsis.categoria;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
-import br.com.hbsis.categorialinha.CategoriaLinha;
 import com.opencsv.bean.CsvBindByPosition;
 
 import javax.persistence.*;
@@ -28,11 +27,8 @@ public class Categoria {
     public Categoria() {
     }
 
-    public Categoria(Long id, String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
-        this.id = id;
-        this.nomeCategoria = nomeCategoria;
-        this.codCategoria = codCategoria;
-        this.fornecedor = fornecedor;
+    public static Categoria findAll() {
+        return Categoria.findAll();
     }
 
     public Long getId() {
@@ -64,6 +60,13 @@ public class Categoria {
     }
 
     public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    public Categoria(Long id, String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
+        this.id = id;
+        this.nomeCategoria = nomeCategoria;
+        this.codCategoria = codCategoria;
         this.fornecedor = fornecedor;
     }
 

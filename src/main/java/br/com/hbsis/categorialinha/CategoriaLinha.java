@@ -1,5 +1,6 @@
 package br.com.hbsis.categorialinha;
 
+import br.com.hbsis.Fornecedor.Fornecedor;
 import br.com.hbsis.produto.Produto;
 import com.opencsv.bean.CsvBindByPosition;
 
@@ -23,17 +24,21 @@ public class CategoriaLinha {
     @CsvBindByPosition(position = 3)
     @Column(name = "nome_linha", unique = true, nullable = false, length = 100)
     private String nomeLinha;
-    @OneToMany(mappedBy = "categoriaLinha", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Produto> produto;
+    @ManyToOne
+    @JoinColumn(name = "id_fornecedor", referencedColumnName = "id")
+    @CsvBindByPosition(position = 4)
+    private Fornecedor fornecedor;
+
+    @OneToMany(mappedBy = "categoriaLinha", cascade = CascadeType.ALL)
+
+    List<Produto> produto;
 
     public List<Produto> getProduto() {
         return produto;
     }
-
     public void setProduto(List<Produto> produtos) {
         this.produto = produtos;
     }
-
 
     public CategoriaLinha() {
     }
@@ -70,6 +75,14 @@ public class CategoriaLinha {
         this.nomeLinha = nomeLinha;
     }
 
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
     @Override
     public String toString() {
         return "CategoriaLinha{codLinha=" + codLinha + ", " +
@@ -77,4 +90,5 @@ public class CategoriaLinha {
                 "nomeLinha=" + nomeLinha + "}";
 
     }
+
 }

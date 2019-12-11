@@ -37,10 +37,10 @@ public class Produto {
     @CsvBindByPosition(position = 7)
 
     @ManyToOne
-    @JoinColumn(name = "id_categoria_linha", referencedColumnName = "id")
-    private CategoriaLinha categoriaLinhaID;
+    @JoinColumn(name = "categoria_linha", referencedColumnName = "id")
+    private CategoriaLinha categoriaLinha;
 
-    public Produto(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, CategoriaLinha categoriaLinhaID) {
+    public Produto(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, CategoriaLinha categoriaLinha) {
         this.id = id;
         this.codProduto = codProduto;
         this.nomeProduto = nomeProduto;
@@ -48,7 +48,7 @@ public class Produto {
         this.unidadeCx = unidadeCx;
         this.pesoUni = pesoUni;
         this.valProduto = valProduto;
-        this.categoriaLinhaID = categoriaLinhaID;
+        this.categoriaLinha = categoriaLinha;
     }
 
     public Produto() {
@@ -112,10 +112,10 @@ public class Produto {
     }
 
     public CategoriaLinha getCategoriaLinha() {
-        return categoriaLinhaID;
+        return categoriaLinha;
     }
 
     public void setCategoriaLinha(CategoriaLinha categoriaLinha) {
-        this.categoriaLinhaID = categoriaLinhaID;
+        this.categoriaLinha = categoriaLinha;
     }
 }

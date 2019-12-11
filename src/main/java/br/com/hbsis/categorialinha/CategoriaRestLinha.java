@@ -1,17 +1,12 @@
 package br.com.hbsis.categorialinha;
 
 
-import com.google.common.net.HttpHeaders;
-import com.opencsv.CSVWriter;
-import com.opencsv.CSVWriterBuilder;
-import com.opencsv.ICSVWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 @RestController
 @RequestMapping("/linhas")
@@ -53,29 +48,8 @@ public class CategoriaRestLinha {
 
     @GetMapping("/exportlinha")
     public void exportCSV(HttpServletResponse response) throws Exception {
-
-        String nomelinha = "linhas.csv";
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + nomelinha);
-
-        PrintWriter writer = response.getWriter();
-
-        ICSVWriter csvwriter = new CSVWriterBuilder(response.getWriter())
-                .withSeparator(';')
-                .withEscapeChar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
-                .withLineEnd(CSVWriter.DEFAULT_LINE_END)
-                .build();
-
-        String headerCSV[] = {"cod_linha", "nome_linha", "catLinha"};
-        csvwriter.writeNext(headerCSV);
-
-        for (CategoriaLinha linha : CategoriaLinhaService.findAll()) {
-            csvwriter.writeNext(new String[]{String.valueOf(linha.getId()),
-                    linha.getCatLinha(),
-                    linha.getNomeLinha(),
-                    linha.getCodLinha()});
-        }
-
+        LOGGER.info("Exportando Arquivo CSV.");
+        this.CategoriaLinhaService.exportCSV(response);
     }
 
     @PostMapping("/import")

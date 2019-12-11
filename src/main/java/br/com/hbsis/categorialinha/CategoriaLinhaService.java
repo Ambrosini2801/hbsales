@@ -1,18 +1,18 @@
 package br.com.hbsis.categorialinha;
 
 import br.com.hbsis.categoria.CategoriaService;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-
+import com.google.common.net.HttpHeaders;
+import com.opencsv.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.MaskFormatter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.net.URI;
 import java.nio.file.Files;
@@ -28,6 +28,7 @@ public class CategoriaLinhaService {
 
     private final ICategoriaLinhaRepository iCategoriaLinhaRepository;
     private final CategoriaService categoriaService;
+    private CategoriaService iCategoriaRepository;
 
     @Autowired
     public CategoriaLinhaService(ICategoriaLinhaRepository iCategoriaLinhaRepository, CategoriaService categoriaService) {
@@ -36,9 +37,6 @@ public class CategoriaLinhaService {
     }
 
     public static void importCSV(MultipartFile arquivo) {
-    }
-
-    public static void findAll(HttpServletResponse file) {
     }
 
     public CategoriaLinhaDTO save(CategoriaLinhaDTO categoriaLinhaDTO) {
@@ -110,26 +108,69 @@ public class CategoriaLinhaService {
 
     }
 
-    public void importCSV() throws IOException {
+    private String mascaraCNPJ(String cnpj) {
 
-        Reader caminho = Files.newBufferedReader(Paths.get("C:\\Users\\vanessa.silva\\Desktop\\arquivoimport.csv"));
-        CSVReader cs = new CSVReaderBuilder(caminho).withSkipLines(1).build();
-        List<String[]> linhaCSV = cs.readAll();
-        CategoriaLinha categorialinhacadastro = new CategoriaLinha();
+        try {
+            MaskFormatter format = new MaskFormatter("##.###.###/####-##");
+            format.setValueContainsLiteralCharacters(false);
+            return format.valueToString(cnpj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-        for (String[] linha : linhaCSV) {
-            String[] colunalinhacategoria = linha[0].replaceAll("\"", "").split(";");
+    public void exportCSV(HttpServletResponse response) throws IOException {
 
-            categorialinhacadastro.setCodLinha(colunalinhacategoria[0]);
-            categorialinhacadastro.setCatLinha(colunalinhacategoria[1]);
-            categorialinhacadastro.setNomeLinha(colunalinhacategoria[2]);
+        String nomelinha = "linhas.csv";
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + nomelinha);
 
-            this.iCategoriaLinhaRepository.save(categorialinhacadastro);
+        PrintWriter writer = response.getWriter();
 
+        ICSVWriter csvwriter = new CSVWriterBuilder(response.getWriter())
+                .withSeparator(';')
+                .withEscapeChar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
+                .withLineEnd(CSVWriter.DEFAULT_LINE_END)
+                .build();
+
+        String headerCSV[] = {"cod_linha", "nome_linha", "catLinha"};
+        csvwriter.writeNext(headerCSV);
+
+        for (CategoriaLinha linha : iCategoriaLinhaRepository.findAll()) {
+            csvwriter.writeNext(new String[]{String.valueOf(linha.getId()),
+                    linha.getCatLinha(),
+                    linha.getNomeLinha(),
+                    linha.getCodLinha(),
+                    linha.getFornecedor().getRazaoSocial(),
+                    linha.getFornecedor().getCNPJ()
+
+            });
         }
     }
 
-    public List<CategoriaLinha>findAll(){
-        return iCategoriaLinhaRepository.findAll();
+    private List<CategoriaLinha> findAll() {
+        return (List<CategoriaLinha>) this.iCategoriaLinhaRepository.findAll();
+    }
+
+    public void importCSV() throws IOException {
+        {
+
+            Reader caminho = Files.newBufferedReader(Paths.get("C:\\Users\\vanessa.silva\\Desktop\\arquivoimport.csv"));
+            CSVReader cs = new CSVReaderBuilder(caminho).withSkipLines(1).build();
+            List<String[]> linhaCSV = cs.readAll();
+            CategoriaLinha categoriaLinhaCadastro = new CategoriaLinha();
+
+            for (String[] linha : linhaCSV) {
+                String[] colunalinhacategoria = linha[0].replaceAll("\"", "").split(";");
+
+                categoriaLinhaCadastro.setCodLinha(colunalinhacategoria[0]);
+                categoriaLinhaCadastro.setCatLinha(colunalinhacategoria[1]);
+                categoriaLinhaCadastro.setNomeLinha(colunalinhacategoria[2]);
+
+                this.iCategoriaLinhaRepository.save(categoriaLinhaCadastro);
+
+            }
+        }
     }
 }

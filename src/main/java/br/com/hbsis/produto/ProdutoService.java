@@ -27,7 +27,7 @@ public class ProdutoService {
 
     public ProdutoDTO save(ProdutoDTO produtoDTO) {
         LOGGER.info("Salvando produto");
-        LOGGER.debug("Produto: {}", produtoDTO.getCategoriaLinhaID());
+        LOGGER.debug("Produto: {}", produtoDTO.getCategoriaLinha());
 
         Produto produto = new Produto();
 
@@ -37,7 +37,7 @@ public class ProdutoService {
         produto.setUnidadeCx(produtoDTO.getUnidadeCx());
         produto.setPesoUni(produtoDTO.getPesoUni());
         produto.setValProduto(produtoDTO.getValProduto());
-        produto.setCategoriaLinha(categoriaLinhaService.findByIdcategorialinha(produtoDTO.getCategoriaLinhaID()));
+        produto.setCategoriaLinha(categoriaLinhaService.findByIdcategorialinha(produtoDTO.getCategoriaLinha()));
 
         produto = this.iProdutoRepository.save(produto);
         return produtoDTO.of(produto);

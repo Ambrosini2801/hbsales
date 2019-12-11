@@ -1,5 +1,6 @@
 package br.com.hbsis.Fornecedor;
 
+import br.com.hbsis.categoria.CategoriaService;
 import com.microsoft.sqlserver.jdbc.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,16 +26,15 @@ public class FornecedorService {
         LOGGER.info("Salvando o fornecedor");
         LOGGER.debug("Fornecedor: {}", fornecedorDTO);
 
-        Object id = null;
-        Object categoria = null;
-        Fornecedor fornecedor = new Fornecedor(id, categoria);
+        Fornecedor fornecedor = new Fornecedor();
 
         fornecedor.setRazaoSocial(fornecedorDTO.getRazaoSocial());
         fornecedor.setCNPJ(fornecedorDTO.getCnpj());
-        fornecedor.setEmail(fornecedorDTO.getEmail());
-        fornecedor.setEndereco(fornecedorDTO.getEndereco());
         fornecedor.setNome_fantasia(fornecedorDTO.getNome_fantasia());
+        fornecedor.setEndereco(fornecedorDTO.getEndereco());
         fornecedor.setTelefone(fornecedorDTO.getTelefone());
+        fornecedor.setEmail(fornecedorDTO.getEmail());
+
         fornecedor = this.iFornecedorRepository.save(fornecedor);
         return FornecedorDTO.of(fornecedor);
     }
@@ -68,7 +68,7 @@ public class FornecedorService {
         if (!(StringUtils.isNumeric(FornecedorDTO.getTelefone()))) {
             throw new IllegalArgumentException("Telefone não pode conter letras!");
         }
-        if (Integer.parseInt(String.valueOf(FornecedorDTO.getTelefone().charAt(5))) != 9) {
+        if (Integer.parseInt(String.valueOf(FornecedorDTO.getTelefone().charAt(4))) != 9) {
             throw new IllegalArgumentException("Somente números de telefone celular!");
         }
         if (FornecedorDTO.getTelefone().length() != 13) {
@@ -120,6 +120,5 @@ public class FornecedorService {
         LOGGER.info("Executando delete para fornecedor de ID: [{}]", id);
         this.iFornecedorRepository.deleteById(id);
     }
-
 
 }
