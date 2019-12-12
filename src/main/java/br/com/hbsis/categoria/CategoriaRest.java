@@ -56,7 +56,7 @@ public class CategoriaRest {
     }
 
     @PostMapping("/import")
-    public void importCSV(@RequestParam("file") MultipartFile arquivo) throws Exception {
-        CategoriaLinhaService.importCSV(arquivo);
+    public void importCSV(HttpServletResponse response) throws Exception {
+         CategoriaService.importCSV(response);
     }
 }

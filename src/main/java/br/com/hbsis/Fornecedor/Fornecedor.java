@@ -84,15 +84,6 @@ public class Fornecedor {
         this.email = email;
     }
 
-    public Fornecedor(Long id, String razaoSocial, String CNPJ, String nome_fantasia, String endereco, String telefone, String email) {
-        this.id = id;
-        this.razaoSocial = razaoSocial;
-        this.cnpj = CNPJ;
-        this.nome_fantasia = nome_fantasia;
-        this.endereco = endereco;
-        this.telefone = telefone;
-        this.email = email;
-    }
 
     @Override
     public String toString() {

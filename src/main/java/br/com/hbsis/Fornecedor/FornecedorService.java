@@ -1,12 +1,12 @@
 package br.com.hbsis.Fornecedor;
 
-import br.com.hbsis.categoria.CategoriaService;
 import com.microsoft.sqlserver.jdbc.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -30,6 +30,7 @@ public class FornecedorService {
 
         fornecedor.setRazaoSocial(fornecedorDTO.getRazaoSocial());
         fornecedor.setCNPJ(fornecedorDTO.getCnpj());
+         TODO: 12/12/2019 convenção java
         fornecedor.setNome_fantasia(fornecedorDTO.getNome_fantasia());
         fornecedor.setEndereco(fornecedorDTO.getEndereco());
         fornecedor.setTelefone(fornecedorDTO.getTelefone());
@@ -95,20 +96,22 @@ public class FornecedorService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-    public FornecedorDTO update(FornecedorDTO FornecedorDTO, Long id) {
+    public FornecedorDTO update(FornecedorDTO fornecedorDTO, Long id) {
         Optional<Fornecedor> fornecedorExistenteOptional = this.iFornecedorRepository.findById(id);
         if (fornecedorExistenteOptional.isPresent()) {
+            // TODO: 12/12/2019 colocar regra de validação do fornecedor
+            // TODO: 12/12/2019 colocar para recalcular o código de todas as categorias
             Fornecedor fornecedorExistente = fornecedorExistenteOptional.get();
             LOGGER.info("Atualizando o Fornecedor... id: [{}]", fornecedorExistente.getId());
-            LOGGER.debug("Payload: {}", FornecedorDTO);
+            LOGGER.debug("Payload: {}", fornecedorDTO);
             LOGGER.debug("Fornecedor Existente: {}", fornecedorExistente);
 
-            fornecedorExistente.setRazaoSocial((FornecedorDTO.getRazaoSocial()));
-            fornecedorExistente.setCNPJ(FornecedorDTO.getCnpj());
-            fornecedorExistente.setNome_fantasia(FornecedorDTO.getNome_fantasia());
-            fornecedorExistente.setEndereco(FornecedorDTO.getEndereco());
-            fornecedorExistente.setTelefone(FornecedorDTO.getTelefone());
-            fornecedorExistente.setEmail(FornecedorDTO.getEmail());
+            fornecedorExistente.setRazaoSocial((fornecedorDTO.getRazaoSocial()));
+            fornecedorExistente.setCNPJ(fornecedorDTO.getCnpj());
+            fornecedorExistente.setNome_fantasia(fornecedorDTO.getNome_fantasia());
+            fornecedorExistente.setEndereco(fornecedorDTO.getEndereco());
+            fornecedorExistente.setTelefone(fornecedorDTO.getTelefone());
+            fornecedorExistente.setEmail(fornecedorDTO.getEmail());
 
             fornecedorExistente = this.iFornecedorRepository.save(fornecedorExistente);
             return FornecedorDTO.of(fornecedorExistente);

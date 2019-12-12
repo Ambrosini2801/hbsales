@@ -1,11 +1,9 @@
 package br.com.hbsis.categorialinha;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -16,7 +14,7 @@ public class CategoriaRestLinha {
 
     @Autowired
     public CategoriaRestLinha(CategoriaLinhaService categoriaLinhaService) {
-        CategoriaLinhaService = categoriaLinhaService;
+       this.CategoriaLinhaService = categoriaLinhaService;
     }
 
     @PostMapping
@@ -46,15 +44,15 @@ public class CategoriaRestLinha {
         this.CategoriaLinhaService.delete(id);
     }
 
-    @GetMapping("/exportlinha")
+    @GetMapping("/exportLinha")
     public void exportCSV(HttpServletResponse response) throws Exception {
         LOGGER.info("Exportando Arquivo CSV.");
         this.CategoriaLinhaService.exportCSV(response);
     }
 
-    @PostMapping("/import")
-    public void importCSV() throws Exception {
-        CategoriaLinhaService.importCSV();
+    @PostMapping("/importLinha")
+    public void importCSV(HttpServletResponse response) throws Exception {
+        CategoriaLinhaService.importCSV(response);
 
     }
 }

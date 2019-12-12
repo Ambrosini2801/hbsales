@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.MaskFormatter;
@@ -26,7 +24,7 @@ import java.util.Optional;
 
 
 @Service
-public class CategoriaService<iFornecedorRepository> {
+public class CategoriaService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaService.class);
     private static final URI SAMPLE_CSV_FILE_PATH = null;
@@ -65,11 +63,12 @@ public class CategoriaService<iFornecedorRepository> {
         zeroEsquerda = categoriaDTO.getCodCategoria();
         String zeroEsquerdaFinal = (StringUtils.leftPad(zeroEsquerda, 3, "0")).toUpperCase();
 
-        categoria.setCodCategoria(codigo.concat(cnpj) + zeroEsquerdaFinal);
+        categoria.setCodCategoria(codigo.concat(cnpj).concat(zeroEsquerdaFinal));
         categoria.setNomeCategoria(categoriaDTO.getNomeCategoria());
         categoria.setFornecedor(fornecedorService.findFornecedorById(categoriaDTO.getFornecedor().getId()));
 
         categoria = this.iCategoriaRepository.save(categoria);
+        TODO: 12/12/2019 Usar a chamada do método estático pela classe
         return categoriaDTO.of(categoria);
     }
 
@@ -99,6 +98,7 @@ public class CategoriaService<iFornecedorRepository> {
     }
 
     public CategoriaDTO update(CategoriaDTO categoriaDTO, Long id) {
+        TODO: 12/12/2019 Realizar construção do código também no update
         Optional<Categoria> categoriaExistenteOptional = this.iCategoriaRepository.findById(id);
         if (categoriaExistenteOptional.isPresent()) {
             Categoria categoriaExistente = categoriaExistenteOptional.get();
@@ -152,7 +152,6 @@ public class CategoriaService<iFornecedorRepository> {
                     mascaraCNPJ(categoria.getFornecedor().getCNPJ())
             });
         }
-
     }
 
     private Categoria findAll() {
@@ -160,8 +159,11 @@ public class CategoriaService<iFornecedorRepository> {
 
     }
 
-    public void importCSV(@RequestParam("arquivoimport") MultipartFile arquivoimport) throws IOException {
-
+    public void importCSV(HttpServletResponse response) throws IOException {
+        String importCategoria = "import.csv";
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + importCategoria + "\"");
+        TODO: 12/12/2019 Realizar upload do arquivo de CSV
         Reader caminhoImport = Files.newBufferedReader(Paths.get("C:\\Users\\vanessa.silva\\Desktop\\arquivoimport.csv"));
         CSVReader csv = new CSVReaderBuilder(caminhoImport).withSkipLines(1).build();
         List<String[]> categoriaCSV = csv.readAll();

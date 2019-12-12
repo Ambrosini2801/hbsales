@@ -17,7 +17,6 @@ public class ProdutoService {
     private static final URI SAMPLE_CSV_FILE_PATH = null;
     private final IProdutoRepository iProdutoRepository;
     private final CategoriaLinhaService categoriaLinhaService;
-    private ProdutoService iCategoriaLinhaRepository;
 
     @Autowired
     public ProdutoService(IProdutoRepository iProdutoRepository, CategoriaLinhaService categoriaLinhaService) {
@@ -28,6 +27,7 @@ public class ProdutoService {
     public ProdutoDTO save(ProdutoDTO produtoDTO) {
         LOGGER.info("Salvando produto");
         LOGGER.debug("Produto: {}", produtoDTO.getCategoriaLinha());
+        // TODO: 12/12/2019 chamar validate de produto
 
         Produto produto = new Produto();
 
@@ -40,6 +40,7 @@ public class ProdutoService {
         produto.setCategoriaLinha(categoriaLinhaService.findByIdcategorialinha(produtoDTO.getCategoriaLinha()));
 
         produto = this.iProdutoRepository.save(produto);
+        // TODO: 12/12/2019 utilziar método estático através da classe
         return produtoDTO.of(produto);
     }
 
@@ -60,7 +61,7 @@ public class ProdutoService {
         if (StringUtils.isEmpty(produtoDTO.getPesoUni())){
             throw  new IllegalArgumentException("Peso por unidade não deve ser nulo ou vazio!");
         }
-
+// TODO: 12/12/2019 remover comentário desnecessário
 //////        if (StringUtils.isEmpty(produtoDTO.getPrecoProduto())){
 //////            throw  new IllegalArgumentException("Preço do produto não deve ser nulo ou vazio!");
 ////
@@ -101,6 +102,7 @@ public class ProdutoService {
         this.iProdutoRepository.deleteById(id);
     }
 
+    // TODO: 12/12/2019 se não está sendo usado....
     public Produto findAll() {
         return (Produto) iProdutoRepository.findAll();
     }

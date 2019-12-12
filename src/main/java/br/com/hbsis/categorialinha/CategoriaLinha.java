@@ -1,6 +1,6 @@
 package br.com.hbsis.categorialinha;
 
-import br.com.hbsis.Fornecedor.Fornecedor;
+import br.com.hbsis.categoria.Categoria;
 import br.com.hbsis.produto.Produto;
 import com.opencsv.bean.CsvBindByPosition;
 
@@ -16,18 +16,18 @@ public class CategoriaLinha {
     @CsvBindByPosition(position = 0)
     private Long id;
     @CsvBindByPosition(position = 1)
-    @Column(name = "cod_linha", unique = true, nullable = false, length = 100)
+    @Column(name = "cod_linha", unique = true, nullable = false, length = 10)
     private String codLinha;
     @CsvBindByPosition(position = 2)
     @Column(name = "cat_linha", unique = true, nullable = false, length = 100)
     private String catLinha;
     @CsvBindByPosition(position = 3)
-    @Column(name = "nome_linha", unique = true, nullable = false, length = 100)
+    @Column(name = "nome_linha", unique = true, nullable = false, length = 50)
     private String nomeLinha;
     @ManyToOne
-    @JoinColumn(name = "id_fornecedor", referencedColumnName = "id")
+    @JoinColumn(name = "categoria", referencedColumnName = "id")
     @CsvBindByPosition(position = 4)
-    private Fornecedor fornecedor;
+    private Categoria categoria;
 
     @OneToMany(mappedBy = "categoriaLinha", cascade = CascadeType.ALL)
 
@@ -36,6 +36,7 @@ public class CategoriaLinha {
     public List<Produto> getProduto() {
         return produto;
     }
+
     public void setProduto(List<Produto> produtos) {
         this.produto = produtos;
     }
@@ -75,12 +76,20 @@ public class CategoriaLinha {
         this.nomeLinha = nomeLinha;
     }
 
-    public Fornecedor getFornecedor() {
-        return fornecedor;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setFornecedor(Fornecedor fornecedor) {
-        this.fornecedor = fornecedor;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public CategoriaLinha(Long id, String nomeLinha, String codLinha, String catLinha, Categoria categoria) {
+        this.id = id;
+        this.nomeLinha = nomeLinha;
+        this.codLinha = codLinha;
+        this.catLinha = catLinha;
+        this.categoria = categoria;
     }
 
     @Override
