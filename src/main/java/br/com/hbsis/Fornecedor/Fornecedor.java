@@ -20,29 +20,20 @@ public class Fornecedor {
     private String nome_fantasia;
     @Column(name = "endereco", nullable = false, length = 100)
     private String endereco;
-    @Column(name = "telefone", nullable = false, length = 13)
+    @Column(name = "telefone", nullable = false, length = 14)
     private String telefone;
     @Column(name = "email", nullable = false, length = 50)
     private String email;
-    @OneToMany(mappedBy = "fornecedor", targetEntity = Categoria.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Categoria> categoria;
-
-    public Fornecedor(Object id, Object categoria) {
-    }
-
-    public List<Categoria> getCategoria() {
-        return categoria;
-    }
-
-    public void setCategorias(List<Categoria> categorias) {
-        this.categoria = categorias;
-    }
 
     public Fornecedor() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getRazaoSocial() {
@@ -93,19 +84,6 @@ public class Fornecedor {
         this.email = email;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Fornecedor(Long id, String razaoSocial, String CNPJ, String nome_fantasia, String endereco, String telefone, String email) {
-        this.id = id;
-        this.razaoSocial = razaoSocial;
-        this.cnpj = CNPJ;
-        this.nome_fantasia = nome_fantasia;
-        this.endereco = endereco;
-        this.telefone = telefone;
-        this.email = email;
-    }
 
     @Override
     public String toString() {

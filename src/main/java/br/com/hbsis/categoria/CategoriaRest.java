@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/categorias")
 public class CategoriaRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaRest.class);
     private final CategoriaService CategoriaService;
+    private Object categoriaService;
 
     @Autowired
     public CategoriaRest(CategoriaService categoriaService) {
@@ -48,12 +51,12 @@ public class CategoriaRest {
 
     @GetMapping("/export")
     public void exportCSV(HttpServletResponse response) throws Exception {
-        HttpServletResponse file = null;
-        CategoriaLinhaService.findAll(file);
+     LOGGER.info("Exportando Arquivo CSV-Categorias disponíveis...");
+        this.CategoriaService.exportCSV(response);
     }
 
     @PostMapping("/import")
-    public void importCSV(@RequestParam("file") MultipartFile arquivo) throws Exception {
-        CategoriaLinhaService.importCSV(arquivo);
+    public void importCSV(HttpServletResponse response) throws Exception {
+         CategoriaService.importCSV(response);
     }
 }

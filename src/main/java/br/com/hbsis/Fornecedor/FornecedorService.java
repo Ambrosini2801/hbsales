@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -25,16 +26,16 @@ public class FornecedorService {
         LOGGER.info("Salvando o fornecedor");
         LOGGER.debug("Fornecedor: {}", fornecedorDTO);
 
-        Object id = null;
-        Object categoria = null;
-        Fornecedor fornecedor = new Fornecedor(id, categoria);
+        Fornecedor fornecedor = new Fornecedor();
 
         fornecedor.setRazaoSocial(fornecedorDTO.getRazaoSocial());
         fornecedor.setCNPJ(fornecedorDTO.getCnpj());
-        fornecedor.setEmail(fornecedorDTO.getEmail());
-        fornecedor.setEndereco(fornecedorDTO.getEndereco());
+         TODO: 12/12/2019 convenção java
         fornecedor.setNome_fantasia(fornecedorDTO.getNome_fantasia());
+        fornecedor.setEndereco(fornecedorDTO.getEndereco());
         fornecedor.setTelefone(fornecedorDTO.getTelefone());
+        fornecedor.setEmail(fornecedorDTO.getEmail());
+
         fornecedor = this.iFornecedorRepository.save(fornecedor);
         return FornecedorDTO.of(fornecedor);
     }
@@ -68,7 +69,7 @@ public class FornecedorService {
         if (!(StringUtils.isNumeric(FornecedorDTO.getTelefone()))) {
             throw new IllegalArgumentException("Telefone não pode conter letras!");
         }
-        if (Integer.parseInt(String.valueOf(FornecedorDTO.getTelefone().charAt(5))) != 9) {
+        if (Integer.parseInt(String.valueOf(FornecedorDTO.getTelefone().charAt(4))) != 9) {
             throw new IllegalArgumentException("Somente números de telefone celular!");
         }
         if (FornecedorDTO.getTelefone().length() != 13) {
@@ -95,20 +96,22 @@ public class FornecedorService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-    public FornecedorDTO update(FornecedorDTO FornecedorDTO, Long id) {
+    public FornecedorDTO update(FornecedorDTO fornecedorDTO, Long id) {
         Optional<Fornecedor> fornecedorExistenteOptional = this.iFornecedorRepository.findById(id);
         if (fornecedorExistenteOptional.isPresent()) {
+            // TODO: 12/12/2019 colocar regra de validação do fornecedor
+            // TODO: 12/12/2019 colocar para recalcular o código de todas as categorias
             Fornecedor fornecedorExistente = fornecedorExistenteOptional.get();
             LOGGER.info("Atualizando o Fornecedor... id: [{}]", fornecedorExistente.getId());
-            LOGGER.debug("Payload: {}", FornecedorDTO);
+            LOGGER.debug("Payload: {}", fornecedorDTO);
             LOGGER.debug("Fornecedor Existente: {}", fornecedorExistente);
 
-            fornecedorExistente.setRazaoSocial((FornecedorDTO.getRazaoSocial()));
-            fornecedorExistente.setCNPJ(FornecedorDTO.getCnpj());
-            fornecedorExistente.setNome_fantasia(FornecedorDTO.getNome_fantasia());
-            fornecedorExistente.setEndereco(FornecedorDTO.getEndereco());
-            fornecedorExistente.setTelefone(FornecedorDTO.getTelefone());
-            fornecedorExistente.setEmail(FornecedorDTO.getEmail());
+            fornecedorExistente.setRazaoSocial((fornecedorDTO.getRazaoSocial()));
+            fornecedorExistente.setCNPJ(fornecedorDTO.getCnpj());
+            fornecedorExistente.setNome_fantasia(fornecedorDTO.getNome_fantasia());
+            fornecedorExistente.setEndereco(fornecedorDTO.getEndereco());
+            fornecedorExistente.setTelefone(fornecedorDTO.getTelefone());
+            fornecedorExistente.setEmail(fornecedorDTO.getEmail());
 
             fornecedorExistente = this.iFornecedorRepository.save(fornecedorExistente);
             return FornecedorDTO.of(fornecedorExistente);
@@ -120,6 +123,5 @@ public class FornecedorService {
         LOGGER.info("Executando delete para fornecedor de ID: [{}]", id);
         this.iFornecedorRepository.deleteById(id);
     }
-
 
 }

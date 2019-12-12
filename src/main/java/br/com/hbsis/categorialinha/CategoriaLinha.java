@@ -1,5 +1,6 @@
 package br.com.hbsis.categorialinha;
 
+import br.com.hbsis.categoria.Categoria;
 import br.com.hbsis.produto.Produto;
 import com.opencsv.bean.CsvBindByPosition;
 
@@ -15,16 +16,22 @@ public class CategoriaLinha {
     @CsvBindByPosition(position = 0)
     private Long id;
     @CsvBindByPosition(position = 1)
-    @Column(name = "cod_linha", unique = true, nullable = false, length = 100)
+    @Column(name = "cod_linha", unique = true, nullable = false, length = 10)
     private String codLinha;
     @CsvBindByPosition(position = 2)
     @Column(name = "cat_linha", unique = true, nullable = false, length = 100)
     private String catLinha;
     @CsvBindByPosition(position = 3)
-    @Column(name = "nome_linha", unique = true, nullable = false, length = 100)
+    @Column(name = "nome_linha", unique = true, nullable = false, length = 50)
     private String nomeLinha;
-    @OneToMany(mappedBy = "categoriaLinha", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Produto> produto;
+    @ManyToOne
+    @JoinColumn(name = "categoria", referencedColumnName = "id")
+    @CsvBindByPosition(position = 4)
+    private Categoria categoria;
+
+    @OneToMany(mappedBy = "categoriaLinha", cascade = CascadeType.ALL)
+
+    List<Produto> produto;
 
     public List<Produto> getProduto() {
         return produto;
@@ -33,7 +40,6 @@ public class CategoriaLinha {
     public void setProduto(List<Produto> produtos) {
         this.produto = produtos;
     }
-
 
     public CategoriaLinha() {
     }
@@ -70,6 +76,22 @@ public class CategoriaLinha {
         this.nomeLinha = nomeLinha;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public CategoriaLinha(Long id, String nomeLinha, String codLinha, String catLinha, Categoria categoria) {
+        this.id = id;
+        this.nomeLinha = nomeLinha;
+        this.codLinha = codLinha;
+        this.catLinha = catLinha;
+        this.categoria = categoria;
+    }
+
     @Override
     public String toString() {
         return "CategoriaLinha{codLinha=" + codLinha + ", " +
@@ -77,4 +99,5 @@ public class CategoriaLinha {
                 "nomeLinha=" + nomeLinha + "}";
 
     }
+
 }

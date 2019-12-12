@@ -1,30 +1,33 @@
 package br.com.hbsis.categorialinha;
 
+import br.com.hbsis.categoria.Categoria;
+
 public class CategoriaLinhaDTO {
 
     private Long id;
     private String codLinha;
     private String catLinha;
     private String nomeLinha;
+    private Categoria categoria;
 
     public CategoriaLinhaDTO() {
     }
 
-    public CategoriaLinhaDTO(Long id, String codLinha, String catLinha, String nomeLinha) {
+    public CategoriaLinhaDTO(Long id, String codLinha, String catLinha, String nomeLinha, Categoria categoria) {
         this.id = id;
         this.codLinha = codLinha;
         this.catLinha = catLinha;
         this.nomeLinha = nomeLinha;
+        this.categoria = categoria;
     }
 
-
-     public static CategoriaLinhaDTO of(CategoriaLinha linhaExistente) {
+    public static CategoriaLinhaDTO of(CategoriaLinha linhaExistente) {
         return new CategoriaLinhaDTO(
                 linhaExistente.getId(),
                 linhaExistente.getCodLinha(),
                 linhaExistente.getCatLinha(),
-                linhaExistente.getNomeLinha()
-
+                linhaExistente.getNomeLinha(),
+                linhaExistente.getCategoria()
         );
     }
 
@@ -60,11 +63,19 @@ public class CategoriaLinhaDTO {
         this.nomeLinha = nomeLinha;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     @Override
     public String toString() {
         return "CategoriaLinhaDTO {codLinha=" + codLinha + ", " +
-            "catLinha=" + catLinha + " ," +
-                    "nomeLinha=" + nomeLinha + "}";
+                "catLinha=" + catLinha + " ," +
+                "nomeLinha=" + nomeLinha + "}";
 
     }
 

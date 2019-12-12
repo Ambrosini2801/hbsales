@@ -11,13 +11,13 @@ public class ProdutoDTO {
     private int unidadeCx;
     private String pesoUni;
     private LocalDate valProduto;
-    private long categoriaLinhaID;
+    private long categoriaLinha;
 
     public ProdutoDTO() {
 
     }
 
-    public ProdutoDTO(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, long categoriaLinhaID) {
+    public ProdutoDTO(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, long categoriaLinha) {
         this.id = id;
         this.codProduto = codProduto;
         this.nomeProduto = nomeProduto;
@@ -25,7 +25,7 @@ public class ProdutoDTO {
         this.unidadeCx = unidadeCx;
         this.pesoUni = pesoUni;
         this.valProduto = valProduto;
-        this.categoriaLinhaID = categoriaLinhaID;
+        this.categoriaLinha = categoriaLinha;
     }
 
     public static ProdutoDTO of(Produto produtoexistente) {
@@ -97,11 +97,11 @@ public class ProdutoDTO {
         this.valProduto = valProduto;
     }
 
-    public long getCategoriaLinhaID() {
-        return categoriaLinhaID;
+    public long getCategoriaLinha() {
+        return categoriaLinha;
     }
 
-    public void setCategoriaLinhaID(long categoriaLinhaID) {
-        this.categoriaLinhaID = categoriaLinhaID;
+    public void setCategoriaLinha(long categoriaLinha) {
+        this.categoriaLinha = categoriaLinha;
     }
 }

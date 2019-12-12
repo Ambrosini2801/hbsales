@@ -4,6 +4,7 @@ public class FornecedorDTO {
     private Long id;
     private String razaoSocial;
     private String cnpj;
+    TODO: 12/12/2019 convenção java
     private String nome_fantasia;
     private String endereco;
     private String telefone;

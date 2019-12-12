@@ -1,0 +1,1 @@
+alter table linha add column categoria BIGINT NOT NULL
