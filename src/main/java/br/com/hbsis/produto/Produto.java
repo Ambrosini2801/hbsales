@@ -1,9 +1,7 @@
 package br.com.hbsis.produto;
 
 import br.com.hbsis.categorialinha.CategoriaLinha;
-import com.opencsv.bean.CsvBindByPosition;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -13,28 +11,20 @@ public class Produto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @CsvBindByPosition(position = 0)
     private Long id;
-    @CsvBindByPosition(position = 1)
     @Column(name = "cod_produto", unique = true, nullable = false, length = 10)
     private String codProduto;
-    @CsvBindByPosition(position = 2)
     @Column(name = "nome_produto", unique = true, nullable = false, length = 200)
     private String nomeProduto;
-    @CsvBindByPosition(position = 3)
     @Column(name = "preco_produto", unique = true, nullable = false, length = 25)
     private double precoProduto;
-    @CsvBindByPosition(position = 4)
     @Column(name = "unidade_cx", unique = true, nullable = false, length = 25)
     private int unidadeCx;
-    @CsvBindByPosition(position = 5)
     @Column(name = "peso_uni", unique = true, nullable = false, length = 25)
     private String pesoUni;
-    @CsvBindByPosition(position = 6)
     @Column(name = "val_produto", nullable = false, length = 8)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate valProduto;
-    @CsvBindByPosition(position = 7)
 
     @ManyToOne
     @JoinColumn(name = "categoria_linha", referencedColumnName = "id")

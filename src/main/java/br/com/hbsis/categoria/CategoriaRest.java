@@ -1,6 +1,5 @@
 package br.com.hbsis.categoria;
 
-import br.com.hbsis.categorialinha.CategoriaLinhaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
-import java.text.ParseException;
 
 @RestController
 @RequestMapping("/categorias")
@@ -51,12 +48,13 @@ public class CategoriaRest {
 
     @GetMapping("/export")
     public void exportCSV(HttpServletResponse response) throws Exception {
-     LOGGER.info("Exportando Arquivo CSV-Categorias disponíveis...");
+        LOGGER.info("Exportando Arquivo CSV-Categorias disponíveis...");
         this.CategoriaService.exportCSV(response);
     }
 
-    @PostMapping("/import")
-    public void importCSV(HttpServletResponse response) throws Exception {
-         CategoriaService.importCSV(response);
-    }
+//   @PostMapping("/import")
+//   public void importCSV(@RequestParam ("file") MultipartFile file) throws Exception {
+//       CategoriaService.readAll(file);
+//
+//    }
 }

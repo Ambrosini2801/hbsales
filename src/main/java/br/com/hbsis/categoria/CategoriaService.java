@@ -2,9 +2,7 @@ package br.com.hbsis.categoria;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
 import br.com.hbsis.Fornecedor.FornecedorService;
-import br.com.hbsis.Fornecedor.IFornecedorRepository;
 import com.google.common.net.HttpHeaders;
-import com.opencsv.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,31 +11,26 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.MaskFormatter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
-
 
 @Service
 public class CategoriaService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaService.class);
     private static final URI SAMPLE_CSV_FILE_PATH = null;
-
-    private final ICategoriaRepository iCategoriaRepository;
+    private static ICategoriaRepository iCategoriaRepository;
     private FornecedorService fornecedorService;
-    private IFornecedorRepository iFornecedorRepository;
+    //private Fornecedor fornecedor;
 
     @Autowired
-    public CategoriaService(ICategoriaRepository iCategoriaRepository, FornecedorService fornecedorService, IFornecedorRepository iFornecedorRepository) {
+    public CategoriaService(ICategoriaRepository iCategoriaRepository, FornecedorService fornecedorServic) { //Fornecedor fornecedor) {
         this.iCategoriaRepository = iCategoriaRepository;
         this.fornecedorService = fornecedorService;
-        this.iFornecedorRepository = iFornecedorRepository;
+        //this.fornecedor = fornecedor;
     }
 
     public Categoria findCategoriaById(Long id) {
@@ -68,7 +61,6 @@ public class CategoriaService {
         categoria.setFornecedor(fornecedorService.findFornecedorById(categoriaDTO.getFornecedor().getId()));
 
         categoria = this.iCategoriaRepository.save(categoria);
-        TODO: 12/12/2019 Usar a chamada do método estático pela classe
         return categoriaDTO.of(categoria);
     }
 
@@ -98,7 +90,7 @@ public class CategoriaService {
     }
 
     public CategoriaDTO update(CategoriaDTO categoriaDTO, Long id) {
-        TODO: 12/12/2019 Realizar construção do código também no update
+        //TODO: 12/12/2019 Realizar construção do código também no update
         Optional<Categoria> categoriaExistenteOptional = this.iCategoriaRepository.findById(id);
         if (categoriaExistenteOptional.isPresent()) {
             Categoria categoriaExistente = categoriaExistenteOptional.get();
@@ -129,55 +121,42 @@ public class CategoriaService {
         return null;
     }
 
-    public void exportCSV(HttpServletResponse response) throws IOException {
-        String exportCategoria = "export.csv";
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + exportCategoria + "\"");
+    public void exportCSV(HttpServletResponse importCSV) throws IOException {
 
-        PrintWriter writer = response.getWriter();
-        ICSVWriter csvwriter = new CSVWriterBuilder(response.getWriter())
-                .withSeparator(';')
-                .withEscapeChar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
-                .withLineEnd(CSVWriter.DEFAULT_LINE_END)
-                .build();
-
-        String headerCSV[] = {"nome_categoria", "cod_categoria", "razão", "cnpj"};
-        csvwriter.writeNext(headerCSV);
+        importCSV.setContentType("text/csv");
+        importCSV.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName= Categoria");
+        PrintWriter writer = importCSV.getWriter();
+        FileWriter write = new FileWriter("import.csv");
+        String lista = ("nome_categoria; cod_categoria; razão_social; cnpj;");
+        writer.write(lista);
 
         for (Categoria categoria : iCategoriaRepository.findAll()) {
-            csvwriter.writeNext(new String[]{
-                    categoria.getNomeCategoria(),
-                    categoria.getCodCategoria(),
-                    categoria.getFornecedor().getRazaoSocial(),
-                    mascaraCNPJ(categoria.getFornecedor().getCNPJ())
-            });
+
+            writer.write("\n");
+
+            writer.append(categoria.getNomeCategoria() + ";");
+            writer.append(categoria.getCodCategoria() + ";");
+            writer.append(categoria.getFornecedor().getRazaoSocial() + ";");
+            writer.append(mascaraCNPJ(categoria.getFornecedor().getCNPJ()) + ";");
+
+            writer.flush();
         }
     }
-
-    private Categoria findAll() {
-        return (Categoria) this.iCategoriaRepository.findAll();
-
-    }
-
-    public void importCSV(HttpServletResponse response) throws IOException {
-        String importCategoria = "import.csv";
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + importCategoria + "\"");
-        TODO: 12/12/2019 Realizar upload do arquivo de CSV
-        Reader caminhoImport = Files.newBufferedReader(Paths.get("C:\\Users\\vanessa.silva\\Desktop\\arquivoimport.csv"));
-        CSVReader csv = new CSVReaderBuilder(caminhoImport).withSkipLines(1).build();
-        List<String[]> categoriaCSV = csv.readAll();
-        Categoria categoriaCadastro = new Categoria();
-
-        for (String[] categoria : categoriaCSV) {
-            String[] colunaCategoriaCSV = categoria[0].replaceAll("\"", "").split(";");
-
-            Fornecedor fornecedor = fornecedorService.findFornecedorById(Long.parseLong(colunaCategoriaCSV[2]));
-            categoriaCadastro.setFornecedor(fornecedor);
-            categoriaCadastro.setCodCategoria(colunaCategoriaCSV[0]);
-            categoriaCadastro.setNomeCategoria(colunaCategoriaCSV[1]);
-
-            this.iCategoriaRepository.save(categoriaCadastro);
-        }
-    }
+//    public void readAll(MultipartFile importCategoria) throws IOException {
+//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(importCategoria.getInputStream()));
+//        String importe = "import.csv";
+//        //TODO: 12/12/2019 Realizar upload do arquivo de CSV
+//        List<String[]> categoriaCSV = null;
+//        Categoria categoriaCadastro = new Categoria();
+//
+//        for (String[] categoria : categoriaCSV) {
+//            String[] colunaCategoriaCSV = categoria[0].replaceAll("\"", "").split(";");
+//            Fornecedor fornecedor = fornecedorService.findFornecedorById(Long.parseLong(colunaCategoriaCSV[2])) + ";" +
+//                    categoriaCadastro.setFornecedor(fornecedor) + ";" +
+//                    categoriaCadastro.setCodCategoria(colunaCategoriaCSV[0]) + ";" +
+//                    categoriaCadastro.setNomeCategoria(colunaCategoriaCSV[1]);
+//
+//            this.iCategoriaRepository.save(categoriaCadastro);
+//
+//        }
 }

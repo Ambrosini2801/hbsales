@@ -13,29 +13,20 @@ public class CategoriaLinha {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @CsvBindByPosition(position = 0)
     private Long id;
-    @CsvBindByPosition(position = 1)
     @Column(name = "cod_linha", unique = true, nullable = false, length = 10)
     private String codLinha;
-    @CsvBindByPosition(position = 2)
     @Column(name = "cat_linha", unique = true, nullable = false, length = 100)
     private String catLinha;
-    @CsvBindByPosition(position = 3)
     @Column(name = "nome_linha", unique = true, nullable = false, length = 50)
     private String nomeLinha;
     @ManyToOne
     @JoinColumn(name = "categoria", referencedColumnName = "id")
-    @CsvBindByPosition(position = 4)
     private Categoria categoria;
 
     @OneToMany(mappedBy = "categoriaLinha", cascade = CascadeType.ALL)
 
     List<Produto> produto;
-
-    public List<Produto> getProduto() {
-        return produto;
-    }
 
     public void setProduto(List<Produto> produtos) {
         this.produto = produtos;
