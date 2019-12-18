@@ -1,9 +1,6 @@
 package br.com.hbsis.Fornecedor;
 
-import br.com.hbsis.categoria.Categoria;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "cad_fornecedor")
@@ -17,7 +14,7 @@ public class Fornecedor {
     @Column(name = "cnpj", unique = true, nullable = false, length = 14)
     private String cnpj;
     @Column(name = "nome_fantasia", nullable = false, length = 100)
-    private String nome_fantasia;
+    private String nomeFantasia;
     @Column(name = "endereco", nullable = false, length = 100)
     private String endereco;
     @Column(name = "telefone", nullable = false, length = 14)
@@ -52,12 +49,12 @@ public class Fornecedor {
         this.cnpj = CNPJ;
     }
 
-    public String getNome_fantasia() {
-        return nome_fantasia;
+    public String getNomeFantasia() {
+        return nomeFantasia;
     }
 
-    public void setNome_fantasia(String nome_fantasia) {
-        this.nome_fantasia = nome_fantasia;
+    public void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = nomeFantasia;
     }
 
     public String getEndereco() {
@@ -88,7 +85,7 @@ public class Fornecedor {
     @Override
     public String toString() {
         return "categoria [razao_social = " + razaoSocial + ", cnpj =" + cnpj + " ," +
-                " nome_fantasia = " + nome_fantasia + ", endereco = " + endereco + "telefone = " + telefone + "]";
+                " nome_fantasia = " + nomeFantasia + ", endereco = " + endereco + "telefone = " + telefone + "]";
 
     }
 }
