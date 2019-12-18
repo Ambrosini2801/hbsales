@@ -52,9 +52,9 @@ public class CategoriaRest {
         this.CategoriaService.exportCSV(response);
     }
 
-//   @PostMapping("/import")
-//   public void importCSV(@RequestParam ("file") MultipartFile file) throws Exception {
-//       CategoriaService.readAll(file);
-//
-//    }
+   @PostMapping("/import")
+   public void importCSV(@RequestParam ("file") MultipartFile file) throws Exception {
+       CategoriaService.readAll(file);
+
+    }
 }
