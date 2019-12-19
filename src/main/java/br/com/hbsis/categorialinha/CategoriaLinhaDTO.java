@@ -6,28 +6,19 @@ public class CategoriaLinhaDTO {
 
     private Long id;
     private String codLinha;
-    private String catLinha;
     private String nomeLinha;
     private Categoria categoria;
 
-    public CategoriaLinhaDTO() {
-    }
-
-    public CategoriaLinhaDTO(Long id, String codLinha, String catLinha, String nomeLinha, Categoria categoria) {
-        this.id = id;
-        this.codLinha = codLinha;
-        this.catLinha = catLinha;
-        this.nomeLinha = nomeLinha;
-        this.categoria = categoria;
+    public CategoriaLinhaDTO(Long id, String codLinha, String nomeLinha, Categoria categoria) {
     }
 
     public static CategoriaLinhaDTO of(CategoriaLinha linhaExistente) {
+        CategoriaLinhaDTO categoriaLinhaDTO = null;
         return new CategoriaLinhaDTO(
                 linhaExistente.getId(),
                 linhaExistente.getCodLinha(),
-                linhaExistente.getCatLinha(),
                 linhaExistente.getNomeLinha(),
-                linhaExistente.getCategoria()
+                linhaExistente.getCategoria(categoriaLinhaDTO)
         );
     }
 
@@ -45,14 +36,6 @@ public class CategoriaLinhaDTO {
 
     public void setCodLinha(String codLinha) {
         this.codLinha = codLinha;
-    }
-
-    public String getCatLinha() {
-        return catLinha;
-    }
-
-    public void setCatLinha(String catLinha) {
-        this.catLinha = catLinha;
     }
 
     public String getNomeLinha() {
@@ -73,10 +56,11 @@ public class CategoriaLinhaDTO {
 
     @Override
     public String toString() {
-        return "CategoriaLinhaDTO {codLinha=" + codLinha + ", " +
-                "catLinha=" + catLinha + " ," +
-                "nomeLinha=" + nomeLinha + "}";
-
+        return "CategoriaLinhaDTO{" +
+                "id=" + id +
+                ", codLinha='" + codLinha + '\'' +
+                ", nomeLinha='" + nomeLinha + '\'' +
+                ", categoria=" + categoria +
+                '}';
     }
-
 }

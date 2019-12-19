@@ -22,10 +22,6 @@ public class Categoria {
     public Categoria() {
     }
 
-    public static Categoria findAll() {
-        return Categoria.findAll();
-    }
-
     public Long getId() {
         return id;
     }
@@ -67,9 +63,11 @@ public class Categoria {
 
     @Override
     public String toString() {
-        return "categoria {IdFornecedor=" + fornecedor.getId() + ", nomeCategoria=" + nomeCategoria + " ," +
-                " idCategoria=" + codCategoria + "}";
-
+        return "Categoria{" +
+                "id=" + id +
+                ", nomeCategoria='" + nomeCategoria + '\'' +
+                ", codCategoria='" + codCategoria + '\'' +
+                ", fornecedor=" + fornecedor +
+                '}';
     }
-
 }

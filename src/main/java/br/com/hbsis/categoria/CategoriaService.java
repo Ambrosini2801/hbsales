@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.MaskFormatter;
 import java.io.*;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,22 +26,20 @@ public class CategoriaService {
     private static final URI SAMPLE_CSV_FILE_PATH = null;
     private static ICategoriaRepository iCategoriaRepository;
     private FornecedorService fornecedorService;
-    private Fornecedor fornecedor;
 
     @Autowired
-    public CategoriaService(ICategoriaRepository iCategoriaRepository, FornecedorService fornecedorService, Fornecedor fornecedor) {
+    public CategoriaService(ICategoriaRepository iCategoriaRepository, FornecedorService fornecedorService) {
         this.iCategoriaRepository = iCategoriaRepository;
         this.fornecedorService = fornecedorService;
-        this.fornecedor = fornecedor;
     }
 
-    public Categoria findCategoriaById(Long id) {
-        Optional<Categoria> CategoriaOptional = this.iCategoriaRepository.findById(id);
-        if (CategoriaOptional.isPresent()) {
-            return CategoriaOptional.get();
-        }
-        throw new IllegalArgumentException(String.format("ID %s não existe", id));
-    }
+//    public Categoria findCategoriaById(Long id) {
+//        Optional<Categoria> CategoriaOptional = this.iCategoriaRepository.findById(id);
+//        if (CategoriaOptional.isPresent()) {
+//            return CategoriaOptional.get();
+//        }
+//        throw new IllegalArgumentException(String.format("ID %s não existe", id));
+//    }
 
     public CategoriaDTO save(CategoriaDTO categoriaDTO) {
         this.validate(categoriaDTO);
@@ -122,9 +122,10 @@ public class CategoriaService {
     }
 
     public void exportCSV(HttpServletResponse exportCSV) throws IOException {
+        LOGGER.info("Exportando Categoria - CSV");
 
         exportCSV.setContentType("text/csv");
-        exportCSV.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName= Categoria");
+        exportCSV.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName= Categoria.csv");
         PrintWriter writer = exportCSV.getWriter();
         FileWriter write = new FileWriter("import.csv");
         String lista = ("nome_categoria; cod_categoria; razão_social; cnpj;");
@@ -143,22 +144,37 @@ public class CategoriaService {
         }
     }
 
-    public void readAll(MultipartFile importCategoria) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(importCategoria.getInputStream()));
-        String importe = "import.csv";
-        //TODO: 12/12/2019 Realizar upload do arquivo de CSV
-        List<String[]> categoriaCSV = null;
-        Categoria categoriaCadastro = new Categoria();
+    public void uploadCSV(MultipartFile importCategoria) throws IOException {
+        LOGGER.info("Importando Categoria - CSV");
+        BufferedReader importReader = new BufferedReader(new InputStreamReader(importCategoria.getInputStream()));
+        importReader.readLine();
+        String linha;
+        List<String[]> categoriaCSV = new ArrayList<>();
+        while ((linha = importReader.readLine()) != null) {
+            String[] list = linha.split(";");
+            categoriaCSV.add(list);
+            Iterator<String[]> iterator = categoriaCSV.iterator();
+            String[] registrando;
+            while (iterator.hasNext()) {
 
-        for (String[] categoria : categoriaCSV) {
-            String[] colunaCategoriaCSV = categoria[0].replaceAll("\"", "").split(";");
-            Fornecedor fornecedor = fornecedorService.findFornecedorById(Long.parseLong(colunaCategoriaCSV[2])) + ";" +
-                    categoriaCadastro.setFornecedor(fornecedor) + ";" +
-                    categoriaCadastro.setCodCategoria(colunaCategoriaCSV[0]) + ";" +
-                    categoriaCadastro.setNomeCategoria(colunaCategoriaCSV[1]);
+                try {
+                    registrando = iterator.next();
+                    Categoria categoriaCadastro = new Categoria();
+                    for (String[] categoria : categoriaCSV) {
+                        String[] colunaCategoriaCSV = categoria[0].replaceAll("\"", "").split(";");
 
-            this.iCategoriaRepository.save(categoriaCadastro);
+                        Fornecedor fornecedor = fornecedorService.findFornecedorById(Long.parseLong(colunaCategoriaCSV[2]));
+                        categoriaCadastro.setFornecedor(fornecedor);
+                        categoriaCadastro.setCodCategoria(colunaCategoriaCSV[0]);
+                        categoriaCadastro.setNomeCategoria(colunaCategoriaCSV[1]);
 
+                        this.iCategoriaRepository.save(categoriaCadastro);
+                    }
+
+                } catch (Exception e) {
+                    LOGGER.info("Importação concluída...");
+                }
+            }
         }
     }
 }

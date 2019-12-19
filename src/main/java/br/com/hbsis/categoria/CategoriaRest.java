@@ -47,14 +47,14 @@ public class CategoriaRest {
     }
 
     @GetMapping("/export")
-    public void exportCSV(HttpServletResponse response) throws Exception {
+    public void exportCSV(HttpServletResponse export) throws Exception {
         LOGGER.info("Exportando Arquivo CSV-Categorias disponíveis...");
-        this.CategoriaService.exportCSV(response);
+        this.CategoriaService.exportCSV(export);
     }
 
-   @PostMapping("/import")
-   public void importCSV(@RequestParam ("file") MultipartFile file) throws Exception {
-       CategoriaService.readAll(file);
-
+    @PostMapping("/import")
+    public void uploadCSV (@RequestParam("file") MultipartFile importCat) throws Exception {
+        LOGGER.info("Importando arquivo categorias.csv'");
+        this.CategoriaService.uploadCSV(importCat);
     }
 }

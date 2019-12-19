@@ -124,4 +124,5 @@ public class FornecedorService {
         LOGGER.info("Executando delete para fornecedor de ID: [{}]", id);
         this.iFornecedorRepository.deleteById(id);
     }
+
 }
