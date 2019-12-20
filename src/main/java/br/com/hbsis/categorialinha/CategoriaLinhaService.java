@@ -1,5 +1,6 @@
 package br.com.hbsis.categorialinha;
 
+import br.com.hbsis.categoria.Categoria;
 import br.com.hbsis.categoria.CategoriaDTO;
 import br.com.hbsis.categoria.CategoriaService;
 import br.com.hbsis.categoria.ICategoriaRepository;
@@ -12,7 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,21 +53,30 @@ public class CategoriaLinhaService {
         LOGGER.info("Salvando categoria linha");
         LOGGER.debug("Categoria linha: {}", categoriaLinhaDTO);
 
-        String codigo = "CAT";
-        String zeroEsquerda = new String();
-        zeroEsquerda = categoriaLinhaDTO.getCodLinha();
-        String zeroEsquerdaFinal = (StringUtils.leftPad(zeroEsquerda, 3, "0")).toUpperCase();
-
-        CategoriaDTO categoriaCompleta = categoriaService.findById(categoriaLinhaDTO.getCategoria().getId());
-
         CategoriaLinha categorialinha = new CategoriaLinha();
-        categorialinha.setCategoria(categorialinha.getCategoria(categoriaLinhaDTO));
-        categorialinha.setCodLinha(categoriaLinhaDTO.getCodLinha() + zeroEsquerdaFinal);
+
+        String zeroEsquerda = categoriaLinhaDTO.getCodLinha();
+        String zeroEsqUpperCase = zeroEsquerda.toUpperCase();
+        String zeroEsquerdaFinal = StringUtils.leftPad(zeroEsqUpperCase, 10, "0");
+
+        categorialinha.setCodLinha(zeroEsquerdaFinal);
         categorialinha.setNomeLinha(categoriaLinhaDTO.getNomeLinha());
-        categorialinha.getCategoria(categoriaLinhaDTO);
+
+        CategoriaDTO categoriaDTO = categoriaService.findById(categoriaLinhaDTO.getId());
+        Categoria categoria = converter(categoriaDTO);
+        categorialinha.setCategoria(categoria);
 
         categorialinha = this.iCategoriaLinhaRepository.save(categorialinha);
+
+        LOGGER.info("TESTE BALA :" + CategoriaLinhaDTO.of(categorialinha));
+
         return CategoriaLinhaDTO.of(categorialinha);
+    }
+
+    public Categoria converter(CategoriaDTO categoriaDTO) {
+        Categoria categoria = new Categoria();
+        categoria.setId(categoriaDTO.getId());
+        return categoria;
     }
 
     private void validate(CategoriaLinhaDTO categoriaLinhaDTO) {
@@ -132,12 +145,12 @@ public class CategoriaLinhaService {
     public void exportCSV(HttpServletResponse exportLinha) throws IOException {
 
         String nomelinha = "linhas.csv";
-        exportLinha.setContentType("text/csv");
         exportLinha.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + nomelinha);
+        exportLinha.setContentType("text/csv");
 
         PrintWriter writer = exportLinha.getWriter();
-        FileWriter write = new FileWriter("exportLinhas.csv");
-        String lista = ("cod_linha; nome_linha; cod_categoria;");
+//        FileWriter write = new FileWriter("exportLinhas.csv");
+        String lista = ("cod_linha; nome_linha; cod_categoria; nome_categoria");
         writer.write(lista);
 
         for (CategoriaLinha linha : iCategoriaLinhaRepository.findAll()) {
@@ -145,9 +158,12 @@ public class CategoriaLinhaService {
 
             writer.append(linha.getCodLinha() + ";");
             writer.append(linha.getNomeLinha() + ";");
-            CategoriaLinhaDTO categoriaLinhaDTO = null;
-            writer.append(linha.getCategoria(categoriaLinhaDTO).getNomeCategoria() + ";");
-            writer.append(linha.getCategoria(categoriaLinhaDTO).getCodCategoria() + ";");
+
+            CategoriaDTO categoriaDTO = categoriaService.findById(linha.getCategoria().getId());
+            Categoria categoria = converter(categoriaDTO);
+
+            writer.append(categoriaDTO.getNomeCategoria() + ";");
+            writer.append(categoriaDTO.getCodCategoria() + ";");
 
             writer.flush();
         }
@@ -165,14 +181,19 @@ public class CategoriaLinhaService {
             linhaCSV.add(list);
             Iterator<String[]> iterator = linhaCSV.iterator();
             String[] uplando;
-            while (iterator.hasNext()) {
 
+        //Optional<CategoriaLinha> categoriaLinhaExistenteOptional = this.iCategoriaLinhaRepository.findById(categoriaLinhaExistenteOptional.isPresent());
+            while (iterator.hasNext()) {
                 try {
                     uplando = iterator.next();
                     CategoriaLinha categoriaLinhaCadastro = new CategoriaLinha();
+
                     for (String[] categoriaLinha : linhaCSV) {
                         String[] colunalinhacategoria = categoriaLinha[0].replaceAll("\"", "").split(";");
 
+//                    if (categoriaLinhaExistenteOptional.isPresent()) {
+//                           continue;
+//                      }
                         categoriaLinhaCadastro.setCodLinha(colunalinhacategoria[0]);
                         categoriaLinhaCadastro.setNomeLinha(colunalinhacategoria[1]);
 

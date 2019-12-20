@@ -1,24 +1,28 @@
 package br.com.hbsis.categorialinha;
 
-import br.com.hbsis.categoria.Categoria;
-
 public class CategoriaLinhaDTO {
 
     private Long id;
     private String codLinha;
     private String nomeLinha;
-    private Categoria categoria;
+    private Long id_categoria;
 
-    public CategoriaLinhaDTO(Long id, String codLinha, String nomeLinha, Categoria categoria) {
+    public CategoriaLinhaDTO(Long id, String codLinha, String nomeLinha, Long id_categoria) {
+        this.id = id;
+        this.codLinha = codLinha;
+        this.nomeLinha = nomeLinha;
+        this.id_categoria = id_categoria;
     }
 
-    public static CategoriaLinhaDTO of(CategoriaLinha linhaExistente) {
-        CategoriaLinhaDTO categoriaLinhaDTO = null;
+    public CategoriaLinhaDTO() {
+    }
+
+    public static CategoriaLinhaDTO of(CategoriaLinha categoriaLinha) {
         return new CategoriaLinhaDTO(
-                linhaExistente.getId(),
-                linhaExistente.getCodLinha(),
-                linhaExistente.getNomeLinha(),
-                linhaExistente.getCategoria(categoriaLinhaDTO)
+                categoriaLinha.getId(),
+                categoriaLinha.getCodLinha(),
+                categoriaLinha.getNomeLinha(),
+                categoriaLinha.getCategoria().getId()
         );
     }
 
@@ -46,12 +50,12 @@ public class CategoriaLinhaDTO {
         this.nomeLinha = nomeLinha;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public Long getId_categoria() {
+        return id_categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setId_categoria(Long id_categoria) {
+        this.id_categoria = id_categoria;
     }
 
     @Override
@@ -60,7 +64,7 @@ public class CategoriaLinhaDTO {
                 "id=" + id +
                 ", codLinha='" + codLinha + '\'' +
                 ", nomeLinha='" + nomeLinha + '\'' +
-                ", categoria=" + categoria +
+                ", id_categoria=" + id_categoria +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package br.com.hbsis.produto;
 
+import br.com.hbsis.categoria.Categoria;
 import br.com.hbsis.categorialinha.CategoriaLinha;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
@@ -107,5 +108,10 @@ public class Produto {
 
     public void setCategoriaLinha(CategoriaLinha categoriaLinha) {
         this.categoriaLinha = categoriaLinha;
+    }
+
+    public Categoria getCategoria() {return categoria;}
+
+
     }
 }

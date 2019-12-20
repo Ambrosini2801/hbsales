@@ -2,7 +2,6 @@ package br.com.hbsis.categorialinha;
 
 import br.com.hbsis.categoria.Categoria;
 import br.com.hbsis.produto.Produto;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,13 +17,12 @@ public class CategoriaLinha {
     @Column(name = "nome_linha", unique = true, nullable = false, length = 50)
     private String nomeLinha;
     @ManyToOne
-    @JoinColumn(name = "categoria", referencedColumnName = "id")
+    @JoinColumn(name = "id_categoria", referencedColumnName = "id")
     private Categoria categoria;
 
-    List<Produto> produto;
+    //List<Produto> produto;
 
     public CategoriaLinha() {
-
     }
 
     public Long getId() {
@@ -51,7 +49,7 @@ public class CategoriaLinha {
         this.nomeLinha = nomeLinha;
     }
 
-    public Categoria getCategoria(CategoriaLinhaDTO categoriaLinhaDTO) {
+    public Categoria getCategoria() {
         return categoria;
     }
 
@@ -59,13 +57,13 @@ public class CategoriaLinha {
         this.categoria = categoria;
     }
 
-    public List<Produto> getProduto() {
-        return produto;
-    }
-
-    public void setProduto(List<Produto> produto) {
-        this.produto = produto;
-    }
+//    public List<Produto> getProduto() {
+//        return produto;
+//    }
+//
+//    public void setProduto(List<Produto> produto) {
+//        this.produto = produto;
+//    }
 
     public CategoriaLinha(Long id, String nomeLinha, String codLinha, Categoria categoria) {
         this.id = id;
@@ -81,7 +79,7 @@ public class CategoriaLinha {
                 ", codLinha='" + codLinha + '\'' +
                 ", nomeLinha='" + nomeLinha + '\'' +
                 ", categoria=" + categoria +
-                ", produto=" + produto +
                 '}';
+
     }
 }

@@ -47,9 +47,9 @@ public class CategoriaRestLinha {
     }
 
     @GetMapping("/exportLinha")
-    public void exportCSV(HttpServletResponse response) throws Exception {
+    public void exportCSV(HttpServletResponse export) throws Exception {
         LOGGER.info("Exportando Arquivo CSV.");
-        this.CategoriaLinhaService.exportCSV(response);
+        this.CategoriaLinhaService.exportCSV(export);
     }
 
     @PostMapping("/importLinha")
