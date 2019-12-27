@@ -2,7 +2,9 @@ package br.com.hbsis.produto;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-interface IProdutoRepository extends JpaRepository<Produto, Long> {
+import java.util.Optional;
 
+interface IProdutoRepository extends JpaRepository<Produto, Long> {
+//    Optional<Produto> findById(Long id);
 }
 

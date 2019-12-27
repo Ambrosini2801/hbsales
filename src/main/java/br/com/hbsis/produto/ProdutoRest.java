@@ -1,22 +1,19 @@
 package br.com.hbsis.produto;
 
-import com.google.common.net.HttpHeaders;
-import com.opencsv.CSVWriter;
-import com.opencsv.CSVWriterBuilder;
-import com.opencsv.ICSVWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 
 @RestController
 @RequestMapping("/produto")
 public class ProdutoRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProdutoRest.class);
-    private final ProdutoService ProdutoService;
+    private ProdutoService ProdutoService = null;
 
     @Autowired
     public ProdutoRest(ProdutoService produtoService) {
@@ -49,47 +46,16 @@ public class ProdutoRest {
         this.ProdutoService.delete(id);
     }
 
-    @GetMapping("/exportproduto")
-    public void exportCSV(HttpServletResponse response) throws Exception {
+    @GetMapping("/exportProduto")
+    public void exportCSV(HttpServletResponse exportProduto) throws Exception {
+        LOGGER.info("Exportando Produto CSV");
+        this.ProdutoService.exportCSV(exportProduto);
 
-        String produto = "produto.csv";
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + produto);
-
-        PrintWriter writer = response.getWriter();
-
-        ICSVWriter csvwriter = new CSVWriterBuilder(response.getWriter())
-                .withSeparator(';')
-                .withEscapeChar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
-                .withLineEnd(CSVWriter.DEFAULT_LINE_END)
-                .build();
-
-        String headerCSV[] = {"cod_produto", "nome_produto", "preco_produto", "unidade_cx",
-                "peso_uni", "val_produto", "id_categorialinha"};
-        csvwriter.writeNext(headerCSV);
-
-        //SimpleDateFormat valProduto = new SimpleDateFormat("dd/mm/yyyy");
-
-        for (Produto produtos : findAll()) {
-            csvwriter.writeNext(new String[]{String.valueOf(produtos.getId()),
-                    String.valueOf(produtos.getCodProduto()),
-                    produtos.getNomeProduto(),
-                    String.valueOf(produtos.getPrecoProduto()),
-                    String.valueOf(produtos.getUnidadeCx()),
-                    String.valueOf(produtos.getPesoUni()),
-                    String.valueOf(produtos.getValProduto()),
-                    String.valueOf(produtos.getCategoriaLinha())
-            });
-        }
     }
 
-    private Iterable<? extends Produto> findAll() {
-        return null;
+    @PostMapping("/importProduto")
+    public void uploadCSV (@RequestParam ("file")MultipartFile importProduto) throws  Exception{
+        LOGGER.info("Importando Produto CSV!");
+        this.ProdutoService.uploadCSV(importProduto);
     }
-
-    /*@PostMapping("/import")
-    public void importCSV() throws Exception {
-        ProdutoService.importCSV();
-
-    }*/
 }

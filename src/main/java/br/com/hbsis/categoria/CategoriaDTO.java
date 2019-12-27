@@ -17,6 +17,7 @@ public class CategoriaDTO {
         this.nomeCategoria = nomeCategoria;
         this.codCategoria = codCategoria;
         this.fornecedor = fornecedor;
+
     }
 
     public static CategoriaDTO of(Categoria categoriaExistente) {
@@ -62,9 +63,11 @@ public class CategoriaDTO {
 
     @Override
     public String toString() {
-        return "categoria [Fornecedor" + fornecedor + ", nomeCategoria=" + nomeCategoria + " ," +
-                " idCategoria=" + codCategoria + "]";
-
+        return "CategoriaDTO{" +
+                "id=" + id +
+                ", nomeCategoria='" + nomeCategoria + '\'' +
+                ", codCategoria='" + codCategoria + '\'' +
+                ", fornecedor=" + fornecedor +
+                '}';
     }
-
 }

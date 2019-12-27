@@ -9,35 +9,39 @@ public class ProdutoDTO {
     private String nomeProduto;
     private double precoProduto;
     private int unidadeCx;
-    private String pesoUni;
+    private double pesoUni;
+    private String unidadePeso;
     private LocalDate valProduto;
-    private long categoriaLinha;
+    private Long categoriaLinha;
 
     public ProdutoDTO() {
-
     }
 
-    public ProdutoDTO(Long id, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, String pesoUni, LocalDate valProduto, long categoriaLinha) {
+
+    public ProdutoDTO(Long id, Long categoriaLinha, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, double pesoUni, String unidadePeso, LocalDate valProduto) {
         this.id = id;
+        this.categoriaLinha = categoriaLinha;
         this.codProduto = codProduto;
         this.nomeProduto = nomeProduto;
         this.precoProduto = precoProduto;
         this.unidadeCx = unidadeCx;
         this.pesoUni = pesoUni;
+        this.unidadePeso = unidadePeso;
         this.valProduto = valProduto;
-        this.categoriaLinha = categoriaLinha;
+
     }
 
-    public static ProdutoDTO of(Produto produtoexistente) {
+    public static ProdutoDTO of(Produto produto) {
         return new ProdutoDTO(
-                produtoexistente.getId(),
-                produtoexistente.getCodProduto(),
-                produtoexistente.getNomeProduto(),
-                produtoexistente.getPrecoProduto(),
-                produtoexistente.getUnidadeCx(),
-                produtoexistente.getPesoUni(),
-                produtoexistente.getValProduto(),
-                produtoexistente.getCategoriaLinha().getId()
+                produto.getId(),
+                produto.getCategoriaLinha().getId(),
+                produto.getCodProduto(),
+                produto.getNomeProduto(),
+                produto.getPrecoProduto(),
+                produto.getUnidadeCx(),
+                produto.getPesoUni(),
+                produto.getUnidadePeso(),
+                produto.getValProduto()
         );
     }
 
@@ -81,12 +85,20 @@ public class ProdutoDTO {
         this.unidadeCx = unidadeCx;
     }
 
-    public String getPesoUni() {
+    public double getPesoUni() {
         return pesoUni;
     }
 
-    public void setPesoUni(String pesoUni) {
+    public void setPesoUni(double pesoUni) {
         this.pesoUni = pesoUni;
+    }
+
+    public String getUnidadePeso() {
+        return unidadePeso;
+    }
+
+    public void setUnidadePeso(String unidadePeso) {
+        this.unidadePeso = unidadePeso;
     }
 
     public LocalDate getValProduto() {
@@ -97,11 +109,27 @@ public class ProdutoDTO {
         this.valProduto = valProduto;
     }
 
-    public long getCategoriaLinha() {
+    public Long getCategoriaLinha() {
         return categoriaLinha;
     }
 
-    public void setCategoriaLinha(long categoriaLinha) {
+    public void setCategoriaLinha(Long categoriaLinha) {
         this.categoriaLinha = categoriaLinha;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ProdutoDTO{" +
+                "id=" + id +
+                ", categoriaLinhaId=" + categoriaLinha +
+                ", codProduto='" + codProduto + '\'' +
+                ", nomeProduto='" + nomeProduto + '\'' +
+                ", precoProduto=" + precoProduto +
+                ", unidadeCx=" + unidadeCx +
+                ", pesoUni=" + pesoUni +
+                ", unidadePeso='" + unidadePeso + '\'' +
+                ", valProduto=" + valProduto +
+                '}';
     }
 }

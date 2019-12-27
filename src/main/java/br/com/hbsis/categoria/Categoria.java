@@ -22,8 +22,11 @@ public class Categoria {
     public Categoria() {
     }
 
-    public static Categoria findAll() {
-        return Categoria.findAll();
+    public Categoria(Long id, String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
+        this.id = id;
+        this.nomeCategoria = nomeCategoria;
+        this.codCategoria = codCategoria;
+        this.fornecedor = fornecedor;
     }
 
     public Long getId() {
@@ -58,18 +61,14 @@ public class Categoria {
         this.fornecedor = fornecedor;
     }
 
-    public Categoria(Long id, String nomeCategoria, String codCategoria, Fornecedor fornecedor) {
-        this.id = id;
-        this.nomeCategoria = nomeCategoria;
-        this.codCategoria = codCategoria;
-        this.fornecedor = fornecedor;
-    }
 
     @Override
     public String toString() {
-        return "categoria {IdFornecedor=" + fornecedor.getId() + ", nomeCategoria=" + nomeCategoria + " ," +
-                " idCategoria=" + codCategoria + "}";
-
+        return "Categoria{" +
+                "id=" + id +
+                ", nomeCategoria='" + nomeCategoria + '\'' +
+                ", codCategoria='" + codCategoria + '\'' +
+                ", fornecedor=" + fornecedor +
+                '}';
     }
-
 }
