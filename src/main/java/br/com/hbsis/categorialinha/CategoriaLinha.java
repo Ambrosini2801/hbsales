@@ -1,9 +1,10 @@
 package br.com.hbsis.categorialinha;
 
 import br.com.hbsis.categoria.Categoria;
-import br.com.hbsis.produto.Produto;
+
+
 import javax.persistence.*;
-import java.util.List;
+
 
 @Entity
 @Table(name = "linha")
@@ -20,9 +21,15 @@ public class CategoriaLinha {
     @JoinColumn(name = "id_categoria", referencedColumnName = "id")
     private Categoria categoria;
 
-    //List<Produto> produto;
-
     public CategoriaLinha() {
+    }
+
+    public CategoriaLinha(Long id, String codLinha, String nomeLinha, Categoria categoria) {
+        this.id = id;
+        this.codLinha = codLinha;
+        this.nomeLinha = nomeLinha;
+        this.categoria = categoria;
+
     }
 
     public Long getId() {
@@ -57,20 +64,6 @@ public class CategoriaLinha {
         this.categoria = categoria;
     }
 
-//    public List<Produto> getProduto() {
-//        return produto;
-//    }
-//
-//    public void setProduto(List<Produto> produto) {
-//        this.produto = produto;
-//    }
-
-    public CategoriaLinha(Long id, String nomeLinha, String codLinha, Categoria categoria) {
-        this.id = id;
-        this.nomeLinha = nomeLinha;
-        this.codLinha = codLinha;
-        this.categoria = categoria;
-    }
 
     @Override
     public String toString() {

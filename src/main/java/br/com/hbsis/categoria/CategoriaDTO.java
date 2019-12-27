@@ -26,7 +26,6 @@ public class CategoriaDTO {
                 categoriaExistente.getNomeCategoria(),
                 categoriaExistente.getCodCategoria(),
                 categoriaExistente.getFornecedor()
-
         );
     }
 
@@ -67,8 +66,8 @@ public class CategoriaDTO {
         return "CategoriaDTO{" +
                 "id=" + id +
                 ", nomeCategoria='" + nomeCategoria + '\'' +
-                ", codCategoria='"  + codCategoria + '\'' +
-                ", fornecedor="     + fornecedor +
+                ", codCategoria='" + codCategoria + '\'' +
+                ", fornecedor=" + fornecedor +
                 '}';
     }
 }

@@ -25,6 +25,16 @@ public class Fornecedor {
     public Fornecedor() {
     }
 
+    public Fornecedor(Long id, String razaoSocial, String cnpj, String nomeFantasia, String endereco, String telefone, String email) {
+        this.id = id;
+        this.razaoSocial = razaoSocial;
+        this.cnpj = cnpj;
+        this.nomeFantasia = nomeFantasia;
+        this.endereco = endereco;
+        this.telefone = telefone;
+        this.email = email;
+    }
+
     public Long getId() {
         return id;
     }

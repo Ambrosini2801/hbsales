@@ -17,7 +17,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +26,6 @@ import java.util.Optional;
 public class CategoriaLinhaService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoriaLinhaService.class);
-    private static final URI SAMPLE_CSV_FILE_PATH = null;
 
     private final ICategoriaLinhaRepository iCategoriaLinhaRepository;
     private final CategoriaService categoriaService;
@@ -39,14 +37,6 @@ public class CategoriaLinhaService {
         this.categoriaService = categoriaService;
         this.iCategoriaRepository = iCategoriaRepository;
     }
-
-//    public CategoriaLinha findCategoriaLinhaById(Long id) {
-//        Optional<CategoriaLinha> CategoriaLinhaOptional = this.iCategoriaLinhaRepository.findById(id);
-//        if (CategoriaLinhaOptional.isPresent()) {
-//            return CategoriaLinhaOptional.get();
-//        }
-//        throw new IllegalArgumentException(String.format("ID %s não existe", id));
-//    }
 
     public CategoriaLinhaDTO save(CategoriaLinhaDTO categoriaLinhaDTO) {
         this.validate(categoriaLinhaDTO);
@@ -104,11 +94,22 @@ public class CategoriaLinhaService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-    public CategoriaLinha findByIdcategorialinha(Long id) {
+    public CategoriaLinha findByLinhaId(Long id) {
         Optional<CategoriaLinha> linhaOptional = this.iCategoriaLinhaRepository.findById(id);
 
         if (linhaOptional.isPresent()) {
             return linhaOptional.get();
+        }
+
+        throw new IllegalArgumentException(String.format("ID %s não existe", id));
+    }
+
+
+    public Long findByIdcategorialinha(Long id) {
+        Optional<CategoriaLinha> linhaOptional = this.iCategoriaLinhaRepository.findById(id);
+
+        if (linhaOptional.isPresent()) {
+            return Long.valueOf(String.valueOf(linhaOptional.get()));
         }
 
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
@@ -136,10 +137,6 @@ public class CategoriaLinhaService {
         LOGGER.info("Executando delete para o código linha de ID: [{}]", CodLinha);
         this.iCategoriaLinhaRepository.deleteById(CodLinha);
 
-    }
-
-    public CategoriaLinha findByCodLinha(String codLinha) {
-        return this.iCategoriaLinhaRepository.findByCodLinha(codLinha);
     }
 
     public void exportCSV(HttpServletResponse exportLinha) throws IOException {
@@ -182,7 +179,7 @@ public class CategoriaLinhaService {
             Iterator<String[]> iterator = linhaCSV.iterator();
             String[] uplando;
 
-        //Optional<CategoriaLinha> categoriaLinhaExistenteOptional = this.iCategoriaLinhaRepository.findById(categoriaLinhaExistenteOptional.isPresent());
+            //Optional<CategoriaLinha> categoriaLinhaExistenteOptional = this.iCategoriaLinhaRepository.findById(categoriaLinhaExistenteOptional.isPresent());
             while (iterator.hasNext()) {
                 try {
                     uplando = iterator.next();
