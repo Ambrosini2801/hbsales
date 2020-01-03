@@ -7,6 +7,10 @@ public class CategoriaLinhaDTO {
     private String nomeLinha;
     private Long id_categoria;
 
+    public CategoriaLinhaDTO() {
+    }
+
+
     public CategoriaLinhaDTO(Long id, String codLinha, String nomeLinha, Long id_categoria) {
         this.id = id;
         this.codLinha = codLinha;
@@ -14,16 +18,17 @@ public class CategoriaLinhaDTO {
         this.id_categoria = id_categoria;
     }
 
-    public CategoriaLinhaDTO() {
+    public CategoriaLinhaDTO(Long id, Long codLinha, Long nomeLinha, Long id1) {
     }
 
     public static CategoriaLinhaDTO of(CategoriaLinha categoriaLinha) {
         return new CategoriaLinhaDTO(
-                categoriaLinha.getId(),
-                categoriaLinha.getCodLinha(),
-                categoriaLinha.getNomeLinha(),
-                categoriaLinha.getCategoria().getId()
-        );
+
+        categoriaLinha.getId(),
+        categoriaLinha.getCodLinha(),
+        categoriaLinha.getNomeLinha(),
+        categoriaLinha.getCategoria().getId());
+
     }
 
     public Long getId() {

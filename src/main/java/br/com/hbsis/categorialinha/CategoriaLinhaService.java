@@ -39,11 +39,10 @@ public class CategoriaLinhaService {
     }
 
     public CategoriaLinhaDTO save(CategoriaLinhaDTO categoriaLinhaDTO) {
+        CategoriaLinha categorialinha = new CategoriaLinha();
         this.validate(categoriaLinhaDTO);
         LOGGER.info("Salvando categoria linha");
         LOGGER.debug("Categoria linha: {}", categoriaLinhaDTO);
-
-        CategoriaLinha categorialinha = new CategoriaLinha();
 
         String zeroEsquerda = categoriaLinhaDTO.getCodLinha();
         String zeroEsqUpperCase = zeroEsquerda.toUpperCase();
@@ -51,14 +50,9 @@ public class CategoriaLinhaService {
 
         categorialinha.setCodLinha(zeroEsquerdaFinal);
         categorialinha.setNomeLinha(categoriaLinhaDTO.getNomeLinha());
-
-        CategoriaDTO categoriaDTO = categoriaService.findById(categoriaLinhaDTO.getId());
-        Categoria categoria = converter(categoriaDTO);
-        categorialinha.setCategoria(categoria);
-
+        categorialinha.setCategoria(categoriaService.findCategoriaById(categoriaLinhaDTO.getId_categoria()));
         categorialinha = this.iCategoriaLinhaRepository.save(categorialinha);
 
-        LOGGER.info("TESTE BALA :" + CategoriaLinhaDTO.of(categorialinha));
 
         return CategoriaLinhaDTO.of(categorialinha);
     }
@@ -202,5 +196,15 @@ public class CategoriaLinhaService {
                 }
             }
         }
+    }
+    public CategoriaLinha findByCodLinhaCategoria(String codLinhaCategoria){
+        CategoriaLinha categoriaLinha = new CategoriaLinha();
+        Optional<CategoriaLinha> categoriaLinhaOptional = iCategoriaLinhaRepository.findCategoriaLinhaByCod(codLinhaCategoria);
+
+        if(categoriaLinhaOptional.isPresent()){
+            categoriaLinha=categoriaLinhaOptional.get();
+        return categoriaLinha;
+        }
+        else return null;
     }
 }

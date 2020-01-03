@@ -58,4 +58,11 @@ public class ProdutoRest {
         LOGGER.info("Importando Produto CSV!");
         this.ProdutoService.uploadCSV(importProduto);
     }
+
+    @PostMapping("/importFornecedor/{id}")
+    public void uploadFornecedor(@RequestParam ("file")MultipartFile importFornecedor,@PathVariable Long id) throws Exception{
+        LOGGER.info("Importando produto por fornecedor - CSV");
+        this.ProdutoService.uploadFornecedor(importFornecedor,id);
+    }
+
 }

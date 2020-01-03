@@ -17,6 +17,7 @@ public class CategoriaLinha {
     private String codLinha;
     @Column(name = "nome_linha", unique = true, nullable = false, length = 50)
     private String nomeLinha;
+
     @ManyToOne
     @JoinColumn(name = "id_categoria", referencedColumnName = "id")
     private Categoria categoria;
@@ -75,4 +76,5 @@ public class CategoriaLinha {
                 '}';
 
     }
+
 }

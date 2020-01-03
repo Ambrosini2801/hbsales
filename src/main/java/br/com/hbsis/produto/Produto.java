@@ -33,7 +33,6 @@ public class Produto {
     @JoinColumn(name = "fk_id_linha", referencedColumnName = "id")
     private CategoriaLinha categoriaLinha;
 
-
     public Produto() {
 
     }
