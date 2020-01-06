@@ -39,11 +39,10 @@ public class CategoriaLinhaService {
     }
 
     public CategoriaLinhaDTO save(CategoriaLinhaDTO categoriaLinhaDTO) {
+        CategoriaLinha categorialinha = new CategoriaLinha();
         this.validate(categoriaLinhaDTO);
         LOGGER.info("Salvando categoria linha");
         LOGGER.debug("Categoria linha: {}", categoriaLinhaDTO);
-
-        CategoriaLinha categorialinha = new CategoriaLinha();
 
         String zeroEsquerda = categoriaLinhaDTO.getCodLinha();
         String zeroEsqUpperCase = zeroEsquerda.toUpperCase();
@@ -51,14 +50,9 @@ public class CategoriaLinhaService {
 
         categorialinha.setCodLinha(zeroEsquerdaFinal);
         categorialinha.setNomeLinha(categoriaLinhaDTO.getNomeLinha());
-
-        CategoriaDTO categoriaDTO = categoriaService.findById(categoriaLinhaDTO.getId());
-        Categoria categoria = converter(categoriaDTO);
-        categorialinha.setCategoria(categoria);
-
+        categorialinha.setCategoria(categoriaService.findCategoriaById(categoriaLinhaDTO.getId_categoria()));
         categorialinha = this.iCategoriaLinhaRepository.save(categorialinha);
 
-        LOGGER.info("TESTE BALA :" + CategoriaLinhaDTO.of(categorialinha));
 
         return CategoriaLinhaDTO.of(categorialinha);
     }
@@ -105,11 +99,12 @@ public class CategoriaLinhaService {
     }
 
 
-    public Long findByIdcategorialinha(Long id) {
+    public CategoriaLinha findByIdcategorialinha(Long id) {
         Optional<CategoriaLinha> linhaOptional = this.iCategoriaLinhaRepository.findById(id);
 
         if (linhaOptional.isPresent()) {
-            return Long.valueOf(String.valueOf(linhaOptional.get()));
+            CategoriaLinha categoriaLinha = linhaOptional.get();
+            return categoriaLinha;
         }
 
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
@@ -201,6 +196,27 @@ public class CategoriaLinhaService {
                     LOGGER.info("Importação concluída!");
                 }
             }
+        }
+    }
+
+    public CategoriaLinha findByCodLinhaCategoria(String codLinhaCategoria) {
+        CategoriaLinha categoriaLinha = new CategoriaLinha();
+        Optional<CategoriaLinha> categoriaLinhaOptional = iCategoriaLinhaRepository.findCategoriaLinhaByCod(codLinhaCategoria);
+
+        if (categoriaLinhaOptional.isPresent()) {
+            categoriaLinha = categoriaLinhaOptional.get();
+            return categoriaLinha;
+        } else return null;
+    }
+
+    public CategoriaLinha findByFornecedor(Long idFornecedor, String nomeCategoria) {
+        Optional<CategoriaLinha> categoriaLinhaOptional = iCategoriaLinhaRepository.findByFornecedor(idFornecedor, nomeCategoria);
+        if (categoriaLinhaOptional.isPresent()) {
+            CategoriaLinha categoriaLinha = categoriaLinhaOptional.get();
+            return categoriaLinha;
+        } else {
+            LOGGER.info("Categoria Linha não encontrado.");
+            return null;
         }
     }
 }

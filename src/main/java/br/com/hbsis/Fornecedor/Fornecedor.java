@@ -35,7 +35,7 @@ public class Fornecedor {
         this.email = email;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -91,11 +91,11 @@ public class Fornecedor {
         this.email = email;
     }
 
-
     @Override
     public String toString() {
         return "categoria [razao_social = " + razaoSocial + ", cnpj =" + cnpj + " ," +
                 " nome_fantasia = " + nomeFantasia + ", endereco = " + endereco + "telefone = " + telefone + "]";
 
     }
+
 }

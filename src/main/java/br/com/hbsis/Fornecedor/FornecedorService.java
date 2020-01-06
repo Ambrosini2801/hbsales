@@ -77,16 +77,22 @@ public class FornecedorService {
             throw new IllegalArgumentException("E-mail não deve ser nulo ou vazio!");
         }
     }
-
     public FornecedorDTO findById(Long id) {
-        Optional<Fornecedor> fornecedorOptional = this.iFornecedorRepository.findById(id);
+         Optional<Fornecedor> fornecedorOptional = this.iFornecedorRepository.findById(id);
         if (fornecedorOptional.isPresent()) {
             return FornecedorDTO.of(fornecedorOptional.get());
         }
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-    public Fornecedor findFornecedorById(long id) {
+    public FornecedorDTO findFornecedorById(long id) {
+        Optional<Fornecedor> fornecedorOptional = this.iFornecedorRepository.findById(id);
+        if (fornecedorOptional.isPresent()) {
+            return FornecedorDTO.of(fornecedorOptional.get());
+        }
+        throw new IllegalArgumentException(String.format("ID %s não existe", id));
+    }
+    public Fornecedor findFornecedorById1(long id) {
         Optional<Fornecedor> fornecedorOptional = this.iFornecedorRepository.findById(id);
         if (fornecedorOptional.isPresent()) {
             return fornecedorOptional.get();
@@ -119,10 +125,8 @@ public class FornecedorService {
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
-
     public void delete(Long id) {
         LOGGER.info("Executando delete para fornecedor de ID: [{}]", id);
         this.iFornecedorRepository.deleteById(id);
     }
-
 }

@@ -17,7 +17,6 @@ public class ProdutoDTO {
     public ProdutoDTO() {
     }
 
-
     public ProdutoDTO(Long id, Long categoriaLinha, String codProduto, String nomeProduto, double precoProduto, int unidadeCx, double pesoUni, String unidadePeso, LocalDate valProduto) {
         this.id = id;
         this.categoriaLinha = categoriaLinha;

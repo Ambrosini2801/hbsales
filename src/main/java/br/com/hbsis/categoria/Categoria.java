@@ -1,6 +1,7 @@
 package br.com.hbsis.categoria;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
+import br.com.hbsis.Fornecedor.FornecedorDTO;
 
 import javax.persistence.*;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 public class Categoria {
 
     @Id
+    @Column(name = "id_categoria")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "nome_categoria", unique = true, nullable = false, length = 50)
@@ -60,7 +62,6 @@ public class Categoria {
     public void setFornecedor(Fornecedor fornecedor) {
         this.fornecedor = fornecedor;
     }
-
 
     @Override
     public String toString() {

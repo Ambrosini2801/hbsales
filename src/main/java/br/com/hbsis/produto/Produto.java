@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class Produto {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "cod_produto", unique = true, nullable = false, length = 10)
@@ -32,7 +33,6 @@ public class Produto {
     @ManyToOne
     @JoinColumn(name = "fk_id_linha", referencedColumnName = "id")
     private CategoriaLinha categoriaLinha;
-
 
     public Produto() {
 

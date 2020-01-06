@@ -33,23 +33,14 @@ public class CategoriaService {
         this.fornecedorService = fornecedorService;
     }
 
-//    public Categoria findCategoriaById(Long id) {
-//        Optional<Categoria> CategoriaOptional = this.iCategoriaRepository.findById(id);
-//        if (CategoriaOptional.isPresent()) {
-//            return CategoriaOptional.get();
-//        }
-//        throw new IllegalArgumentException(String.format("ID %s não existe", id));
-//    }
-
     public CategoriaDTO save(CategoriaDTO categoriaDTO) {
-        this.validate(categoriaDTO);
         LOGGER.info("Salvando categoria");
         LOGGER.debug("Categoria: {}", categoriaDTO);
-
-        Fornecedor fornecedorCompleto = fornecedorService.findFornecedorById(categoriaDTO.getFornecedor().getId());
-        categoriaDTO.setFornecedor(fornecedorCompleto);
         Categoria categoria = new Categoria();
-        String cnpj = (categoriaDTO.getFornecedor().getCNPJ());
+        categoria.setFornecedor(fornecedorService.findFornecedorById1(categoriaDTO.getFornecedor()));
+        System.out.println(categoria);
+
+        String cnpj = (categoria.getFornecedor().getCNPJ());
         cnpj = cnpj.substring(10, 14);
         String codigo = "CAT";
         String zeroEsquerda = new String();
@@ -58,8 +49,8 @@ public class CategoriaService {
 
         categoria.setCodCategoria(codigo.concat(cnpj).concat(zeroEsquerdaFinal));
         categoria.setNomeCategoria(categoriaDTO.getNomeCategoria());
-        categoria.setFornecedor(fornecedorService.findFornecedorById(categoriaDTO.getFornecedor().getId()));
 
+        this.validate(categoriaDTO);
         categoria = this.iCategoriaRepository.save(categoria);
         return categoriaDTO.of(categoria);
     }
@@ -84,6 +75,27 @@ public class CategoriaService {
 
         if (categoriaOptional.isPresent()) {
             return CategoriaDTO.of(categoriaOptional.get());
+        }
+
+        throw new IllegalArgumentException(String.format("ID %s não existe", id));
+    }
+    public Categoria findCategoriaById(Long id) {
+        Categoria categoria =new Categoria();
+        Optional<Categoria> categoriaOptional = this.iCategoriaRepository.findById(id);
+
+        if (categoriaOptional.isPresent()) {
+            return categoria =categoriaOptional.get();
+        }
+
+        throw new IllegalArgumentException("A categoria não existe");
+    }
+
+    public CategoriaDTO findByNomeId(Long nomeCategoria) {
+        String id = null;
+        Optional<Categoria> categoriaNomeOptional = this.iCategoriaRepository.findById(id);
+
+        if (categoriaNomeOptional.isPresent()) {
+            return CategoriaDTO.of(categoriaNomeOptional.get());
         }
 
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
@@ -163,7 +175,7 @@ public class CategoriaService {
                     for (String[] categoria : categoriaCSV) {
                         String[] colunaCategoriaCSV = categoria[0].replaceAll("\"", "").split(";");
 
-                        Fornecedor fornecedor = fornecedorService.findFornecedorById(Long.parseLong(colunaCategoriaCSV[2]));
+                        Fornecedor fornecedor = fornecedorService.findFornecedorById1(Long.parseLong(colunaCategoriaCSV[2]));
                         categoriaCadastro.setFornecedor(fornecedor);
                         categoriaCadastro.setCodCategoria(colunaCategoriaCSV[0]);
                         categoriaCadastro.setNomeCategoria(colunaCategoriaCSV[1]);
@@ -177,4 +189,28 @@ public class CategoriaService {
             }
         }
     }
+
+    public Categoria findByCod(String codCategoria){
+        Optional<Categoria>categoriaOptional = iCategoriaRepository.findByCod(codCategoria);
+        if(categoriaOptional.isPresent()){
+            Categoria categoria = categoriaOptional.get();
+            return categoria;
+        }else {
+            LOGGER.info("CATEGORIA NÃO ENCONTRADA.");
+            return  null;
+        }
+    }
+    public Categoria findByFornecedor(String nomeCategoria , Long idFornecedor){
+        Optional<Categoria> categoriaOptional =  iCategoriaRepository.findByFornecedor(nomeCategoria,idFornecedor);
+        if(categoriaOptional.isPresent()){
+            Categoria categoria =  categoriaOptional.get();
+        return categoria;
+        }
+        else {
+            LOGGER.info("CATEGORIA NÃO ENCONTRADA.");
+            return null;
+        }
+
+    }
+
 }

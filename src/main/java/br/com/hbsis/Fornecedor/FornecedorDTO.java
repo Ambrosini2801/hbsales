@@ -90,6 +90,7 @@ public class FornecedorDTO {
         this.email = email;
     }
 
+
     @Override
     public String toString() {
         return "FornecedorDTO{" +
