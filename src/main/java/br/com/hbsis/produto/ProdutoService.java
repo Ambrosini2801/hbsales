@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -158,13 +157,12 @@ public class ProdutoService {
 
             produtoExistente.setCodProduto(produtoDTO.getCodProduto().toUpperCase());
             produtoExistente.setNomeProduto(produtoDTO.getNomeProduto().toUpperCase());
-            this.categoriaLinhaService.findByIdcategorialinha(produtoDTO.getCategoriaLinha());
+            produtoExistente.setCategoriaLinha(categoriaLinhaService.findByIdcategorialinha(produtoDTO.getCategoriaLinha()));
             produtoExistente.setPrecoProduto(produtoDTO.getPrecoProduto());
             produtoExistente.setUnidadeCx(produtoDTO.getUnidadeCx());
             produtoExistente.setPesoUni(produtoDTO.getPesoUni());
             produtoExistente.setUnidadePeso(produtoDTO.getUnidadePeso());
             produtoExistente.setValProduto(produtoDTO.getValProduto());
-
             produtoExistente = this.iProdutoRepository.save(produtoExistente);
             return produtoDTO.of(produtoExistente);
         }
@@ -276,56 +274,97 @@ public class ProdutoService {
         }
         Iterator<String[]> iterator = produtoCSV.iterator();
         String[] registro;
-        Produto produtoF = new Produto();
 
         if (fornecedorDTO != null) {
             while (iterator.hasNext()) {
                 try {
-
                     registro = iterator.next();
                     ProdutoDTO produtoDTO = new ProdutoDTO();
                     String codProduto = registro[0].toUpperCase();
                     String nomeProduto = registro[1];
-                    String precoProduto =registro[2];
+                    String precoProduto = registro[2];
                     String unidadeCaixa = registro[3];
                     String peso = registro[4];
                     String unidadeMedida = registro[5];
-                    String dataValidade =registro[6];
-                    String codLinhaCategoria = registro[7];
-                    String nomeLinhaCategoria = registro[8];
-                    String codCategoria = registro[9];
-                    String nomecategoria = registro[10];
-                    CategoriaLinha categoriaLinha = categoriaLinhaService.findByCodLinhaCategoria(codLinhaCategoria);
-                    LOGGER.info("--------------");
-                    LOGGER.info(fornecedorDTO.getCnpj());
-                    LOGGER.info(""+codProduto);
-                    LOGGER.info(""+nomeProduto);
-                    LOGGER.info(""+precoProduto);
-                    LOGGER.info(""+unidadeCaixa);
-                    LOGGER.info(""+peso);
-                    LOGGER.info(""+unidadeMedida);
-                    LOGGER.info(""+dataValidade);
-                    LOGGER.info(""+codLinhaCategoria);
-                    LOGGER.info(""+nomeLinhaCategoria);
-                    LOGGER.info(""+codCategoria);
-                    LOGGER.info(""+nomecategoria);
-                    LOGGER.info("PRECO FORMATADO:"+this.precoFormat(precoProduto));
-                    double precoFinal=Double.parseDouble(this.precoFormat(precoProduto));
-                    LOGGER.info("VALIDACAO DATA:");
-                    LocalDate data= this.convertData(dataValidade);
-                    LOGGER.info(data.toString());
+                    String dataValidade = registro[6];
+                    String codLinha = registro[7].toUpperCase();
+                    String nomeLinha = registro[8];
+                    String codCategoria = registro[9].toUpperCase();
+                    String nomeCategoria = registro[10];
 
-                    produtoDTO.setCodProduto(codProduto);
-                    produtoDTO.setNomeProduto(nomeProduto);
-                    produtoDTO.setPrecoProduto(precoFinal);
-                    produtoDTO.setUnidadeCx(Integer.parseInt(unidadeCaixa));
-                    produtoDTO.setPesoUni(Double.parseDouble(peso));
-                    produtoDTO.setUnidadePeso(unidadeMedida);
-                    produtoDTO.setValProduto(data);
-                    produtoDTO.setCategoriaLinha(categoriaLinha.getId());
-                    this.save(produtoDTO);
+                    double precoFinal = Double.parseDouble(this.precoFormat(precoProduto));
+                    LocalDate data = this.convertData(dataValidade);
 
+                    Produto produto = this.findCodProduto(codProduto);
 
+                    if (produto != null) {
+                        LOGGER.info("PRODUTO ENCONTRADO.");
+                        produtoDTO.setCodProduto(codProduto);
+                        produtoDTO.setNomeProduto(nomeProduto);
+                        produtoDTO.setPrecoProduto(precoFinal);
+                        produtoDTO.setUnidadeCx(Integer.parseInt(unidadeCaixa));
+                        produtoDTO.setPesoUni(Double.parseDouble(peso));
+                        produtoDTO.setUnidadePeso(unidadeMedida);
+                        produtoDTO.setValProduto(data);
+                        produtoDTO.setCategoriaLinha(produto.getCategoriaLinha().getId());
+                        this.update(produtoDTO, produto.getId());
+
+                    } else if (produto == null) {
+                        produto = this.findProdutoByFornecedor(fornecedorDTO.getId(), nomeProduto);
+                        LOGGER.info("PRODUTO NÃO ENCONTRADO.");
+
+                        if (produto == null) {
+                            Categoria categoria = categoriaService.findByCod(codCategoria);
+
+                            if (categoria == null) {
+                                categoria = categoriaService.findByFornecedor(nomeCategoria, fornecedorDTO.getId());
+                            }
+                            if (categoria != null && !categoria.getNomeCategoria().equalsIgnoreCase(nomeCategoria)) {
+                                categoria = null;
+                            }
+
+                            if (categoria == null) {
+                                CategoriaDTO categoriaDTO = new CategoriaDTO();
+                                categoriaDTO.setNomeCategoria(nomeCategoria);
+                                categoriaDTO.setCodCategoria(codCategoria);
+                                categoriaDTO.setFornecedor(fornecedorDTO.getId());
+                                categoriaDTO = categoriaService.save(categoriaDTO);
+                                categoria.setId(categoriaDTO.getId());
+                            }
+                            LOGGER.info(categoria.getNomeCategoria() + "nome Categoria" + nomeCategoria);
+                            CategoriaLinha categoriaLinha = categoriaLinhaService.findByCodLinhaCategoria(codLinha);
+
+                            if (categoriaLinha == null) {
+                                categoriaLinha = categoriaLinhaService.findByFornecedor(fornecedorDTO.getId(), nomeLinha);
+
+                            }
+                            if (categoriaLinha != null && !categoriaLinha.getNomeLinha().equalsIgnoreCase(nomeLinha)) {
+                                categoriaLinha = null;
+
+                            }
+
+                            if (categoriaLinha == null) {
+                                CategoriaLinhaDTO categoriaLinhaDTO = new CategoriaLinhaDTO();
+                                categoriaLinhaDTO.setNomeLinha(nomeLinha);
+                                categoriaLinhaDTO.setCodLinha(codLinha);
+                                categoriaLinhaDTO.setId_categoria(categoria.getId());
+                                categoriaLinhaDTO = categoriaLinhaService.save(categoriaLinhaDTO);
+                            }
+                            LOGGER.info("NOME LINHA CATEGORIA" + categoriaLinha.getNomeLinha());
+                            LOGGER.info("AQUI.");
+                            LOGGER.info("NOME LINHA CATEGORIA" + categoriaLinha.getNomeLinha());
+                            produtoDTO.setCodProduto(codProduto);
+                            produtoDTO.setNomeProduto(nomeProduto);
+                            produtoDTO.setPrecoProduto(precoFinal);
+                            produtoDTO.setUnidadeCx(Integer.parseInt(unidadeCaixa));
+                            produtoDTO.setPesoUni(Double.parseDouble(peso));
+                            produtoDTO.setUnidadePeso(unidadeMedida);
+                            produtoDTO.setValProduto(data);
+                            produtoDTO.setCategoriaLinha(categoriaLinha.getId());
+                            LOGGER.info("ID categoria linha" + produtoDTO.getCategoriaLinha().toString());
+                            produtoDTO = this.save(produtoDTO);
+                        }
+                    }
                 } catch (Exception e) {
                     LOGGER.info("Importação de produtos por fornecedor concluída!");
                     e.printStackTrace();
@@ -333,20 +372,41 @@ public class ProdutoService {
             }
         }
     }
-    public String precoFormat(String stringPrecoProduto){
+
+    public String precoFormat(String stringPrecoProduto) {
         String precoProduto;
-        precoProduto = stringPrecoProduto.replace("R$","");
+        precoProduto = stringPrecoProduto.replace("R$", "");
         return precoProduto;
     }
-    public LocalDate convertData(String dataValidade){
+
+    public LocalDate convertData(String dataValidade) {
         LocalDate dataFinal;
         int ano;
         int mes;
         int dia;
-        ano= Integer.parseInt(dataValidade.substring(6,10));
-        mes= Integer.parseInt(dataValidade.substring(3,5));
-        dia= Integer.parseInt(dataValidade.substring(0,2));
-        dataFinal=LocalDate.of(ano,mes,dia);
+        ano = Integer.parseInt(dataValidade.substring(6, 10));
+        mes = Integer.parseInt(dataValidade.substring(3, 5));
+        dia = Integer.parseInt(dataValidade.substring(0, 2));
+        dataFinal = LocalDate.of(ano, mes, dia);
         return dataFinal;
+    }
+
+    public Produto findCodProduto(String codProduto) {
+        Optional<Produto> produtoOptional = iProdutoRepository.findCodProduto(codProduto);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            return produto;
+        } else return null;
+    }
+
+    public Produto findProdutoByFornecedor(Long idFornecedor, String nomeProduto) {
+        Optional<Produto> produtoOptional = iProdutoRepository.findProdutoByFornecedor(idFornecedor, nomeProduto);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            return produto;
+        } else {
+            LOGGER.info("Produto não encotrando. findProdutoByFornecedor");
+            return null;
+        }
     }
 }

@@ -99,11 +99,12 @@ public class CategoriaLinhaService {
     }
 
 
-    public Long findByIdcategorialinha(Long id) {
+    public CategoriaLinha findByIdcategorialinha(Long id) {
         Optional<CategoriaLinha> linhaOptional = this.iCategoriaLinhaRepository.findById(id);
 
         if (linhaOptional.isPresent()) {
-            return Long.valueOf(String.valueOf(linhaOptional.get()));
+            CategoriaLinha categoriaLinha = linhaOptional.get();
+            return categoriaLinha;
         }
 
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
@@ -197,14 +198,25 @@ public class CategoriaLinhaService {
             }
         }
     }
-    public CategoriaLinha findByCodLinhaCategoria(String codLinhaCategoria){
+
+    public CategoriaLinha findByCodLinhaCategoria(String codLinhaCategoria) {
         CategoriaLinha categoriaLinha = new CategoriaLinha();
         Optional<CategoriaLinha> categoriaLinhaOptional = iCategoriaLinhaRepository.findCategoriaLinhaByCod(codLinhaCategoria);
 
-        if(categoriaLinhaOptional.isPresent()){
-            categoriaLinha=categoriaLinhaOptional.get();
-        return categoriaLinha;
+        if (categoriaLinhaOptional.isPresent()) {
+            categoriaLinha = categoriaLinhaOptional.get();
+            return categoriaLinha;
+        } else return null;
+    }
+
+    public CategoriaLinha findByFornecedor(Long idFornecedor, String nomeCategoria) {
+        Optional<CategoriaLinha> categoriaLinhaOptional = iCategoriaLinhaRepository.findByFornecedor(idFornecedor, nomeCategoria);
+        if (categoriaLinhaOptional.isPresent()) {
+            CategoriaLinha categoriaLinha = categoriaLinhaOptional.get();
+            return categoriaLinha;
+        } else {
+            LOGGER.info("Categoria Linha não encontrado.");
+            return null;
         }
-        else return null;
     }
 }

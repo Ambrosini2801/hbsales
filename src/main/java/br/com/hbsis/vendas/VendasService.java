@@ -25,7 +25,7 @@ public class VendasService {
     }
 
     public VendasDTO save(VendasDTO vendasDTO) {
-        this.validate(vendasDTO);
+
         LOGGER.info("Salvando Período de Vendas!");
         LOGGER.debug("Vendas: {}", vendasDTO);
 
@@ -34,8 +34,8 @@ public class VendasService {
         vendas.setFimVendas(vendasDTO.getFimVendas());
         vendas.setRetiradaPedido(vendasDTO.getRetiradaPedido());
         vendas.setDescricao(vendasDTO.getDescricao());
-       vendas.setFornecedor(fornecedorService.findFornecedorById1(vendasDTO.getFornecedor()));
-
+        vendas.setFornecedor(fornecedorService.findFornecedorById1(vendasDTO.getFornecedor()));
+        this.validate(vendasDTO);
         vendas = this.iVendasRepository.save(vendas);
         return VendasDTO.of(vendas);
     }

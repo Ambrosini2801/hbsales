@@ -34,30 +34,23 @@ public class CategoriaService {
     }
 
     public CategoriaDTO save(CategoriaDTO categoriaDTO) {
-        this.validate(categoriaDTO);
         LOGGER.info("Salvando categoria");
         LOGGER.debug("Categoria: {}", categoriaDTO);
-
-        //Instanciar
         Categoria categoria = new Categoria();
-        //Get CNPJ & Substring
-
         categoria.setFornecedor(fornecedorService.findFornecedorById1(categoriaDTO.getFornecedor()));
         System.out.println(categoria);
+
         String cnpj = (categoria.getFornecedor().getCNPJ());
         cnpj = cnpj.substring(10, 14);
-        //Conc Cat & LeftPad
         String codigo = "CAT";
         String zeroEsquerda = new String();
         zeroEsquerda = categoriaDTO.getCodCategoria();
-        //Add zero
         String zeroEsquerdaFinal = (StringUtils.leftPad(zeroEsquerda, 3, "0")).toUpperCase();
 
-        //Save
         categoria.setCodCategoria(codigo.concat(cnpj).concat(zeroEsquerdaFinal));
         categoria.setNomeCategoria(categoriaDTO.getNomeCategoria());
 
-
+        this.validate(categoriaDTO);
         categoria = this.iCategoriaRepository.save(categoria);
         return categoriaDTO.of(categoria);
     }
@@ -196,4 +189,28 @@ public class CategoriaService {
             }
         }
     }
+
+    public Categoria findByCod(String codCategoria){
+        Optional<Categoria>categoriaOptional = iCategoriaRepository.findByCod(codCategoria);
+        if(categoriaOptional.isPresent()){
+            Categoria categoria = categoriaOptional.get();
+            return categoria;
+        }else {
+            LOGGER.info("CATEGORIA NÃO ENCONTRADA.");
+            return  null;
+        }
+    }
+    public Categoria findByFornecedor(String nomeCategoria , Long idFornecedor){
+        Optional<Categoria> categoriaOptional =  iCategoriaRepository.findByFornecedor(nomeCategoria,idFornecedor);
+        if(categoriaOptional.isPresent()){
+            Categoria categoria =  categoriaOptional.get();
+        return categoria;
+        }
+        else {
+            LOGGER.info("CATEGORIA NÃO ENCONTRADA.");
+            return null;
+        }
+
+    }
+
 }

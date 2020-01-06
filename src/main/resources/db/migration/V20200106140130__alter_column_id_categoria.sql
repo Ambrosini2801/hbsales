@@ -1,0 +1,1 @@
+sp_rename "categoria.id_categoria", "id", 'column';
