@@ -2,7 +2,6 @@ package br.com.hbsis.categorialinha;
 
 import br.com.hbsis.categoria.Categoria;
 
-
 import javax.persistence.*;
 
 

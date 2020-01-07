@@ -72,7 +72,6 @@ public class ProdutoService {
         }
 
         produto = this.iProdutoRepository.save(produto);
-
         return ProdutoDTO.of(produto);
     }
 
@@ -152,7 +151,7 @@ public class ProdutoService {
             Produto produtoExistente = produtoExistenteOptional.get();
 
             LOGGER.info("Atualizando produto... id: [{}]", produtoDTO.getCodProduto());
-            LOGGER.debug("Payload: {}", produtoDTO);
+            LOGGER.debug("Payaload: {}", produtoDTO);
             LOGGER.debug("Produto Existente: {}", produtoExistente);
 
             produtoExistente.setCodProduto(produtoDTO.getCodProduto().toUpperCase());

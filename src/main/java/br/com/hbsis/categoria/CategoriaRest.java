@@ -53,7 +53,7 @@ public class CategoriaRest {
     }
 
     @PostMapping("/import")
-    public void uploadCSV (@RequestParam("file") MultipartFile importCat) throws Exception {
+    public void uploadCSV(@RequestParam("file") MultipartFile importCat) throws Exception {
         LOGGER.info("Importando arquivo categorias.csv'");
         this.CategoriaService.uploadCSV(importCat);
     }

@@ -141,7 +141,6 @@ public class CategoriaLinhaService {
         exportLinha.setContentType("text/csv");
 
         PrintWriter writer = exportLinha.getWriter();
-//        FileWriter write = new FileWriter("exportLinhas.csv");
         String lista = ("cod_linha; nome_linha; cod_categoria; nome_categoria");
         writer.write(lista);
 

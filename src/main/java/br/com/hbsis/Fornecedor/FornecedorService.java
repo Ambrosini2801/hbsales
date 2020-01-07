@@ -20,8 +20,6 @@ public class FornecedorService {
     }
 
     public FornecedorDTO save(FornecedorDTO fornecedorDTO) {
-        this.validate(fornecedorDTO);
-
         LOGGER.info("Salvando o fornecedor");
         LOGGER.debug("Fornecedor: {}", fornecedorDTO);
 
@@ -34,6 +32,7 @@ public class FornecedorService {
         fornecedor.setTelefone(fornecedorDTO.getTelefone());
         fornecedor.setEmail(fornecedorDTO.getEmail());
 
+        this.validate(fornecedorDTO);
         fornecedor = this.iFornecedorRepository.save(fornecedor);
         return FornecedorDTO.of(fornecedor);
     }
@@ -41,7 +40,7 @@ public class FornecedorService {
     private void validate(FornecedorDTO FornecedorDTO) {
         LOGGER.info("Validando Fornecedor");
         if (FornecedorDTO == null) {
-            throw new IllegalArgumentException("FornecedorDTO não deve ser nulo!");
+            throw new IllegalArgumentException("Fornecedor não deve ser nulo!");
         }
         if (StringUtils.isEmpty(FornecedorDTO.getRazaoSocial())) {
             throw new IllegalArgumentException("Razão Social não deve ser nula ou vazia!");
@@ -77,8 +76,9 @@ public class FornecedorService {
             throw new IllegalArgumentException("E-mail não deve ser nulo ou vazio!");
         }
     }
+
     public FornecedorDTO findById(Long id) {
-         Optional<Fornecedor> fornecedorOptional = this.iFornecedorRepository.findById(id);
+        Optional<Fornecedor> fornecedorOptional = this.iFornecedorRepository.findById(id);
         if (fornecedorOptional.isPresent()) {
             return FornecedorDTO.of(fornecedorOptional.get());
         }
@@ -92,6 +92,7 @@ public class FornecedorService {
         }
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
+
     public Fornecedor findFornecedorById1(long id) {
         Optional<Fornecedor> fornecedorOptional = this.iFornecedorRepository.findById(id);
         if (fornecedorOptional.isPresent()) {
@@ -102,14 +103,12 @@ public class FornecedorService {
 
     public FornecedorDTO update(FornecedorDTO fornecedorDTO, Long id) {
         Optional<Fornecedor> fornecedorExistenteOptional = this.iFornecedorRepository.findById(id);
-        this.validate(fornecedorDTO);
-        LOGGER.info("Validando o Fornecedor!");
 
         if (fornecedorExistenteOptional.isPresent()) {
             // TODO: 12/12/2019 colocar para recalcular o código de todas as categorias
             Fornecedor fornecedorExistente = fornecedorExistenteOptional.get();
             LOGGER.info("Atualizando o Fornecedor... id: [{}]", fornecedorExistente.getId());
-            LOGGER.debug("Payload: {}", fornecedorDTO);
+            LOGGER.debug("Payaload: {}", fornecedorDTO);
             LOGGER.debug("Fornecedor Existente: {}", fornecedorExistente);
 
             fornecedorExistente.setRazaoSocial((fornecedorDTO.getRazaoSocial()));
@@ -119,6 +118,8 @@ public class FornecedorService {
             fornecedorExistente.setTelefone(fornecedorDTO.getTelefone());
             fornecedorExistente.setEmail(fornecedorDTO.getEmail());
 
+            this.validate(fornecedorDTO);
+            LOGGER.info("Validando o Fornecedor!");
             fornecedorExistente = this.iFornecedorRepository.save(fornecedorExistente);
             return FornecedorDTO.of(fornecedorExistente);
         }
