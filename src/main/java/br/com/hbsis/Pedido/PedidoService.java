@@ -1,5 +1,9 @@
 package br.com.hbsis.Pedido;
 
+import br.com.hbsis.Api.ApiService;
+import br.com.hbsis.Fornecedor.FornecedorService;
+import br.com.hbsis.produto.ProdutoService;
+import br.com.hbsis.vendas.VendasService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +16,19 @@ import java.util.Optional;
 public class PedidoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PedidoService.class);
+    private final ApiService apiService;
     private final IPedidoRepository iPedidoRepository;
+    private final FornecedorService fornecedorService;
+    private final ProdutoService produtoService;
+    private final VendasService vendasService;
 
     @Autowired
-    public PedidoService(IPedidoRepository iPedidoRepository) {
+    public PedidoService(ApiService apiService, IPedidoRepository iPedidoRepository, FornecedorService fornecedorService, ProdutoService produtoService, VendasService vendasService) {
+        this.apiService = apiService;
         this.iPedidoRepository = iPedidoRepository;
+        this.fornecedorService = fornecedorService;
+        this.produtoService = produtoService;
+        this.vendasService = vendasService;
     }
 
     public PedidoDTO save(PedidoDTO pedidoDTO) {
@@ -27,10 +39,12 @@ public class PedidoService {
 
         pedido.setCodPedido(pedidoDTO.getCodigo());
         pedido.setStatus(pedidoDTO.getStatus());
+        pedido.setQuantidade(pedidoDTO.getQuantidade());
+        pedido.setUuid(pedidoDTO.getUuid());
         pedido.setDataPedido(pedidoDTO.getDataPedido());
-        pedido.setFuncionario(pedidoDTO.getFuncionario());
-        pedido.setProduto(pedidoDTO.getProduto());
-        pedido.setVendas(pedidoDTO.getVendas());
+        pedido.setFornecedor(fornecedorService.findFornecedorById1(pedidoDTO.getFornecedor()));
+        pedido.setProduto(produtoService.findProdutoById(pedidoDTO.getProduto()));
+        pedido.setVendas(vendasService.findVendasById(pedidoDTO.getVendas()));
 
         this.validate(pedidoDTO);
         pedido = this.iPedidoRepository.save(pedido);
@@ -44,19 +58,27 @@ public class PedidoService {
             throw new IllegalArgumentException("Pedido não deve ser nulo ou vazio!");
         }
 
-        if (StringUtils.isEmpty(pedidoDTO.getCodigo())) {
+        if (StringUtils.isEmpty(pedidoDTO.getCodigo().toUpperCase())) {
             throw new IllegalArgumentException("Código do pedido não deve ser nulo ou vazio!");
         }
 
-        if (StringUtils.isEmpty(pedidoDTO.getStatus())) {
-            throw new IllegalArgumentException("Nome do produto não deve ser nulo ou vazio!");
+        if (StringUtils.isEmpty(String.valueOf(pedidoDTO.getStatus()))) {
+            throw new IllegalArgumentException("O STATUS não deve ser nulo ou vazio!");
+        }
+
+        if (StringUtils.isEmpty(String.valueOf(pedidoDTO.getQuantidade()))) {
+            throw new IllegalArgumentException("Quantidade de produto não deve ser nula ou vazia!");
+        }
+
+        if (StringUtils.isEmpty(pedidoDTO.getUuid())) {
+            throw new IllegalArgumentException("Uuid de produto não deve ser nulo ou vazio!");
         }
 
         if (StringUtils.isEmpty(String.valueOf(pedidoDTO.getDataPedido()))) {
             throw new IllegalArgumentException("A data do pedido não deve ser nulo ou vazio!");
         }
 
-        if (StringUtils.isEmpty(String.valueOf(pedidoDTO.getFuncionario()))) {
+        if (StringUtils.isEmpty(String.valueOf(pedidoDTO.getFornecedor()))) {
             throw new IllegalArgumentException("Funcionário não deve ser nulo ou vazio!");
         }
         if (StringUtils.isEmpty(String.valueOf(pedidoDTO.getProduto()))) {
@@ -76,10 +98,12 @@ public class PedidoService {
 
             pedidoExistente.setCodPedido(pedidoDTO.getCodigo().toUpperCase());
             pedidoExistente.setStatus(pedidoDTO.getStatus());
+            pedidoExistente.setQuantidade(pedidoDTO.getQuantidade());
+            pedidoExistente.setUuid(pedidoDTO.getUuid());
             pedidoExistente.setDataPedido(pedidoDTO.getDataPedido());
-            pedidoExistente.setFuncionario(pedidoDTO.getFuncionario());
-            pedidoExistente.setProduto(pedidoDTO.getProduto());
-            pedidoExistente.setVendas(pedidoDTO.getVendas());
+            pedidoExistente.setFornecedor(fornecedorService.findFornecedorById1(pedidoDTO.getFornecedor()));
+            pedidoExistente.setProduto(produtoService.findProdutoById(pedidoDTO.getProduto()));
+            pedidoExistente.setVendas(vendasService.findVendasById(pedidoDTO.getVendas()));
 
             pedidoExistente = this.iPedidoRepository.save(pedidoExistente);
             return pedidoDTO.of(pedidoExistente);

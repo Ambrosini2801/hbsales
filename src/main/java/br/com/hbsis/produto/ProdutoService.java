@@ -37,7 +37,6 @@ public class ProdutoService {
     private final CategoriaLinhaService categoriaLinhaService;
     private final FornecedorService fornecedorService;
     private final CategoriaService categoriaService;
-    private Object id;
 
     @Autowired
     public ProdutoService(IProdutoRepository iProdutoRepository, CategoriaLinhaService categoriaLinhaService, FornecedorService fornecedorService, CategoriaService categoriaService) {
@@ -162,6 +161,7 @@ public class ProdutoService {
             produtoExistente.setPesoUni(produtoDTO.getPesoUni());
             produtoExistente.setUnidadePeso(produtoDTO.getUnidadePeso());
             produtoExistente.setValProduto(produtoDTO.getValProduto());
+
             produtoExistente = this.iProdutoRepository.save(produtoExistente);
             return produtoDTO.of(produtoExistente);
         }
@@ -408,4 +408,17 @@ public class ProdutoService {
             return null;
         }
     }
+
+    public Produto findProdutoById(Long idProduto) {
+        Optional<Produto> produtoOptional = iProdutoRepository.findProdutoById(idProduto);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            return produto;
+        } else {
+            LOGGER.info("ID do produto não encontrado. findProdutoById");
+            return null;
+        }
+
+    }
 }
+

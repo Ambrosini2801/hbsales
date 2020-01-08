@@ -28,4 +28,12 @@ public class EmployeeDTO {
     public void setEmployeeSavingDTO(EmployeeSavingDTO employeeSavingDTO) {
         this.employeeSavingDTO = employeeSavingDTO;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeDTO{" +
+                "nome='" + nome + '\'' +
+                ", employeeSavingDTO=" + employeeSavingDTO +
+                '}';
+    }
 }

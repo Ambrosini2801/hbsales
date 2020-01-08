@@ -10,7 +10,6 @@ import javax.persistence.*;
 public class CategoriaLinha {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "cod_linha", unique = true, nullable = false, length = 10)

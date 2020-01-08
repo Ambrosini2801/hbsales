@@ -1,47 +1,58 @@
 package br.com.hbsis.Pedido;
 
-import br.com.hbsis.Funcionario.Funcionario;
+import br.com.hbsis.Fornecedor.Fornecedor;
 import br.com.hbsis.produto.Produto;
 import br.com.hbsis.vendas.Vendas;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "pedidos")
 public class Pedido {
 
     @Id
+    @Column(name = "id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_pedido")
     private Long id;
-    @Column(name = "codigo")
+    @Column(name = "codigo", unique = true, nullable = false, length = 10)
     private String codPedido;
-    @Column(name = "status")
-    private String status;
+    @Column(name = "quantidade", nullable = false)
+    private int quantidade;
+    @Column(name = "uuid_pedido", nullable = false, length = 36)
+    private String uuid;
     @Column(name = "data")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataPedido;
 
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status", nullable = false, length = 10)
+    private EnumStatusPedido status;
+
     @ManyToOne
-    @JoinColumn(name = "id_pedido_funcionario", referencedColumnName = "id")
-    private Funcionario funcionario;
+    @JoinColumn(name = "fk_pedido_fornecedor", referencedColumnName = "id")
+    private Fornecedor fornecedor;
     @ManyToOne
-    @JoinColumn(name = "id_pedido_produto", referencedColumnName = "id")
+    @JoinColumn(name = "fk_pedido_produto", referencedColumnName = "id")
     private Produto produto;
     @ManyToOne
-    @JoinColumn(name = "id_pedido_vendas", referencedColumnName = "id")
+    @JoinColumn(name = "fk_pedido_vendas", referencedColumnName = "id")
     private Vendas vendas;
 
-    public Pedido(Long id, String codPedido, String status, LocalDate dataPedido, Funcionario funcionario, Produto produto, Vendas vendas) {
+    public Pedido() {
+    }
+
+    public Pedido(Long id, String codPedido, EnumStatusPedido status, int quantidade, String uuid, LocalDate dataPedido, Fornecedor fornecedor, Produto produto, Vendas vendas) {
         this.id = id;
         this.codPedido = codPedido;
         this.status = status;
+        this.quantidade = quantidade;
+        this.uuid = uuid;
         this.dataPedido = dataPedido;
-        this.funcionario = funcionario;
+        this.fornecedor = fornecedor;
         this.produto = produto;
         this.vendas = vendas;
-    }
-
-    public Pedido() {
-
     }
 
     public Long getId() {
@@ -60,12 +71,20 @@ public class Pedido {
         this.codPedido = codPedido;
     }
 
-    public String getStatus() {
-        return status;
+    public int getQuantidade() {
+        return quantidade;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public LocalDate getDataPedido() {
@@ -76,12 +95,20 @@ public class Pedido {
         this.dataPedido = dataPedido;
     }
 
-    public Funcionario getFuncionario() {
-        return funcionario;
+    public EnumStatusPedido getStatus() {
+        return status;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
+    public void setStatus(EnumStatusPedido status) {
+        this.status = status;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
 
     public Produto getProduto() {
@@ -105,9 +132,11 @@ public class Pedido {
         return "Pedido{" +
                 "id=" + id +
                 ", codPedido='" + codPedido + '\'' +
-                ", status='" + status + '\'' +
+                ", quantidade=" + quantidade +
+                ", uuid='" + uuid + '\'' +
                 ", dataPedido=" + dataPedido +
-                ", funcionario=" + funcionario +
+                ", status=" + status +
+                ", fornecedor=" + fornecedor +
                 ", produto=" + produto +
                 ", vendas=" + vendas +
                 '}';

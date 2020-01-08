@@ -4,6 +4,14 @@ public class EmployeeSavingDTO {
     private String employeeName;
     private String employeeUuid;
 
+    public EmployeeSavingDTO() {
+    }
+
+    public EmployeeSavingDTO(String employeeName, String employeeUuid) {
+        this.employeeName = employeeName;
+        this.employeeUuid = employeeUuid;
+    }
+
     public String getEmployeeName() {
         return employeeName;
     }
@@ -20,12 +28,11 @@ public class EmployeeSavingDTO {
         this.employeeUuid = employeeUuid;
     }
 
-    public EmployeeSavingDTO(String employeeName, String employeeUuid) {
-        this.employeeName = employeeName;
-        this.employeeUuid = employeeUuid;
-    }
-
-    public EmployeeSavingDTO(){
-
+    @Override
+    public String toString() {
+        return "EmployeeSavingDTO{" +
+                "employeeName='" + employeeName + '\'' +
+                ", employeeUuid='" + employeeUuid + '\'' +
+                '}';
     }
 }

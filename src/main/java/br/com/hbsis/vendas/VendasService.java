@@ -117,4 +117,15 @@ public class VendasService {
         LOGGER.info("Executando delete para vendas de ID: [{}]", id);
         this.iVendasRepository.deleteById(id);
     }
+
+    public Vendas findVendasById(Long idVendas) {
+        Optional<Vendas> vendasOptional = iVendasRepository.findVendasById(idVendas);
+        if (vendasOptional.isPresent()) {
+            Vendas vendas = vendasOptional.get();
+            return vendas;
+        } else {
+            LOGGER.info("ID de vendas não encontrado. findVendasById");
+            return null;
+        }
+    }
 }

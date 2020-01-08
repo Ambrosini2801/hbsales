@@ -1,17 +1,13 @@
 package br.com.hbsis.vendas;
 
-import br.com.hbsis.Fornecedor.Fornecedor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
 interface IVendasRepository extends JpaRepository<Vendas, Long> {
-    Vendas save(Vendas vendas);
 
     Optional<Vendas> findById(Long id);
 
-
-
-    void deleteById(Long id);
-
+    Optional<Vendas> findVendasById(Long idVendas);
 }

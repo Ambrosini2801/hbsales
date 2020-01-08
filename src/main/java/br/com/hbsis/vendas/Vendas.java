@@ -11,18 +11,13 @@ public class Vendas {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-
     @Column(name = "inicio_vendas", nullable = false)
     private LocalDate inicioVendas;
-
     @Column(name = "fim_vendas", nullable = false)
     private LocalDate fimVendas;
-
     @Column(name = "retirada_pedido", nullable = false)
     private LocalDate retiradaPedido;
-
     @Column(name = "descricao", nullable = false, length = 50)
     private String descricao;
 

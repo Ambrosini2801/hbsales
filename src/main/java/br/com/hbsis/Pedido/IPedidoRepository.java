@@ -1,12 +1,10 @@
 package br.com.hbsis.Pedido;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.Optional;
 
-public interface IPedidoRepository {
+interface IPedidoRepository extends JpaRepository<Pedido, Long> {
     Optional<Pedido> findById(Long id);
 
-    Pedido save(Pedido pedidoExistente);
-
-    void deleteById(Long id);
 }
-
