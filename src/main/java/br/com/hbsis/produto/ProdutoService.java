@@ -9,6 +9,7 @@ import br.com.hbsis.categoria.CategoriaService;
 import br.com.hbsis.categorialinha.CategoriaLinha;
 import br.com.hbsis.categorialinha.CategoriaLinhaDTO;
 import br.com.hbsis.categorialinha.CategoriaLinhaService;
+import br.com.hbsis.vendas.VendasService;
 import com.google.common.net.HttpHeaders;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -44,6 +45,7 @@ public class ProdutoService {
         this.categoriaLinhaService = categoriaLinhaService;
         this.fornecedorService = fornecedorService;
         this.categoriaService = categoriaService;
+
     }
 
     public ProdutoDTO save(ProdutoDTO produtoDTO) {
@@ -421,4 +423,3 @@ public class ProdutoService {
 
     }
 }
-

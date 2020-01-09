@@ -2,14 +2,23 @@ package br.com.hbsis.Pedido;
 
 import br.com.hbsis.Api.ApiService;
 import br.com.hbsis.Fornecedor.FornecedorService;
+import br.com.hbsis.produto.Produto;
 import br.com.hbsis.produto.ProdutoService;
+import br.com.hbsis.vendas.Vendas;
 import br.com.hbsis.vendas.VendasService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.awt.DesktopBrowse;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -29,6 +38,7 @@ public class PedidoService {
         this.fornecedorService = fornecedorService;
         this.produtoService = produtoService;
         this.vendasService = vendasService;
+
     }
 
     public PedidoDTO save(PedidoDTO pedidoDTO) {
@@ -79,12 +89,52 @@ public class PedidoService {
         }
 
         if (StringUtils.isEmpty(String.valueOf(pedidoDTO.getFornecedor()))) {
-            throw new IllegalArgumentException("Funcionário não deve ser nulo ou vazio!");
+            throw new IllegalArgumentException("Fornecedor não deve ser nulo ou vazio!");
         }
+
         if (StringUtils.isEmpty(String.valueOf(pedidoDTO.getProduto()))) {
             throw new IllegalArgumentException("O produto não deve ser nulo ou vazio!");
         }
+
+        Produto produto;
+        produto = produtoService.findProdutoById(pedidoDTO.getProduto());
+        Vendas vendas = vendasService.findVendasById(pedidoDTO.getVendas());
+
+        if (produto.getCategoriaLinha().getCategoria().getFornecedor().getId() != vendas.getFornecedor().getId()) {
+            throw new IllegalArgumentException("O produto não pertence a este fornecedor!");
+        }
+
     }
+
+//    public boolean data(String data) {
+//        LOGGER.info("Validando data de pedidos!");
+//        try {
+//            SimpleDateFormat formatdata = new SimpleDateFormat("dd/MM/yyyy");
+//            formatdata.setLenient(false);
+//            formatdata.parse(data);
+//            return true;
+//        } catch (ParseException ex) {
+//            return false;
+//        }
+//    }
+
+//    public boolean dataMenorQueHoje(String data) {
+//        LOGGER.info("Verificando se a data está correta!");
+//        DateTimeFormatter dataMenor = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        LocalDate dataOk = LocalDate.parse(data, dataMenor); //Pega a data de hoje
+//        LocalDate dataHoje = LocalDate.now(); //Verifica se a data é menor ou igual a zero então retorna verdadeiro, senão retorna falso
+//        LocalDate dataPedido = LocalDate.now();
+//
+//        if (dataHoje.compareTo(dataMenorQueHoje())) {
+//            throw new IllegalArgumentException("Esse período não existe");
+//        } else if (!dataHoje.isAfter(dataHoje)) {
+//            throw new IllegalArgumentException("Esse período ainda não começou...");
+//        } else if (!dataHoje.isBefore(dataOk)) {
+//            throw new IllegalArgumentException("Esse período já terminou...");
+//        }
+//
+//        return dataOk.compareTo(dataHoje) <= 0; //quando a data1 é menor isso retorna -1, quando é maior retorna 1, e quando é igual retorna 0
+//    }
 
     public PedidoDTO update(PedidoDTO pedidoDTO, Long id) {
         Optional<Pedido> pedidoExistenteOptional = this.iPedidoRepository.findById(id);

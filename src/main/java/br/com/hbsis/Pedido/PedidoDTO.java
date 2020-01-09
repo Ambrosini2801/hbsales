@@ -15,6 +15,7 @@ public class PedidoDTO {
     private Long vendas;
 
     public PedidoDTO() {
+
     }
 
     public PedidoDTO(Long id, String codigo, EnumStatusPedido status, int quantidade, String uuid, LocalDate dataPedido, Long fornecedor, Long produto, Long vendas) {

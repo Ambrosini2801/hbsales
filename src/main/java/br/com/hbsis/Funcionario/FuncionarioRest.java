@@ -21,7 +21,7 @@ public class FuncionarioRest {
     @PostMapping
     public FuncionarioDTO save(@RequestBody FuncionarioDTO funcionarioDTO) {
         LOGGER.info("Recebendo solicitação de persistências de funcionário...");
-        LOGGER.debug("Payaload: {}", funcionarioDTO);
+        LOGGER.debug("Payload: {}", funcionarioDTO);
         return this.funcionarioService.save(funcionarioDTO);
     }
 
@@ -34,7 +34,7 @@ public class FuncionarioRest {
     @PutMapping("/{id}")
     public FuncionarioDTO update(@PathVariable("id") Long id, @RequestBody FuncionarioDTO funcionarioDTO) {
         LOGGER.info("Recebendo Update para o funcionário de ID: {}", id);
-        LOGGER.debug("Payaload: {}", funcionarioDTO);
+        LOGGER.debug("Payload: {}", funcionarioDTO);
         return this.funcionarioService.update(funcionarioDTO, id);
     }
 

@@ -22,7 +22,7 @@ public class CategoriaRestLinha {
     @PostMapping
     public CategoriaLinhaDTO save(@RequestBody CategoriaLinhaDTO categoriaLinhaDTO) {
         LOGGER.info("Receber solitação da categoria linha");
-        LOGGER.debug("Payaload: {}", categoriaLinhaDTO);
+        LOGGER.debug("Payload: {}", categoriaLinhaDTO);
         return this.CategoriaLinhaService.save(categoriaLinhaDTO);
     }
 

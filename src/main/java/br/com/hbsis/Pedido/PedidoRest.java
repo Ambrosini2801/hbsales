@@ -16,14 +16,14 @@ public class PedidoRest {
         this.PedidoService = pedidoService;
     }
 
-    @PostMapping
+    @PostMapping("/{id}")
     public PedidoDTO save(@RequestBody PedidoDTO pedidoDTO) {
         LOGGER.info("Receber solicitação do pedido!");
-        LOGGER.debug("Payaload: {}", pedidoDTO);
+        LOGGER.debug("Payload: {}", pedidoDTO);
         return this.PedidoService.save(pedidoDTO);
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public PedidoDTO find(@PathVariable("id") Long id) {
         LOGGER.info("Recebendo find by ID... id: [{}]", id);
         return this.PedidoService.findByid(id);
@@ -32,7 +32,7 @@ public class PedidoRest {
     @PutMapping("/{id}")
     public PedidoDTO update(@PathVariable("id") Long id, @RequestBody PedidoDTO pedidoDTO) {
         LOGGER.info("Recebendo Update para o pedido de ID: {}", id);
-        LOGGER.info("Payaload: {}", pedidoDTO);
+        LOGGER.info("Payload: {}", pedidoDTO);
         return this.PedidoService.update(pedidoDTO, id);
     }
 

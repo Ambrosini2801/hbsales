@@ -20,10 +20,10 @@ public class ProdutoRest {
         this.ProdutoService = produtoService;
     }
 
-    @PostMapping
+    @PostMapping("/{id}")
     public ProdutoDTO save(@RequestBody ProdutoDTO produtoDTO) {
         LOGGER.info("Receber solicitação do produto");
-        LOGGER.debug("Payaload: {}", produtoDTO);
+        LOGGER.debug("Payload: {}", produtoDTO);
         return this.ProdutoService.save(produtoDTO);
     }
 
@@ -36,7 +36,7 @@ public class ProdutoRest {
     @PutMapping("{/id}")
     public ProdutoDTO update(@PathVariable("id") Long id, @RequestBody ProdutoDTO produtoDTO) {
         LOGGER.info("Recebendo Update para produto de ID: {}", id);
-        LOGGER.info("Payaload: {}", produtoDTO);
+        LOGGER.info("Payload: {}", produtoDTO);
         return this.ProdutoService.update(produtoDTO, id);
     }
 

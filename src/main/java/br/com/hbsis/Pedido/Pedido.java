@@ -13,8 +13,8 @@ import java.time.LocalDate;
 public class Pedido {
 
     @Id
-    @Column(name = "id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
     @Column(name = "codigo", unique = true, nullable = false, length = 10)
     private String codPedido;
@@ -22,7 +22,7 @@ public class Pedido {
     private int quantidade;
     @Column(name = "uuid_pedido", nullable = false, length = 36)
     private String uuid;
-    @Column(name = "data")
+    @Column(name = "data", nullable = false)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataPedido;
 
@@ -43,13 +43,13 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Long id, String codPedido, EnumStatusPedido status, int quantidade, String uuid, LocalDate dataPedido, Fornecedor fornecedor, Produto produto, Vendas vendas) {
+    public Pedido(Long id, String codPedido, int quantidade, String uuid, LocalDate dataPedido, EnumStatusPedido status, Fornecedor fornecedor, Produto produto, Vendas vendas) {
         this.id = id;
         this.codPedido = codPedido;
-        this.status = status;
         this.quantidade = quantidade;
         this.uuid = uuid;
         this.dataPedido = dataPedido;
+        this.status = status;
         this.fornecedor = fornecedor;
         this.produto = produto;
         this.vendas = vendas;

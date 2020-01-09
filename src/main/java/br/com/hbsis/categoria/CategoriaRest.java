@@ -23,7 +23,7 @@ public class CategoriaRest {
     @PostMapping
     public CategoriaDTO save(@RequestBody CategoriaDTO categoriaDTO) {
         LOGGER.info("Receber a solicitação da categoria");
-        LOGGER.debug("Payaload: {}", categoriaDTO);
+        LOGGER.debug("Payload: {}", categoriaDTO);
         return this.CategoriaService.save(categoriaDTO);
     }
 

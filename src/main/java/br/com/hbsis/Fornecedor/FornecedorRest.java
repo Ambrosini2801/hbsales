@@ -19,7 +19,7 @@ public class FornecedorRest {
     @PostMapping
     public FornecedorDTO save(@RequestBody FornecedorDTO fornecedorDTO) {
         LOGGER.info("Recebendo solicitação de persistência de fornecedor...");
-        LOGGER.debug("Payaload: {}", fornecedorDTO);
+        LOGGER.debug("Payload: {}", fornecedorDTO);
         return this.fornecedorService.save(fornecedorDTO);
     }
 
@@ -32,7 +32,7 @@ public class FornecedorRest {
     @PutMapping("/{id}")
     public FornecedorDTO udpate(@PathVariable("id") Long id, @RequestBody FornecedorDTO fornecedorDTO) {
         LOGGER.info("Recebendo Update para fornecedor de ID: {}", id);
-        LOGGER.debug("Payaload: {}", fornecedorDTO);
+        LOGGER.debug("Payload: {}", fornecedorDTO);
         return this.fornecedorService.update(fornecedorDTO, id);
 
     }
