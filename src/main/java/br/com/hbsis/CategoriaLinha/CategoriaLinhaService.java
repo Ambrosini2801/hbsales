@@ -1,9 +1,9 @@
-package br.com.hbsis.categorialinha;
+package br.com.hbsis.CategoriaLinha;
 
-import br.com.hbsis.categoria.Categoria;
-import br.com.hbsis.categoria.CategoriaDTO;
-import br.com.hbsis.categoria.CategoriaService;
-import br.com.hbsis.categoria.ICategoriaRepository;
+import br.com.hbsis.Categoria.Categoria;
+import br.com.hbsis.Categoria.CategoriaDTO;
+import br.com.hbsis.Categoria.CategoriaService;
+import br.com.hbsis.Categoria.ICategoriaRepository;
 import com.google.common.net.HttpHeaders;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

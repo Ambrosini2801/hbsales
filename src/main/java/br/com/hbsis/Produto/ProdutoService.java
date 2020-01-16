@@ -1,15 +1,14 @@
-package br.com.hbsis.produto;
+package br.com.hbsis.Produto;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
 import br.com.hbsis.Fornecedor.FornecedorDTO;
 import br.com.hbsis.Fornecedor.FornecedorService;
-import br.com.hbsis.categoria.Categoria;
-import br.com.hbsis.categoria.CategoriaDTO;
-import br.com.hbsis.categoria.CategoriaService;
-import br.com.hbsis.categorialinha.CategoriaLinha;
-import br.com.hbsis.categorialinha.CategoriaLinhaDTO;
-import br.com.hbsis.categorialinha.CategoriaLinhaService;
-import br.com.hbsis.vendas.VendasService;
+import br.com.hbsis.Categoria.Categoria;
+import br.com.hbsis.Categoria.CategoriaDTO;
+import br.com.hbsis.Categoria.CategoriaService;
+import br.com.hbsis.CategoriaLinha.CategoriaLinha;
+import br.com.hbsis.CategoriaLinha.CategoriaLinhaDTO;
+import br.com.hbsis.CategoriaLinha.CategoriaLinhaService;
 import com.google.common.net.HttpHeaders;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -349,7 +348,7 @@ public class ProdutoService {
                                 categoriaLinhaDTO.setNomeLinha(nomeLinha);
                                 categoriaLinhaDTO.setCodLinha(codLinha);
                                 categoriaLinhaDTO.setId_categoria(categoria.getId());
-                                categoriaLinhaDTO = categoriaLinhaService.save(categoriaLinhaDTO);
+                                categoriaLinhaService.save(categoriaLinhaDTO);
                             }
                             LOGGER.info("NOME LINHA CATEGORIA" + categoriaLinha.getNomeLinha());
                             LOGGER.info("AQUI.");
@@ -363,7 +362,7 @@ public class ProdutoService {
                             produtoDTO.setValProduto(data);
                             produtoDTO.setCategoriaLinha(categoriaLinha.getId());
                             LOGGER.info("ID categoria linha" + produtoDTO.getCategoriaLinha().toString());
-                            produtoDTO = this.save(produtoDTO);
+                            this.save(produtoDTO);
                         }
                     }
                 } catch (Exception e) {

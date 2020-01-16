@@ -1,38 +1,38 @@
 package br.com.hbsis.Api.Invoice;
 
 public class InvoiceItemDTO {
-    private String cnpjFornecedor;
-    private String employeeUuid;
+    private int amount;
+    private String itemName;
 
     public InvoiceItemDTO() {
     }
 
-    public InvoiceItemDTO(String cnpjFornecedor, String employeeUuid) {
-        this.cnpjFornecedor = cnpjFornecedor;
-        this.employeeUuid = employeeUuid;
+    public InvoiceItemDTO(int amount, String itemName) {
+        this.amount = amount;
+        this.itemName = itemName;
     }
 
-    public String getCnpjFornecedor() {
-        return cnpjFornecedor;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setCnpjFornecedor(String cnpjFornecedor) {
-        this.cnpjFornecedor = cnpjFornecedor;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
-    public String getEmployeeUuid() {
-        return employeeUuid;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setEmployeeUuid(String employeeUuid) {
-        this.employeeUuid = employeeUuid;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     @Override
     public String toString() {
         return "InvoiceItemDTO{" +
-                "cnpjFornecedor='" + cnpjFornecedor + '\'' +
-                ", employeeUuid='" + employeeUuid + '\'' +
+                "amount=" + amount +
+                ", itemName='" + itemName + '\'' +
                 '}';
     }
 }

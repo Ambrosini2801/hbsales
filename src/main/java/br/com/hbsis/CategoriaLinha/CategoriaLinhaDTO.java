@@ -1,4 +1,4 @@
-package br.com.hbsis.categorialinha;
+package br.com.hbsis.CategoriaLinha;
 
 public class CategoriaLinhaDTO {
 

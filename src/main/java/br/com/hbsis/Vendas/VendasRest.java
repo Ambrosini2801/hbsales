@@ -1,4 +1,4 @@
-package br.com.hbsis.vendas;
+package br.com.hbsis.Vendas;
 
 
 import org.slf4j.Logger;

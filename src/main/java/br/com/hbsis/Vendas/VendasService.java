@@ -1,4 +1,4 @@
-package br.com.hbsis.vendas;
+package br.com.hbsis.Vendas;
 
 
 import br.com.hbsis.Fornecedor.FornecedorService;
@@ -90,7 +90,7 @@ public class VendasService {
             this.fornecedorService.findFornecedorById(vendasDTO.getId());
 
             vendaExistente = this.iVendasRepository.save(vendaExistente);
-            return vendasDTO.of(vendaExistente);
+            return VendasDTO.of(vendaExistente);
         }
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }

@@ -16,7 +16,7 @@ public class PedidoRest {
         this.PedidoService = pedidoService;
     }
 
-    @PostMapping("/{id}")
+    @PostMapping
     public PedidoDTO save(@RequestBody PedidoDTO pedidoDTO) {
         LOGGER.info("Receber solicitação do pedido!");
         LOGGER.debug("Payload: {}", pedidoDTO);

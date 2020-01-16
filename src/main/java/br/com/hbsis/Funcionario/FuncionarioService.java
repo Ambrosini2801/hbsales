@@ -60,12 +60,11 @@ public class FuncionarioService {
         if (funcionarioExistenteOptional.isPresent()) {
             Funcionario funcionarioExistente = funcionarioExistenteOptional.get();
             LOGGER.info("Atualizando o funcionário... ID: [{}]", funcionarioExistente.getId());
-            LOGGER.info("Payaload: {}", funcionarioExistente);
+            LOGGER.info("Payload: {}", funcionarioExistente);
 
             funcionarioExistente.setId(funcionarioDTO.getId());
             funcionarioExistente.setNomeFuncionario(funcionarioDTO.getNomeFuncionario());
             funcionarioExistente.setEmail(funcionarioDTO.getEmail());
-
 
             this.validate(funcionarioDTO);
             LOGGER.info("Validando o funcionário!");

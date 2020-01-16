@@ -1,8 +1,7 @@
 package br.com.hbsis.Pedido;
 
 import br.com.hbsis.Fornecedor.Fornecedor;
-import br.com.hbsis.produto.Produto;
-import br.com.hbsis.vendas.Vendas;
+import br.com.hbsis.Vendas.Vendas;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -14,28 +13,21 @@ public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id_pedido")
     private Long id;
     @Column(name = "codigo", unique = true, nullable = false, length = 10)
     private String codPedido;
-    @Column(name = "quantidade", nullable = false)
-    private int quantidade;
-    @Column(name = "uuid_pedido", nullable = false, length = 36)
+    @Column(name = "uuid", nullable = false, length = 36)
     private String uuid;
     @Column(name = "data", nullable = false)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataPedido;
-
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status", nullable = false, length = 10)
     private EnumStatusPedido status;
-
     @ManyToOne
     @JoinColumn(name = "fk_pedido_fornecedor", referencedColumnName = "id")
     private Fornecedor fornecedor;
-    @ManyToOne
-    @JoinColumn(name = "fk_pedido_produto", referencedColumnName = "id")
-    private Produto produto;
     @ManyToOne
     @JoinColumn(name = "fk_pedido_vendas", referencedColumnName = "id")
     private Vendas vendas;
@@ -43,15 +35,13 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Long id, String codPedido, int quantidade, String uuid, LocalDate dataPedido, EnumStatusPedido status, Fornecedor fornecedor, Produto produto, Vendas vendas) {
+    public Pedido(Long id, String codPedido, String uuid, LocalDate dataPedido, EnumStatusPedido status, Fornecedor fornecedor, Vendas vendas) {
         this.id = id;
         this.codPedido = codPedido;
-        this.quantidade = quantidade;
         this.uuid = uuid;
         this.dataPedido = dataPedido;
         this.status = status;
         this.fornecedor = fornecedor;
-        this.produto = produto;
         this.vendas = vendas;
     }
 
@@ -69,14 +59,6 @@ public class Pedido {
 
     public void setCodPedido(String codPedido) {
         this.codPedido = codPedido;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
     }
 
     public String getUuid() {
@@ -111,14 +93,6 @@ public class Pedido {
         this.fornecedor = fornecedor;
     }
 
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
     public Vendas getVendas() {
         return vendas;
     }
@@ -132,12 +106,10 @@ public class Pedido {
         return "Pedido{" +
                 "id=" + id +
                 ", codPedido='" + codPedido + '\'' +
-                ", quantidade=" + quantidade +
                 ", uuid='" + uuid + '\'' +
                 ", dataPedido=" + dataPedido +
                 ", status=" + status +
                 ", fornecedor=" + fornecedor +
-                ", produto=" + produto +
                 ", vendas=" + vendas +
                 '}';
     }

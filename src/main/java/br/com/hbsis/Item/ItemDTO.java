@@ -1,30 +1,33 @@
 package br.com.hbsis.Item;
 
-import br.com.hbsis.produto.Produto;
+import br.com.hbsis.Produto.Produto;
 
 public class ItemDTO {
 
     private Long id;
     private int quantidade;
-    private Produto produto;
+    private double preco;
+    private Long produto;
+    private Long pedido;
 
     public ItemDTO() {
     }
 
-    public ItemDTO(Long id, int quantidade, Produto produto) {
+
+    public ItemDTO(Long id, int quantidade, double preco, Long produto, Long pedido) {
         this.id = id;
         this.quantidade = quantidade;
+        this.preco = preco;
         this.produto = produto;
-    }
-
-    public ItemDTO(Long id, int quantidade, Long id1) {
+        this.pedido = pedido;
     }
 
     public static ItemDTO of(Item item) {
         return new ItemDTO(
                 item.getId(),
                 item.getQuantidade(),
-                item.getProduto().getId()
+                item.getPreco(),
+                item.getProduto().getId(),item.getPedido().getId()
         );
     }
 
@@ -36,6 +39,14 @@ public class ItemDTO {
         this.id = id;
     }
 
+    public Long getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Long pedido) {
+        this.pedido = pedido;
+    }
+
     public int getQuantidade() {
         return quantidade;
     }
@@ -44,20 +55,29 @@ public class ItemDTO {
         this.quantidade = quantidade;
     }
 
-    public Produto getProduto() {
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    public Long getProduto() {
         return produto;
     }
 
-    public void setProduto(Produto produto) {
+    public void setProduto(Long produto) {
         this.produto = produto;
     }
 
     @Override
     public String toString() {
         return "ItemDTO{" +
-                "produto=" + produto +
-                ", id=" + id +
+                "id=" + id +
                 ", quantidade=" + quantidade +
+                ", preco=" + preco +
+                ", produto=" + produto +
                 '}';
     }
 }

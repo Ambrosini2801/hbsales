@@ -1,4 +1,4 @@
-package br.com.hbsis.produto;
+package br.com.hbsis.Produto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

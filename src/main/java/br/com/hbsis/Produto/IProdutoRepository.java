@@ -1,4 +1,4 @@
-package br.com.hbsis.produto;
+package br.com.hbsis.Produto;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +19,6 @@ interface IProdutoRepository extends JpaRepository<Produto, Long> {
             "where f.id =:idFornecedor and nome_produto =:nomeProduto", nativeQuery = true)
     Optional<Produto> findProdutoByFornecedor(@Param("idFornecedor") Long idFornecedor, @Param("nomeProduto") String nomeProduto);
 
-    @Query(value = "SELECT * FROM dbo.produto WHERE id =: id", nativeQuery = true)
+    @Query(value = "SELECT * FROM dbo.produto WHERE id =:id", nativeQuery = true)
     Optional<Produto> findProdutoById(@Param("id") Long id);
 }

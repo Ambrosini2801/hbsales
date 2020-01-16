@@ -1,7 +1,4 @@
-package br.com.hbsis.categoria;
-
-import br.com.hbsis.Fornecedor.Fornecedor;
-import br.com.hbsis.Fornecedor.FornecedorDTO;
+package br.com.hbsis.Categoria;
 
 public class CategoriaDTO {
 

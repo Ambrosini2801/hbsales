@@ -1,4 +1,4 @@
-package br.com.hbsis.categorialinha;
+package br.com.hbsis.CategoriaLinha;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
-package br.com.hbsis.produto;
+package br.com.hbsis.Produto;
 
-import br.com.hbsis.categorialinha.CategoriaLinha;
+import br.com.hbsis.CategoriaLinha.CategoriaLinha;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;

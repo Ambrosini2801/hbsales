@@ -1,6 +1,6 @@
-package br.com.hbsis.categorialinha;
+package br.com.hbsis.CategoriaLinha;
 
-import br.com.hbsis.categoria.Categoria;
+import br.com.hbsis.Categoria.Categoria;
 
 import javax.persistence.*;
 
