@@ -27,6 +27,7 @@ public class Funcionario {
         this.uuid = uuid;
     }
 
+
     public Long getId() {
         return id;
     }

@@ -10,4 +10,5 @@ interface IFornecedorRepository extends JpaRepository<Fornecedor, Long> {
     Optional<Fornecedor> findById(String id);
 
 
+
 }

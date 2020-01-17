@@ -53,7 +53,6 @@ public class CategoriaLinhaService {
         categorialinha.setCategoria(categoriaService.findCategoriaById(categoriaLinhaDTO.getId_categoria()));
         categorialinha = this.iCategoriaLinhaRepository.save(categorialinha);
 
-
         return CategoriaLinhaDTO.of(categorialinha);
     }
 
@@ -151,7 +150,6 @@ public class CategoriaLinhaService {
             writer.append(linha.getNomeLinha() + ";");
 
             CategoriaDTO categoriaDTO = categoriaService.findById(linha.getCategoria().getId());
-            Categoria categoria = converter(categoriaDTO);
 
             writer.append(categoriaDTO.getNomeCategoria() + ";");
             writer.append(categoriaDTO.getCodCategoria() + ";");

@@ -1,6 +1,8 @@
 package br.com.hbsis.Pedido;
 
+import br.com.hbsis.Api.Employee.EmployeeDTO;
 import br.com.hbsis.Fornecedor.Fornecedor;
+import br.com.hbsis.Funcionario.Funcionario;
 import br.com.hbsis.Vendas.Vendas;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,6 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "pedidos")
 public class Pedido {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

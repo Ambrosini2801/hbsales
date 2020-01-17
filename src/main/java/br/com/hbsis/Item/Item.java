@@ -37,7 +37,6 @@ public class Item {
 
     }
 
-
     public Long getId() {
         return id;
     }

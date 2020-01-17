@@ -1,6 +1,5 @@
 package br.com.hbsis.Vendas;
 
-
 import br.com.hbsis.Fornecedor.FornecedorService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -124,8 +123,18 @@ public class VendasService {
             Vendas vendas = vendasOptional.get();
             return vendas;
         } else {
-            LOGGER.info("ID de vendas não encontrado. findVendasById");
+            LOGGER.info("ID de vendas não encontrado!");
             return null;
         }
+    }
+
+    public Vendas findByIdPeriodo(Long id) {
+        Optional<Vendas> vendasOptional = this.iVendasRepository.findById(id);
+
+        if (vendasOptional.isPresent()) {
+            return vendasOptional.get();
+        }
+
+        throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 }

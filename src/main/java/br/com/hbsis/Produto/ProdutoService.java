@@ -1,14 +1,17 @@
 package br.com.hbsis.Produto;
 
-import br.com.hbsis.Fornecedor.Fornecedor;
-import br.com.hbsis.Fornecedor.FornecedorDTO;
-import br.com.hbsis.Fornecedor.FornecedorService;
 import br.com.hbsis.Categoria.Categoria;
 import br.com.hbsis.Categoria.CategoriaDTO;
 import br.com.hbsis.Categoria.CategoriaService;
 import br.com.hbsis.CategoriaLinha.CategoriaLinha;
 import br.com.hbsis.CategoriaLinha.CategoriaLinhaDTO;
 import br.com.hbsis.CategoriaLinha.CategoriaLinhaService;
+import br.com.hbsis.Fornecedor.Fornecedor;
+import br.com.hbsis.Fornecedor.FornecedorDTO;
+import br.com.hbsis.Fornecedor.FornecedorService;
+import br.com.hbsis.Fornecedor.IFornecedorRepository;
+import br.com.hbsis.Pedido.PedidoService;
+import br.com.hbsis.Vendas.VendasService;
 import com.google.common.net.HttpHeaders;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -44,7 +47,6 @@ public class ProdutoService {
         this.categoriaLinhaService = categoriaLinhaService;
         this.fornecedorService = fornecedorService;
         this.categoriaService = categoriaService;
-
     }
 
     public ProdutoDTO save(ProdutoDTO produtoDTO) {
@@ -193,11 +195,8 @@ public class ProdutoService {
 
         for (Produto linha : iProdutoRepository.findAll()) {
             CategoriaLinhaDTO categoriaLinhaDTO = categoriaLinhaService.findById(linha.getCategoriaLinha().getId());
-            CategoriaLinha categoriaLinha = converter(categoriaLinhaDTO);
             CategoriaDTO categoriaDTO = categoriaService.findById(linha.getId());
-            Categoria categoria = converter(categoriaDTO);
             FornecedorDTO fornecedorDTO = fornecedorService.findFornecedorById(linha.getCategoriaLinha().getCategoria().getFornecedor().getId());
-            Fornecedor fornecedor = converter(fornecedorDTO);
 
             writer.write("\n");
             writer.append(linha.getCodProduto() + ";");
@@ -419,6 +418,7 @@ public class ProdutoService {
             LOGGER.info("ID do produto não encontrado. findProdutoById");
             return null;
         }
-
     }
+
+
 }

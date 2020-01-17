@@ -50,18 +50,18 @@ public class ProdutoRest {
     public void exportCSV(HttpServletResponse exportProduto) throws Exception {
         LOGGER.info("Exportando Produto CSV");
         this.ProdutoService.exportCSV(exportProduto);
-
     }
 
     @PostMapping("/importProduto")
-    public void uploadCSV (@RequestParam ("file") MultipartFile importProduto) throws  Exception{
+    public void uploadCSV(@RequestParam("file") MultipartFile importProduto) throws Exception {
         LOGGER.info("Importando Produto CSV!");
         this.ProdutoService.uploadCSV(importProduto);
     }
 
     @PostMapping("/importFornecedor/{id}")
-    public void uploadFornecedor (@RequestParam ("file")MultipartFile importFornecedor, @PathVariable Long id) throws Exception{
+    public void uploadFornecedor(@RequestParam("file") MultipartFile importFornecedor, @PathVariable Long id) throws Exception {
         LOGGER.info("Importando produto por fornecedor - CSV");
-        this.ProdutoService.uploadFornecedor(importFornecedor,id);
+        this.ProdutoService.uploadFornecedor(importFornecedor, id);
     }
+
 }

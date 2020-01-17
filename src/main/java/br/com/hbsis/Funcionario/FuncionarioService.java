@@ -86,4 +86,11 @@ public class FuncionarioService {
         }
         throw new IllegalArgumentException(String.format("ID %s não existe!", id));
     }
+
+//    public Funcionario findByfuncionarioId(Long id) {
+//        Optional<Funcionario> funcionarioOptional = this.iFuncionarioRepository.findById(id);
+//        if (funcionarioOptional.isPresent()) {
+//            return funcionarioOptional.get();
+//        } else return null;
+//    }
 }

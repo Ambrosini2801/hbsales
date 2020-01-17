@@ -5,6 +5,7 @@ import br.com.hbsis.Api.Invoice.InvoiceDTO;
 import br.com.hbsis.Api.Invoice.InvoiceItemDTO;
 import br.com.hbsis.Pedido.Pedido;
 import br.com.hbsis.Pedido.PedidoService;
+import br.com.hbsis.Produto.Produto;
 import br.com.hbsis.Produto.ProdutoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -22,8 +23,8 @@ import java.util.Set;
 public class ItemService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemService.class);
+    private static IItemRepository iItemRepository;
     private final ApiService apiService;
-    private final IItemRepository iItemRepository;
     private final ProdutoService produtoService;
     private final PedidoService pedidoService;
 
@@ -133,7 +134,7 @@ public class ItemService {
         return invoiceItemDTOSet;
     }
 
-    public InvoiceDTO setInvoiceDTO(Long idPedido){
+    public InvoiceDTO setInvoiceDTO(Long idPedido) {
         InvoiceDTO invoiceDTO = new InvoiceDTO();
         Pedido pedido = pedidoService.findPedidoByid(idPedido);
         LOGGER.info(pedido.getFornecedor().getCNPJ());
@@ -144,10 +145,16 @@ public class ItemService {
         invoiceDTO.setInvoiceItemDTOSet(this.setInvoiceItemDTOSet(idPedido));
         return invoiceDTO;
     }
+
     public String validacaoApi(Long idPedido) throws IOException {
         String resultado = apiService.sendValidacao(this.setInvoiceDTO(idPedido));
         return resultado;
+    }
 
-
+    public static List<Item> findByItemPedido(Pedido pedido) {
+        List<Item> itemLista = iItemRepository.findByPedido(pedido);
+        if (itemLista != null) {
+            return itemLista;
+        } else throw new IllegalArgumentException("Não há itens para esse pedido");
     }
 }

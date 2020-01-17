@@ -3,7 +3,6 @@ package br.com.hbsis.Api;
 import br.com.hbsis.Api.Employee.EmployeeDTO;
 import br.com.hbsis.Api.Employee.EmployeeSavingDTO;
 import br.com.hbsis.Api.Invoice.InvoiceDTO;
-import br.com.hbsis.Item.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -17,9 +16,6 @@ import java.util.Arrays;
 public class ApiService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiService.class);
-
-
-
 
     public String getUuid(String nome) {
         String url = "http://10.2.54.25:9999/api/employees";
@@ -62,7 +58,4 @@ public class ApiService {
         headers.set("Authorization", "f59ffdbc-1b67-11ea-978f-2e728ce88125");
         return headers;
     }
-
-
 }
-

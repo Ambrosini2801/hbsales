@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/pedido")
 public class PedidoRest {
@@ -40,5 +42,17 @@ public class PedidoRest {
     public void delete(@PathVariable("id") Long id) {
         LOGGER.info("Recebendo delete para o pedido de ID: {}", id);
         this.PedidoService.delete(id);
+    }
+
+    @GetMapping("/relatorioPedidoCSV/{id}")
+    public void relatorioCSV(HttpServletResponse relatorioCSV, @PathVariable("id") Long id) throws Exception {
+        LOGGER.info("Emitindo relatório do pedido - CSV!");
+        this.PedidoService.relatorioCSV(relatorioCSV, id);
+    }
+
+    @GetMapping("/relatorioVendasCSV/{id}")
+    public void relatorioVendas(HttpServletResponse relatorioVendas, @PathVariable("id") Long id) throws Exception {
+        LOGGER.info("Emitindo relatório de vendas - CSV!");
+        this.PedidoService.relatorioVendas(relatorioVendas, id);
     }
 }
