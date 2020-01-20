@@ -9,9 +9,6 @@ import br.com.hbsis.CategoriaLinha.CategoriaLinhaService;
 import br.com.hbsis.Fornecedor.Fornecedor;
 import br.com.hbsis.Fornecedor.FornecedorDTO;
 import br.com.hbsis.Fornecedor.FornecedorService;
-import br.com.hbsis.Fornecedor.IFornecedorRepository;
-import br.com.hbsis.Pedido.PedidoService;
-import br.com.hbsis.Vendas.VendasService;
 import com.google.common.net.HttpHeaders;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -419,6 +416,4 @@ public class ProdutoService {
             return null;
         }
     }
-
-
 }

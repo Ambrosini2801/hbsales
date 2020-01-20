@@ -3,6 +3,7 @@ package br.com.hbsis.Api.Invoice;
 import br.com.hbsis.Api.ApiService;
 import br.com.hbsis.Item.ItemService;
 import br.com.hbsis.Pedido.Pedido;
+import br.com.hbsis.Pedido.PedidoDTO;
 import br.com.hbsis.Pedido.PedidoService;
 import br.com.hbsis.Produto.ProdutoService;
 
@@ -24,7 +25,8 @@ public class InvoiceService {
 
     public InvoiceDTO setInvoiceItemDTOSet(Long idPedido) throws IOException {
 
-        Pedido pedido = pedidoService.findPedidoByid(idPedido);
+        PedidoDTO pedidoDTO = new PedidoDTO();
+        Pedido pedido = pedidoService.findPedidoByid(idPedido, pedidoDTO);
         InvoiceDTO invoiceDTO = new InvoiceDTO();
 
         invoiceDTO.setEmployeeUuid(pedido.getUuid());

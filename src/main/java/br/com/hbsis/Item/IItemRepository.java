@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface IItemRepository extends JpaRepository<Item, Long> {
     List<Item> findByPedido(Pedido pedido);
 
-
     Optional<Item> findById(Long id);
 
     Item save(Item itemExistente);

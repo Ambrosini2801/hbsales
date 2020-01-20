@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping("/pedido")
@@ -54,5 +55,29 @@ public class PedidoRest {
     public void relatorioVendas(HttpServletResponse relatorioVendas, @PathVariable("id") Long id) throws Exception {
         LOGGER.info("Emitindo relatório de vendas - CSV!");
         this.PedidoService.relatorioVendas(relatorioVendas, id);
+    }
+
+    @GetMapping("/visualizarPedidos/{id}")
+    public List<Pedido> visualizarPedidos(@PathVariable("id") Long id, PedidoDTO pedidoDTO) {
+        LOGGER.info("Emitindo lista de pedidos do funcionário de ID: {}", id);
+        return this.PedidoService.visualizarPedidos(id, pedidoDTO);
+    }
+
+    @PutMapping("/cancelaPedido/{id}")
+    public PedidoDTO cancelarPedido(@PathVariable("id") Long id, PedidoDTO pedidoDTO) {
+        LOGGER.info("Cancelando o pedido de ID: {}", id);
+        return this.PedidoService.cancelarPedido(id, pedidoDTO);
+    }
+
+    @PutMapping("/editarPedido/{id}")
+    public PedidoDTO editarPedido(@PathVariable("id") Long id, PedidoDTO pedidoDTO) {
+        LOGGER.info("Editando o pedido de ID: {}", id);
+        return this.PedidoService.editarPedido(id, pedidoDTO);
+    }
+
+    @PutMapping("/retirarPedido/{id}")
+    public PedidoDTO retirarPedido(@PathVariable("id") Long id, PedidoDTO pedidoDTO) {
+        LOGGER.info("Recebendo Update para Pedido de ID: {}", id);
+        return this.PedidoService.retirarPedido(id, pedidoDTO);
     }
 }

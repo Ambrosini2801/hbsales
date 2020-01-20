@@ -81,13 +81,10 @@ public class CategoriaService {
     }
 
     public Categoria findCategoriaById(Long id) {
-        Categoria categoria = new Categoria();
         Optional<Categoria> categoriaOptional = this.iCategoriaRepository.findById(id);
-
         if (categoriaOptional.isPresent()) {
-            return categoria = categoriaOptional.get();
+            return categoriaOptional.get();
         }
-
         throw new IllegalArgumentException("A categoria não existe");
     }
 
@@ -156,11 +153,9 @@ public class CategoriaService {
             String[] list = linha.split(";");
             categoriaCSV.add(list);
             Iterator<String[]> iterator = categoriaCSV.iterator();
-            String[] registrando;
             while (iterator.hasNext()) {
 
                 try {
-                    registrando = iterator.next();
                     Categoria categoriaCadastro = new Categoria();
                     for (String[] categoria : categoriaCSV) {
                         String[] colunaCategoriaCSV = categoria[0].replaceAll("\"", "").split(";");

@@ -18,4 +18,5 @@ interface ICategoriaLinhaRepository extends JpaRepository<CategoriaLinha, Long> 
             "where f.id =:idFornecedor and l.nome_linha =:nomeLinha",nativeQuery = true)
     Optional<CategoriaLinha>findByFornecedor(@Param("idFornecedor")Long idFornecedor,@Param("nomeLinha")String nomeLinha);
 
+    Optional<CategoriaLinha> findById(boolean present);
 }

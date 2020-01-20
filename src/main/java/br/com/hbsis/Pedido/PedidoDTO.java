@@ -54,7 +54,7 @@ public class PedidoDTO {
         this.codigo = codigo;
     }
 
-    public EnumStatusPedido getStatus() {
+    public EnumStatusPedido getStatus(EnumStatusPedido cancelado) {
         return status;
     }
 

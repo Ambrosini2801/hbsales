@@ -171,7 +171,7 @@ public class CategoriaLinhaService {
             Iterator<String[]> iterator = linhaCSV.iterator();
             String[] uplando;
 
-            //Optional<CategoriaLinha> categoriaLinhaExistenteOptional = this.iCategoriaLinhaRepository.findById(categoriaLinhaExistenteOptional.isPresent());
+//            Optional<CategoriaLinha> categoriaLinhaExistenteOptional = this.iCategoriaLinhaRepository.findById(categoriaLinhaExistenteOptional.isPresent());
             while (iterator.hasNext()) {
                 try {
                     uplando = iterator.next();
@@ -180,9 +180,9 @@ public class CategoriaLinhaService {
                     for (String[] categoriaLinha : linhaCSV) {
                         String[] colunalinhacategoria = categoriaLinha[0].replaceAll("\"", "").split(";");
 
-//                    if (categoriaLinhaExistenteOptional.isPresent()) {
-//                           continue;
-//                      }
+//                        if (categoriaLinhaExistenteOptional.isPresent()) {
+//                            continue;
+//                        }
                         categoriaLinhaCadastro.setCodLinha(colunalinhacategoria[0]);
                         categoriaLinhaCadastro.setNomeLinha(colunalinhacategoria[1]);
 
@@ -197,7 +197,7 @@ public class CategoriaLinhaService {
     }
 
     public CategoriaLinha findByCodLinhaCategoria(String codLinhaCategoria) {
-        CategoriaLinha categoriaLinha = new CategoriaLinha();
+        CategoriaLinha categoriaLinha;
         Optional<CategoriaLinha> categoriaLinhaOptional = iCategoriaLinhaRepository.findCategoriaLinhaByCod(codLinhaCategoria);
 
         if (categoriaLinhaOptional.isPresent()) {

@@ -4,8 +4,8 @@ import br.com.hbsis.Api.ApiService;
 import br.com.hbsis.Api.Invoice.InvoiceDTO;
 import br.com.hbsis.Api.Invoice.InvoiceItemDTO;
 import br.com.hbsis.Pedido.Pedido;
+import br.com.hbsis.Pedido.PedidoDTO;
 import br.com.hbsis.Pedido.PedidoService;
-import br.com.hbsis.Produto.Produto;
 import br.com.hbsis.Produto.ProdutoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -45,7 +45,8 @@ public class ItemService {
         item.setId(itemDTO.getId());
         item.setQuantidade(itemDTO.getQuantidade());
         item.setProduto(produtoService.findProdutoById(itemDTO.getProduto()));
-        item.setPedido(pedidoService.findPedidoByid(itemDTO.getPedido()));
+        PedidoDTO pedidoDTO = new PedidoDTO();
+        item.setPedido(pedidoService.findPedidoByid(itemDTO.getPedido(), pedidoDTO));
         this.validate(itemDTO);
         item = this.iItemRepository.save(item);
 
@@ -136,7 +137,8 @@ public class ItemService {
 
     public InvoiceDTO setInvoiceDTO(Long idPedido) {
         InvoiceDTO invoiceDTO = new InvoiceDTO();
-        Pedido pedido = pedidoService.findPedidoByid(idPedido);
+        PedidoDTO pedidoDTO = new PedidoDTO();
+        Pedido pedido = pedidoService.findPedidoByid(idPedido, pedidoDTO);
         LOGGER.info(pedido.getFornecedor().getCNPJ());
         LOGGER.info(pedido.getUuid());
         invoiceDTO.setCnpjFornecedor(pedido.getFornecedor().getCNPJ());
