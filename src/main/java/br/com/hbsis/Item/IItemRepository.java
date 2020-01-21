@@ -1,7 +1,6 @@
 package br.com.hbsis.Item;
 
 import br.com.hbsis.Pedido.Pedido;
-import br.com.hbsis.Produto.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +20,4 @@ public interface IItemRepository extends JpaRepository<Item, Long> {
     @Query(value = "select * from dbo.itens where fk_pedido=:idPedido", nativeQuery = true)
     List<Item> findItensByPedido(@Param("idPedido") Long idPedido);
 
-}
+  }

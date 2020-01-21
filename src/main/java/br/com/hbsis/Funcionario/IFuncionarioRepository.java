@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface IFuncionarioRepository extends JpaRepository<Funcionario, Long> {
     Optional<Funcionario> findById(Long id);
 
+    Funcionario findByid(Long id);
 }

@@ -2,8 +2,10 @@ package br.com.hbsis.Pedido;
 
 import br.com.hbsis.Email.MailConfig;
 import br.com.hbsis.Fornecedor.FornecedorService;
+import br.com.hbsis.Funcionario.Funcionario;
 import br.com.hbsis.Funcionario.FuncionarioDTO;
 import br.com.hbsis.Funcionario.FuncionarioService;
+import br.com.hbsis.Funcionario.IFuncionarioRepository;
 import br.com.hbsis.Item.Item;
 import br.com.hbsis.Item.ItemService;
 import br.com.hbsis.Vendas.Vendas;
@@ -34,17 +36,18 @@ public class PedidoService {
     private final VendasService vendasService;
     private final ItemService itemService;
     private final FuncionarioService funcionarioService;
-    @Autowired
     private final MailConfig mailConfig;
+    private final IFuncionarioRepository iFuncionarioRepository;
 
-    public PedidoService(IPedidoRepository iPedidoRepository, FornecedorService fornecedorService, VendasService vendasService, @Lazy ItemService itemService, FuncionarioService funcionarioService, MailConfig mailConfig) {
-
+    @Autowired
+    public PedidoService(IPedidoRepository iPedidoRepository, FornecedorService fornecedorService, VendasService vendasService, @Lazy ItemService itemService, FuncionarioService funcionarioService, MailConfig mailConfig, IFuncionarioRepository iFuncionarioRepository) {
         this.iPedidoRepository = iPedidoRepository;
         this.fornecedorService = fornecedorService;
         this.vendasService = vendasService;
         this.itemService = itemService;
         this.funcionarioService = funcionarioService;
         this.mailConfig = mailConfig;
+        this.iFuncionarioRepository = iFuncionarioRepository;
     }
 
     public PedidoDTO save(PedidoDTO pedidoDTO) {
@@ -229,52 +232,74 @@ public class PedidoService {
         }
     }
 
-    public List<Pedido> visualizarPedidos(Long id, PedidoDTO pedidoDTO) {
-        Pedido pedido;
-        pedido = this.findPedidoByid(id, pedidoDTO);
-        List<Pedido> listPedido = new ArrayList<>();
-        if (pedido.getStatus().equals(EnumStatusPedido.ABERTO) || pedido.getStatus().equals(EnumStatusPedido.RETIRADO)) {
-            listPedido.add(pedido);
-        }
+    public List<Pedido> visualizarPedidos(Long id) {
+        List<Pedido> listPedido = iPedidoRepository.findAll();
+        Funcionario funcionario = this.iFuncionarioRepository.findByid(id);
+
+        for (Pedido pedido : listPedido)
+            if (funcionario.equals(id) || pedido.getId().equals(id)) {
+
+                if (pedido.getStatus().equals(EnumStatusPedido.ABERTO) || pedido.getStatus().equals(EnumStatusPedido.RETIRADO)) {
+                    pedido.setId(pedido.getId());
+                    pedido.setCodPedido(pedido.getCodPedido());
+                    pedido.setStatus(pedido.getStatus());
+                    pedido.setDataPedido(pedido.getDataPedido());
+                    listPedido.add(pedido);
+
+                } else {
+                    throw new IllegalArgumentException("Não foi possível visualizar este pedido!");
+                }
+            }
         return listPedido;
     }
 
-    public PedidoDTO cancelarPedido(Long id, PedidoDTO pedidoDTO) {
-        Pedido pedido;
-        pedido = this.findPedidoByid(id, pedidoDTO);
-        pedidoDTO = PedidoDTO.of(pedido);
+    public PedidoDTO cancelarPedido(Long id) {
+        Pedido pedido = this.iPedidoRepository.findByid(id);
+        Funcionario funcionario = this.iFuncionarioRepository.findByid(id);
+        PedidoDTO pedidoDTO = PedidoDTO.of(pedido);
+
         pedidoDTO.getStatus(EnumStatusPedido.CANCELADO);
-        if (pedido.getStatus().equals(EnumStatusPedido.ABERTO)) {
-            if (pedido.getVendas().getFimVendas().isBefore(LocalDate.now()) || pedido.getVendas().getFimVendas().isAfter(LocalDate.now())) {
-            } else {
-                throw new IllegalArgumentException("Não foi possível cancelar este pedido!");
-            }
-        }
-        return pedidoDTO;
-    }
 
-    public PedidoDTO editarPedido(Long id, PedidoDTO pedidoDTO) {
-        Pedido pedido;
-        pedido = this.findPedidoByid(id, pedidoDTO);
-        if (pedido.getStatus().equals(EnumStatusPedido.ABERTO)) {
-            if (pedido.getVendas().getInicioVendas().isBefore(LocalDate.now()) && pedido.getVendas().getFimVendas().isAfter(LocalDate.now())) {
-            } else {
-                throw new IllegalArgumentException("Não foi possível editar este pedido!");
-            }
-         }
-        return pedidoDTO;
-    }
+        if (funcionario.equals(id) || pedido.getId().equals(id))
 
-    public PedidoDTO retirarPedido(Long id, PedidoDTO pedidoDTO) {
-        Pedido pedido;
-        pedido = this.findPedidoByid(id, pedidoDTO);
-        if (pedido.getVendas().getRetiradaPedido().equals(LocalDate.now())) {
             if (pedido.getStatus().equals(EnumStatusPedido.ABERTO)) {
-                pedido.setStatus(EnumStatusPedido.RETIRADO);
-                this.update(PedidoDTO.of(pedido), id);
-                throw new IllegalArgumentException("Pedido de retirada inválido!");
+                if (pedido.getVendas().getFimVendas().isBefore(LocalDate.now()) || pedido.getVendas().getFimVendas().isAfter(LocalDate.now())) {
+
+                } else {
+                    throw new IllegalArgumentException("Não foi possível cancelar este pedido!");
+                }
             }
-        }
-        return null;
+        return pedidoDTO;
+    }
+
+    public PedidoDTO editarPedido(Long id) {
+        Pedido pedido = this.iPedidoRepository.findPedidoByid(id);
+        PedidoDTO pedidoDTO = PedidoDTO.of(pedido);
+
+            if (pedido.getStatus().equals(EnumStatusPedido.ABERTO)) {
+                if (pedido.getVendas().getInicioVendas().isBefore(LocalDate.now()) && pedido.getVendas().getFimVendas().isAfter(LocalDate.now())) {
+                } else {
+                    throw new IllegalArgumentException("Não foi possível editar este pedido!");
+                }
+            }
+        return pedidoDTO;
+    }
+
+    public PedidoDTO retirarPedido(Long id) {
+        Pedido pedido = this.iPedidoRepository.findPedidoByid(id);
+        Funcionario funcionario = this.iFuncionarioRepository.findByid(id);
+        PedidoDTO pedidoDTO = PedidoDTO.of(pedido);
+
+        if (funcionario.equals(id) || pedido.getId().equals(id))
+
+            if (pedido.getVendas().getRetiradaPedido().equals(LocalDate.now())) {
+                if (pedido.getStatus().equals(EnumStatusPedido.ABERTO)) {
+                    pedido.setStatus(EnumStatusPedido.RETIRADO);
+                    this.update(PedidoDTO.of(pedido), id);
+                } else {
+                    throw new IllegalArgumentException("Retirada inválido!");
+                }
+            }
+        return pedidoDTO;
     }
 }

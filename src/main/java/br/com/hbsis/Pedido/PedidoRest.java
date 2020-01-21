@@ -58,26 +58,26 @@ public class PedidoRest {
     }
 
     @GetMapping("/visualizarPedidos/{id}")
-    public List<Pedido> visualizarPedidos(@PathVariable("id") Long id, PedidoDTO pedidoDTO) {
+    public List<Pedido> visualizarPedidos(@PathVariable("id") Long id) {
         LOGGER.info("Emitindo lista de pedidos do funcionário de ID: {}", id);
-        return this.PedidoService.visualizarPedidos(id, pedidoDTO);
+        return this.PedidoService.visualizarPedidos(id);
     }
 
     @PutMapping("/cancelaPedido/{id}")
-    public PedidoDTO cancelarPedido(@PathVariable("id") Long id, PedidoDTO pedidoDTO) {
+    public PedidoDTO cancelarPedido(@PathVariable("id") Long id) {
         LOGGER.info("Cancelando o pedido de ID: {}", id);
-        return this.PedidoService.cancelarPedido(id, pedidoDTO);
+        return this.PedidoService.cancelarPedido(id);
     }
 
     @PutMapping("/editarPedido/{id}")
-    public PedidoDTO editarPedido(@PathVariable("id") Long id, PedidoDTO pedidoDTO) {
+    public PedidoDTO editarPedido(@PathVariable("id") Long id) {
         LOGGER.info("Editando o pedido de ID: {}", id);
-        return this.PedidoService.editarPedido(id, pedidoDTO);
+        return this.PedidoService.editarPedido(id);
     }
 
     @PutMapping("/retirarPedido/{id}")
-    public PedidoDTO retirarPedido(@PathVariable("id") Long id, PedidoDTO pedidoDTO) {
-        LOGGER.info("Recebendo Update para Pedido de ID: {}", id);
-        return this.PedidoService.retirarPedido(id, pedidoDTO);
+    public PedidoDTO retirarPedido(@PathVariable("id") Long id) {
+        LOGGER.info("Retirando o Pedido de ID: {}", id);
+        return this.PedidoService.retirarPedido(id);
     }
 }
