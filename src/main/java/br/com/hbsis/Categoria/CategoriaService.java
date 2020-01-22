@@ -36,9 +36,9 @@ public class CategoriaService {
     public CategoriaDTO save(CategoriaDTO categoriaDTO) {
         LOGGER.info("Salvando categoria");
         LOGGER.debug("Categoria: {}", categoriaDTO);
+
         Categoria categoria = new Categoria();
         categoria.setFornecedor(fornecedorService.findFornecedorById1(categoriaDTO.getFornecedor()));
-        System.out.println(categoria);
 
         String cnpj = (categoria.getFornecedor().getCNPJ());
         cnpj = cnpj.substring(10, 14);
@@ -76,7 +76,6 @@ public class CategoriaService {
         if (categoriaOptional.isPresent()) {
             return CategoriaDTO.of(categoriaOptional.get());
         }
-
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
@@ -89,10 +88,13 @@ public class CategoriaService {
     }
 
     public CategoriaDTO update(CategoriaDTO categoriaDTO, Long id) {
-        //TODO: 12/12/2019 Realizar construção do código também no update
         Optional<Categoria> categoriaExistenteOptional = this.iCategoriaRepository.findById(id);
         if (categoriaExistenteOptional.isPresent()) {
             Categoria categoriaExistente = categoriaExistenteOptional.get();
+
+            categoriaExistente.setCodCategoria(categoriaExistente.getCodCategoria().toUpperCase());
+            categoriaExistente.setFornecedor(categoriaExistente.getFornecedor());
+            categoriaExistente.setNomeCategoria(categoriaExistente.getNomeCategoria());
 
             LOGGER.info("Atualizando usuário... id: [{}]", categoriaExistente.getId());
             LOGGER.debug("Payload: {}", categoriaDTO);
@@ -167,7 +169,6 @@ public class CategoriaService {
 
                         this.iCategoriaRepository.save(categoriaCadastro);
                     }
-
                 } catch (Exception e) {
                     LOGGER.info("Importação concluída...");
                 }

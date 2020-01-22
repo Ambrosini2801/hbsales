@@ -115,7 +115,6 @@ public class ProdutoService {
         if (produtoOptional.isPresent()) {
             return ProdutoDTO.of(produtoOptional.get());
         }
-
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 
@@ -247,7 +246,6 @@ public class ProdutoService {
 
                         this.iProdutoRepository.save(produto1);
                     }
-
                 } catch (Exception e) {
                     LOGGER.info("Importação concluída!");
                 }

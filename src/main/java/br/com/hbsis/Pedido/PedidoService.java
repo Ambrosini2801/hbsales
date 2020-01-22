@@ -287,10 +287,7 @@ public class PedidoService {
 
     public PedidoDTO retirarPedido(Long id) {
         Pedido pedido = this.iPedidoRepository.findPedidoByid(id);
-        Funcionario funcionario = this.iFuncionarioRepository.findByid(id);
         PedidoDTO pedidoDTO = PedidoDTO.of(pedido);
-
-        if (funcionario.equals(id) || pedido.getId().equals(id))
 
             if (pedido.getVendas().getRetiradaPedido().equals(LocalDate.now())) {
                 if (pedido.getStatus().equals(EnumStatusPedido.ABERTO)) {

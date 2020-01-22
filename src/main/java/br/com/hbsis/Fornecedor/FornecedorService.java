@@ -105,7 +105,6 @@ public class FornecedorService {
         Optional<Fornecedor> fornecedorExistenteOptional = this.iFornecedorRepository.findById(id);
 
         if (fornecedorExistenteOptional.isPresent()) {
-            // TODO: 12/12/2019 colocar para recalcular o código de todas as categorias
             Fornecedor fornecedorExistente = fornecedorExistenteOptional.get();
             LOGGER.info("Atualizando o Fornecedor... id: [{}]", fornecedorExistente.getId());
             LOGGER.debug("Payaload: {}", fornecedorDTO);
@@ -119,7 +118,9 @@ public class FornecedorService {
             fornecedorExistente.setEmail(fornecedorDTO.getEmail());
 
             this.validate(fornecedorDTO);
+
             LOGGER.info("Validando o Fornecedor!");
+
             fornecedorExistente = this.iFornecedorRepository.save(fornecedorExistente);
             return FornecedorDTO.of(fornecedorExistente);
         }

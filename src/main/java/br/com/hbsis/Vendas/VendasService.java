@@ -134,7 +134,6 @@ public class VendasService {
         if (vendasOptional.isPresent()) {
             return vendasOptional.get();
         }
-
         throw new IllegalArgumentException(String.format("ID %s não existe", id));
     }
 }

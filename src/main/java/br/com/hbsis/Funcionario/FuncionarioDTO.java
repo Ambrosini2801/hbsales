@@ -1,6 +1,6 @@
 package br.com.hbsis.Funcionario;
 
-public class FuncionarioDTO {
+public class FuncionarioDTO{
 
     private Long id;
     private String nomeFuncionario;

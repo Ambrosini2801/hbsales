@@ -171,24 +171,19 @@ public class CategoriaLinhaService {
             Iterator<String[]> iterator = linhaCSV.iterator();
             String[] uplando;
 
-//            Optional<CategoriaLinha> categoriaLinhaExistenteOptional = this.iCategoriaLinhaRepository.findById(categoriaLinhaExistenteOptional.isPresent());
             while (iterator.hasNext()) {
                 try {
                     uplando = iterator.next();
                     CategoriaLinha categoriaLinhaCadastro = new CategoriaLinha();
 
-                    for (String[] categoriaLinha : linhaCSV) {
-                        String[] colunalinhacategoria = categoriaLinha[0].replaceAll("\"", "").split(";");
+                    for (String[] categoriaLinhaOK : linhaCSV) {
+                        String[] colunalinhacategoria = categoriaLinhaOK[0].replaceAll("\"", "").split(";");
 
-//                        if (categoriaLinhaExistenteOptional.isPresent()) {
-//                            continue;
-//                        }
                         categoriaLinhaCadastro.setCodLinha(colunalinhacategoria[0]);
                         categoriaLinhaCadastro.setNomeLinha(colunalinhacategoria[1]);
 
                         this.iCategoriaLinhaRepository.save(categoriaLinhaCadastro);
                     }
-
                 } catch (Exception e) {
                     LOGGER.info("Importação concluída!");
                 }
